@@ -1,0 +1,282 @@
+/* Reset styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Body and container styling */
+body {
+    background-color: #f7f7f7;
+    color: #333;
+    line-height: 1.6;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* Top-right avatar and notification styling */
+.top-right-icons {
+    position: fixed; /* Fixed position to stay at top-right during scroll */
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 1000; /* Ensure it stays above other elements */
+}
+
+/* Avatar styling */
+.avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #ff5a5f;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.avatar:hover {
+    background-color: #e14e4e;
+}
+
+/* Notification icon styling */
+.notification {
+    position: relative;
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.notification:hover .notification-icon {
+    color: #ff5a5f;
+}
+
+.notification-icon {
+    color: #333;
+}
+
+.notification-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff5a5f;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 2px 6px;
+}
+
+/* Container styling */
+.container {
+    width: 85%;
+    max-width: 1000px;
+    margin: 100px auto 40px; /* Added top margin to prevent overlap with fixed icons */
+}
+
+/* Header styling */
+header {
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+header nav {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+header nav a {
+    text-decoration: none;
+    color: #ff5a5f;
+}
+
+header nav a:hover {
+    text-decoration: underline;
+}
+
+/* Main content layout */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Spacing between sections */
+}
+
+/* User info section styling */
+.user-info, .preferences, .security {
+    background-color: #fff;
+    padding: 20px 25px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-info {
+    /* Optional: Specific styles for user-info if needed */
+}
+
+.preferences, .security {
+    /* Additional styles for preferences and security sections */
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.info-item:last-child {
+    border-bottom: none; /* Remove last item border */
+}
+
+.user-info label,
+.preferences label,
+.security label {
+    font-weight: bold;
+    color: #555;
+    width: 200px;
+    margin-right: 15px;
+}
+
+.user-info span,
+.preferences span,
+.security span {
+    color: #333;
+    font-size: 15px;
+    flex: 1;
+}
+
+.user-info a,
+.preferences a,
+.security a {
+    color: #ff5a5f;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.user-info a:hover,
+.preferences a:hover,
+.security a:hover {
+    text-decoration: underline;
+}
+
+/* Section headings */
+.preferences h2,
+.security h2 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        margin: 120px auto 20px; /* Adjust top margin for mobile */
+    }
+
+    header h1 {
+        font-size: 24px;
+    }
+
+    .user-info label,
+    .preferences label,
+    .security label {
+        width: 150px;
+    }
+
+    .top-right-icons {
+        top: 10px;
+        right: 10px;
+    }
+
+    .avatar {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+
+    .notification-icon {
+        font-size: 18px;
+    }
+}
+/* Style the avatar */
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ccc;
+    display: inline-block;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+}
+
+/* Dropdown menu hidden by default */
+.dropdown-menu {
+    display: none; /* Hide by default */
+    position: absolute;
+    top: 50px; /* Adjust based on avatar position */
+    right: 10px; /* Adjust based on layout */
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+}
+
+/* Display dropdown menu when it has the 'show' class */
+.dropdown-menu.show {
+    display: block;
+}
+
+/* Style for each link in the dropdown */
+.dropdown-menu a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of links on hover */
+.dropdown-menu a:hover {
+    background-color: #ddd;
+}
+
+/* Style the notification section */
+.notification {
+    position: relative;
+    margin-left: 20px;
+    display: inline-block;
+}
+
+.notification .notification-icon {
+    font-size: 24px;
+    color: #333;
+}
+
+.notification .notification-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    padding: 5px;
+    border-radius: 50%;
+    font-size: 12px;
+}

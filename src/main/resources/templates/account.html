@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông tin cá nhân</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="top-right-icons">
+    <div class="avatar" onclick="toggleDropdown()">C</div>
+
+    <div id="avatarDropdown" class="dropdown-menu">
+        <a href="/profile">Hồ sơ </a>
+        <a href="/account">tài khoản</a>
+        <a href="#">trung tâm trợ giúp</a>
+        <a href="#">Ngôn ngữ và dịch</a>
+        <a href="#">Đăng xuất</a>
+    </div>
+
+    <div class="notification">
+        <span class="notification-icon">&#128276;</span>
+        <span class="notification-count">3</span>
+    </div>
+</div>
+
+<div class="container">
+    <header>
+        <nav>
+            <a href="/">Tài khoản</a>
+        </nav>
+        <h1>Tài Khoản </h1>
+    </header>
+
+    <main class="main-content">
+        <section class="user-info">
+            <div class="info-item">
+                <label>Tên pháp lý</label>
+                <span>Cuong Tran</span>
+                <a href="#" th:href="@{/editLegalName}">Chỉnh sửa</a>
+            </div>
+            <div class="info-item">
+                <label>Tên ưa dùng</label>
+                <span>Chưa được cung cấp</span>
+                <a href="#" th:href="@{/addPreferredName}">Thêm</a>
+            </div>
+            <div class="info-item">
+                <label>Địa chỉ email</label>
+                <span>c***5@gmail.com</span>
+                <a href="#" th:href="@{/editEmail}">Chỉnh sửa</a>
+            </div>
+            <div class="info-item">
+                <label>Số điện thoại</label>
+                <span>Chưa được cung cấp</span>
+                <a href="#" th:href="@{/addPhoneNumber}">Thêm</a>
+            </div>
+            <div class="info-item">
+                <label>Giấy tờ tùy thân do chính phủ cấp</label>
+                <span>Chưa được cung cấp</span>
+                <a href="#" th:href="@{/addIdDocument}">Thêm</a>
+            </div>
+            <div class="info-item">
+                <label>Địa chỉ</label>
+                <span>Chưa được cung cấp</span>
+                <a href="#" th:href="@{/editAddress}">Chỉnh sửa</a>
+            </div>
+            <div class="info-item">
+                <label>Liên hệ trong trường hợp khẩn cấp</label>
+                <span>Chưa được cung cấp</span>
+                <a href="#" th:href="@{/addEmergencyContact}">Thêm</a>
+            </div>
+        </section>
+        <section class="preferences">
+            <h2>Tùy chọn tài khoản</h2>
+            <div class="info-item">
+                <label>Ngôn ngữ ưa thích</label>
+                <span>Tiếng Việt</span>
+                <a href="#" th:href="@{/editLanguage}">Chỉnh sửa</a>
+            </div>
+            <div class="info-item">
+                <label>Thời gian địa phương</label>
+                <span>GMT+7</span>
+                <a href="#" th:href="@{/editTimezone}">Chỉnh sửa</a>
+            </div>
+            <div class="info-item">
+                <label>Thông báo qua email</label>
+                <span>Đã bật</span>
+                <a href="#" th:href="@{/editNotifications}">Chỉnh sửa</a>
+            </div>
+        </section>
+        <section class="security">
+            <h2>Bảo mật tài khoản</h2>
+            <div class="info-item">
+                <label>Mật khẩu</label>
+                <span>********</span>
+                <a href="#" th:href="@{/editPassword}">Đổi mật khẩu</a>
+            </div>
+            <div class="info-item">
+                <label>Xác thực hai bước</label>
+                <span>Chưa bật</span>
+                <a href="#" th:href="@{/enable2FA}">Bật</a>
+            </div>
+        </section>
+    </main>
+</div>
+<script>
+    function toggleDropdown() {
+        const dropdown = document.getElementById("avatarDropdown");
+        dropdown.classList.toggle("show");
+    }
+    window.onclick = function(event) {
+        if (!event.target.matches('.avatar')) {
+            var dropdowns = document.getElementsByClassName("dropdown-menu");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+    window.onload = function() {
+        document.querySelector('.avatar').style.backgroundColor = getRandomColor();
+    }
+</script>
+</body>
+</html>
