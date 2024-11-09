@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("profile")
-public class profile {
+public class profileController {
     @GetMapping("")
     public String getPage ()
     {
-        return "profile";
+        return "profile/profile";
     }
 }
