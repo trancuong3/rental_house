@@ -17,7 +17,8 @@ public class User {
 
     @Column(name = "email", unique = true)
     private String email;
-
+    @Column(name = "avatar", unique = true)
+    private String  avatar;
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -33,8 +34,6 @@ public class User {
     @Column(name = "status", columnDefinition = "ENUM('Active', 'Locked') DEFAULT 'Active'")
     private Status status = Status.Active;
 
-    @Column(name = "is_owner")
-    private boolean isOwner;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
@@ -42,6 +41,13 @@ public class User {
     @Column(name = "updated_at", nullable = false)
     private Timestamp updatedAt;
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public enum Status {
         ACTIVE,   // Make sure the enum constant matches the value being passed.
@@ -112,13 +118,6 @@ public class User {
         this.status = status;
     }
 
-    public boolean isOwner() {
-        return isOwner;
-    }
-
-    public void setOwner(boolean owner) {
-        isOwner = owner;
-    }
 
     public Timestamp getCreatedAt() {
         return createdAt;
