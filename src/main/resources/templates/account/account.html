@@ -212,14 +212,17 @@
                     <label for="fullname">Họ và tên</label>
                     <input type="text" id="fullname" name="fullname" th:value="${user.fullname}" required />
                 </div>
+
                 <div class="info-item">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" th:value="${user.email}" required />
                 </div>
+
                 <div class="info-item">
                     <label for="phone">Số điện thoại</label>
-                    <input type="text" id="phone" name="phone" th:value="${user.phone}" />
+                    <input type="text" id="phone" name="phone" th:value="${user.phone}" required pattern="^\d{10}$" />
                 </div>
+
                 <div class="info-item">
                     <label for="address">Địa chỉ</label>
                     <input type="text" id="address" name="address" th:value="${user.address}" />
@@ -230,23 +233,24 @@
                     <button type="button" onclick="hideEditForm()">Hủy</button>
                 </div>
             </form>
+
         </div>
     </div>
     <div id="changePasswordFormOverlay" class="edit-form-overlay hidden">
         <div class="edit-form-container">
             <h1>Đổi mật khẩu</h1>
-            <form th:action="@{/account/change-password}" method="POST">
+            <form th:action="@{/account/change-password}" method="POST" onsubmit="return validatePassword()">
                 <div class="info-item">
                     <label for="currentPassword">Mật khẩu hiện tại</label>
                     <input type="password" id="currentPassword" name="currentPassword" required />
                 </div>
                 <div class="info-item">
                     <label for="newPassword">Mật khẩu mới</label>
-                    <input type="password" id="newPassword" name="newPassword" required />
+                    <input type="password" id="newPassword" name="newPassword" required minlength="6" maxlength="8" />
                 </div>
                 <div class="info-item">
                     <label for="confirmPassword">Xác nhận mật khẩu mới</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" required />
+                    <input type="password" id="confirmPassword" name="confirmPassword" required minlength="6" maxlength="8" />
                 </div>
                 <div class="submit-btn">
                     <button type="submit">Cập nhật</button>
@@ -255,6 +259,7 @@
             </form>
         </div>
     </div>
+
 
 </div>
 

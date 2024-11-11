@@ -17,8 +17,7 @@ public class User {
 
     @Column(name = "email", unique = true)
     private String email;
-    @Column(name = "avatar", unique = true)
-    private String  avatar;
+
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -26,7 +25,8 @@ public class User {
     private String phone;
     @Column(name="fullname")
     private String fullname;
-
+    @Column(name="confirm_password")
+    private String confirmPassword;
     @Column(name = "address")
     private String address;
 
@@ -35,25 +35,18 @@ public class User {
     private Status status = Status.Active;
 
 
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
 
     @Column(name = "updated_at", nullable = false)
     private Timestamp updatedAt;
 
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
 
     public enum Status {
-        ACTIVE,   // Make sure the enum constant matches the value being passed.
+        ACTIVE,
         Active, Locked
     }
-    // Getters and Setters
     public int getUserId() {
         return userId;
     }
@@ -68,6 +61,14 @@ public class User {
 
     public String getFullname() {
         return fullname;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     public void setFullname(String fullname) {
@@ -117,6 +118,7 @@ public class User {
     public void setStatus(Status status) {
         this.status = status;
     }
+
 
 
     public Timestamp getCreatedAt() {
