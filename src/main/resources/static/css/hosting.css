@@ -1,0 +1,184 @@
+.btn-hover:hover {
+    background-color: #f0f0f0;
+}
+.nav-link {
+    border-radius: 50px;
+    transition: background-color 0.3s;
+}
+.btn-hover:focus {
+    background-color: #e0e0e0 !important; /* Nền xám */
+    color: black !important; /* Chữ đen */
+    border-color: black !important; /* Viền xám */
+    outline: none; /* Loại bỏ viền outline mặc định khi nhấn */
+}
+.nav-link:hover {
+    background-color: #f0f0f0;
+    color: black !important;
+}
+.navbar-brand img {
+    height: 50px; /* Định kích thước của logo */
+    margin-right: 10px; /* Khoảng cách bên phải logo */
+}
+.dropdown-menu {
+    right: 0;
+    left: auto;
+    border-radius: 20px;
+}
+.notification-panel h4 {
+    padding: 10px 15px; /* Thêm khoảng cách bên trong */
+    margin-bottom: 10px; /* Thêm khoảng cách bên dưới */
+    border-bottom: 1px solid #f0f0f0; /* Thêm đường kẻ dưới */
+    font-weight: bold; /* In đậm chữ */
+}
+.notification-panel {
+    width: 300px; /* Định kích thước cho bảng thông báo */
+}
+
+.notification-panel a {
+    display: block;
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    color: black;
+}
+
+.notification-panel a:last-child {
+    border-bottom: none;
+}
+
+.notification-panel a:hover {
+    background-color: #f0f0f0;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-content h1 {
+    margin: 0;
+}
+
+.btn {
+    background-color: white;
+    color: black;
+    border: 1px solid gray;
+    border-radius: 50px;
+    transition: background-color 0.3s, color;
+}
+
+.btn:hover {
+    background-color: #e9ecef;
+    color: black;
+}
+.btn-underline {
+    background-color: transparent; /* Không có nền */
+    color: black; /* Màu chữ đen */
+    border: none; /* Không có border */
+    text-decoration: underline; /* Gạch dưới chữ */
+    padding: 0; /* Loại bỏ padding nếu có */
+}
+
+.btn-underline:hover {
+    background-color: #e9ecef; /* Giữ nguyên nền trong khi hover */
+}
+.header-content h2 {
+    margin-bottom: 20px; /* Tạo khoảng cách dưới cho dòng đầu tiên */
+}
+
+.header-content.mt-4 h2 {
+    margin-top: 20px; /* Tạo khoảng cách trên cho dòng thứ hai nếu cần */
+}
+
+.help-box {
+    border: 1px solid #e0e0e0; /* Màu viền xám nhạt */
+    border-radius: 10px; /* Bo tròn viền */
+    background-color: #ffffff; /* Màu nền trắng */
+    color: black; /* Màu chữ mặc định */
+    transition: background-color 0.3s, border-color 0.3s; /* Hiệu ứng khi hover */
+}
+.help-box:hover {
+    background-color: #f0f0f0; /* Đổi màu nền khi hover */
+    border-color: #bfbfbf; /* Đổi màu viền khi hover */
+    text-decoration: none; /* Loại bỏ gạch chân */
+}
+.help-box h5 {
+    font-size: 16px;
+    font-weight: bold;
+}
+.help-box p {
+    font-size: 14px;
+    color: #757575; /* Màu chữ xám nhạt */
+}
+
+.card {
+    height: 100%; /* Đảm bảo thẻ card có chiều cao đầy đủ */
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Đưa nội dung xuống phía dưới */
+    height: 100%; /* Đảm bảo chiều cao đầy đủ */
+}
+
+.card-text {
+    font-weight: bold; /* In đậm văn bản */
+    text-align: center; /* Căn giữa văn bản */
+    font-size: 14px; /* Điều chỉnh kích thước chữ */
+}
+
+.card img {
+    height: 150px; /* Đặt chiều cao cố định cho ảnh */
+    object-fit: cover; /* Giữ tỷ lệ ảnh, cắt phần dư */
+    width: 100%; /* Ảnh rộng bằng thẻ */
+}
+.footer h6 {
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.footer ul {
+    padding-left: 0;
+}
+
+.footer ul li {
+    list-style-type: none;
+    margin-bottom: 8px;
+}
+
+.footer ul li a {
+    color: #6c757d;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer ul li a:hover {
+    color: #343a40;
+}
+
+.footer .text-muted {
+    font-size: 14px;
+}
+
+.footer .fab, .footer .fas.fa-globe {
+    color: #6c757d;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+.footer .fab:hover, .footer .fas.fa-globe:hover {
+    color: #343a40;
+}
+.footer-link {
+    color: #6c757d;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-link:hover {
+    color: #343a40;
+}
+.notification-panel .fa-envelope {
+    font-size: 20px; /* Điều chỉnh kích thước biểu tượng */
+}
