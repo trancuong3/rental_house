@@ -48,7 +48,6 @@
             font-size: 1.2em;
         }
 
-
         /* Overlay styling */
         .edit-form-overlay {
             position: fixed;
@@ -97,6 +96,24 @@
             background-color: #f44336;
             color: white;
         }
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
     </style>
 </head>
 <body>
@@ -121,7 +138,12 @@
         <h1>Thông tin cá nhân</h1>
         <a href="javascript:void(0);" onclick="showEditForm()">Chỉnh sửa</a>
     </header>
-
+    <div th:if="${success}" class="alert alert-success">
+        <p th:text="${success}"></p>
+    </div>
+    <div th:if="${error}" class="alert alert-danger">
+        <p th:text="${error}"></p>
+    </div>
     <main class="main-content">
         <section class="user-info">
             <h2>Thông tin tài khoản</h2>
@@ -133,21 +155,18 @@
                 <label>Họ và tên</label>
                 <span th:text="${user.fullname}">Họ và tên</span>
             </div>
-            <div class="info-item">
-                <label>Mật khẩu</label>
-                <span th:text="${user.password}">Mật khẩu</span>
-            </div>
+
             <div class="info-item">
                 <label>Email</label>
                 <span th:text="${user.email}">Email</span>
             </div>
             <div class="info-item">
                 <label>Số điện thoại</label>
-                <span th:text="${user.phone != null ? user.phone : 'Chưa được cung cấp'}">Chưa được cung cấp</span>
+                <span th:text="${user.phone != null && user.phone != '' ? user.phone : 'Chưa được cung cấp'}"></span>
             </div>
             <div class="info-item">
                 <label>Địa chỉ</label>
-                <span th:text="${user.address != null ? user.address : 'Chưa được cung cấp'}">Chưa được cung cấp</span>
+                <span th:text="${user.address != null && user.address !='' ? user.address : 'Chưa được cung cấp'}">Chưa được cung cấp</span>
             </div>
         </section>
 
@@ -170,6 +189,7 @@
             <div class="info-item">
                 <label>Mật khẩu</label>
                 <span th:text="${user.password}"></span>
+                <a href="javascript:void(0);" onclick="showChangePasswordForm()">Đổi mật khẩu</a>
             </div>
             <div class="info-item">
                 <label>Xác thực hai bước</label>
@@ -177,6 +197,7 @@
                 <a href="#">Bật</a>
             </div>
         </section>
+
     </main>
     <div id="editFormOverlay" class="edit-form-overlay hidden">
         <div class="edit-form-container">
@@ -191,18 +212,17 @@
                     <label for="fullname">Họ và tên</label>
                     <input type="text" id="fullname" name="fullname" th:value="${user.fullname}" required />
                 </div>
-                <div class="info-item">
-                    <label for="password">Họ và tên</label>
-                    <input type="text" id="password" name="password" th:value="${user.password}" required />
-                </div>
+
                 <div class="info-item">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" th:value="${user.email}" required />
                 </div>
+
                 <div class="info-item">
                     <label for="phone">Số điện thoại</label>
-                    <input type="text" id="phone" name="phone" th:value="${user.phone}" />
+                    <input type="text" id="phone" name="phone" th:value="${user.phone}" required pattern="^\d{10}$" />
                 </div>
+
                 <div class="info-item">
                     <label for="address">Địa chỉ</label>
                     <input type="text" id="address" name="address" th:value="${user.address}" />
@@ -216,6 +236,31 @@
 
         </div>
     </div>
+    <div id="changePasswordFormOverlay" class="edit-form-overlay hidden">
+        <div class="edit-form-container">
+            <h1>Đổi mật khẩu</h1>
+            <form th:action="@{/account/change-password}" method="POST" onsubmit="return validatePassword()">
+                <div class="info-item">
+                    <label for="currentPassword">Mật khẩu hiện tại</label>
+                    <input type="password" id="currentPassword" name="currentPassword" required />
+                </div>
+                <div class="info-item">
+                    <label for="newPassword">Mật khẩu mới</label>
+                    <input type="password" id="newPassword" name="newPassword" required minlength="6" maxlength="8" />
+                </div>
+                <div class="info-item">
+                    <label for="confirmPassword">Xác nhận mật khẩu mới</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required minlength="6" maxlength="8" />
+                </div>
+                <div class="submit-btn">
+                    <button type="submit">Cập nhật</button>
+                    <button type="button" onclick="hideChangePasswordForm()">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
 </div>
 
 <script>
@@ -231,11 +276,19 @@
         const dropdown = document.getElementById("avatarDropdown");
         dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
     }
+
     function setRandomAvatarColor() {
         const avatar = document.querySelector(".avatar");
         const colors = ["#ff6f61", "#6b5b95", "#88b04b", "#f7cac9", "#92a8d1"];
         const randomColor = colors[Math.floor(Math.random() * colors.length)];
         avatar.style.backgroundColor = randomColor;
+    }
+    function showChangePasswordForm() {
+        document.getElementById("changePasswordFormOverlay").classList.remove("hidden");
+    }
+
+    function hideChangePasswordForm() {
+        document.getElementById("changePasswordFormOverlay").classList.add("hidden");
     }
 
     window.onload = setRandomAvatarColor;

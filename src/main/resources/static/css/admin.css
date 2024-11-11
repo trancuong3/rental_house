@@ -1,0 +1,160 @@
+#sidebar-wrapper {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    transition: all 0.3s;
+    z-index: 1000;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 80px;
+}
+
+#sidebar-wrapper .list-group-item {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+#wrapper.toggled #sidebar-wrapper .list-group-item {
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#page-content-wrapper {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    transition: all 0.3s;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+#sidebar-wrapper {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    transition: all 0.3s;
+    z-index: 1000;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 80px;
+}
+
+#sidebar-wrapper .list-group-item {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+#wrapper.toggled #sidebar-wrapper .list-group-item {
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#page-content-wrapper {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    transition: all 0.3s;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+}
+
+.table {
+    background-color: #fff;
+    margin-top: 20px;
+    border-collapse: separate;
+    border-spacing: 0 15px;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.table img {
+    width: 80px;
+    height: auto;
+    border-radius: 8px;
+}
+
+.btn {
+    padding: 5px 10px;
+}
+
+.btn-success:hover, .btn-info:hover, .btn-danger:hover {
+    background-color: #007bff;
+}
+
+.badge-success {
+    background-color: #28a745;
+}
+
+.badge-danger {
+    background-color: #dc3545;
+}
+
+
+.form-inline {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.form-inline input {
+    width: 300px;
+    margin-right: 10px;
+}
+
+#suggestions {
+    display: none;
+    z-index: 999;
+    border: 1px solid #ccc;
+    background: #fff;
+    max-height: 200px;
+    overflow-y: auto;
+    position: absolute;
+}
+
+#suggestions a {
+    padding: 10px;
+    display: block;
+    color: #000;
+    text-decoration: none;
+}
+
+#suggestions a:hover {
+    background-color: #f0f0f0;
+}
+
+.table {
+    width: 100%;
+}
+
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+#productList td img {
+    max-width: 50px;
+    height: auto;
+}
