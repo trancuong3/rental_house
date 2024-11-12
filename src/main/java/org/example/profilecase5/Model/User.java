@@ -1,8 +1,7 @@
 package org.example.profilecase5.Model;
 
 import jakarta.persistence.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -12,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "User")
-public class User implements UserDetails {
+public class User  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +32,9 @@ public class User implements UserDetails {
     private String phone;
     @Column(name="fullname")
     private String fullname;
+    @Column(name = "avatar", columnDefinition = "TEXT")
+    private String avatar;
+
 
     @Column(name = "address")
     private String address;
@@ -41,8 +43,7 @@ public class User implements UserDetails {
     @Column(name = "status", columnDefinition = "ENUM('Active', 'Locked') DEFAULT 'Active'")
     private Status status = Status.Active;
 
-    @Column(name = "is_owner")
-    private boolean isOwner;
+
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
@@ -62,6 +63,15 @@ public class User implements UserDetails {
         ACTIVE,   // Make sure the enum constant matches the value being passed.
         Active, Locked
     }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     // Getters and Setters
     public int getUserId() {
         return userId;
@@ -75,25 +85,6 @@ public class User implements UserDetails {
         return username;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
-    }
 
     public String getFullname() {
         return fullname;
@@ -119,10 +110,6 @@ public class User implements UserDetails {
 
 
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
 
     public String getPassword() {
         return password;
@@ -156,13 +143,7 @@ public class User implements UserDetails {
         this.status = status;
     }
 
-    public boolean isOwner() {
-        return isOwner;
-    }
 
-    public void setOwner(boolean owner) {
-        isOwner = owner;
-    }
 
     public Timestamp getCreatedAt() {
         return createdAt;
