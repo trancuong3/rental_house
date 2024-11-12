@@ -31,8 +31,9 @@ public class User  {
     private String phone;
     @Column(name="fullname")
     private String fullname;
-    @Column(name="avatar")
+    @Column(name = "avatar", columnDefinition = "TEXT")
     private String avatar;
+
 
     @Column(name = "address")
     private String address;
