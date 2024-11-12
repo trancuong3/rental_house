@@ -1,11 +1,17 @@
 package org.example.profilecase5.Model;
 
 import jakarta.persistence.*;
+
+
 import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "User")
-public class User {
+public class User  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,13 +26,16 @@ public class User {
 
     @Column(name = "password", nullable = false)
     private String password;
-
+    @Column(name="confirm_password")
+    private String confirmPassword;
     @Column(name = "phone")
     private String phone;
     @Column(name="fullname")
     private String fullname;
-    @Column(name="confirm_password")
-    private String confirmPassword;
+    @Column(name = "avatar", columnDefinition = "TEXT")
+    private String avatar;
+
+
     @Column(name = "address")
     private String address;
 
@@ -42,11 +51,28 @@ public class User {
     @Column(name = "updated_at", nullable = false)
     private Timestamp updatedAt;
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
 
     public enum Status {
-        ACTIVE,
+        ACTIVE,   // Make sure the enum constant matches the value being passed.
         Active, Locked
     }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    // Getters and Setters
     public int getUserId() {
         return userId;
     }
@@ -59,16 +85,9 @@ public class User {
         return username;
     }
 
+
     public String getFullname() {
         return fullname;
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
     }
 
     public void setFullname(String fullname) {
@@ -86,6 +105,11 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+
+
+
+
 
     public String getPassword() {
         return password;
@@ -136,4 +160,27 @@ public class User {
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public enum UserStatus {
+        Active, Locked
+    }
+
 }

@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/login")
-public class LoginController {
+@RequestMapping("/hosting/listings")
+public class ListingsController {
 
     @GetMapping
     public String listings(Model model) {
-        return "login/login";
+        return "hosting/listings";
     }
 }

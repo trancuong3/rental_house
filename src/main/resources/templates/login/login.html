@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+<div class="role-selector">
+    <label>ĐĂNG NHẬP VỚI:</label>
+    <div class="dropdown">
+        <button class="dropdown-btn">Chọn</button>
+        <div class="dropdown-content">
+            <a href="@{/hosting}" data-value="user">Người dùng</a>
+            <a href="@{/admin}" data-value="host">Chủ nhà</a>
+        </div>
+    </div>
+    <input type="hidden" id="loginAs" name="loginAs" value="">
+</div>
+<div class="login-container">
+    <h2>Welcome to NHÀ CHÒI</h2>
+    <form th:action="@{/login}" method="post">
+
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+
+        <button type="submit" class="btn">Login</button>
+    </form>
+    <div class="or-divider">
+        <span>or</span>
+    </div>
+    <button class="btn google-btn">
+        <i class="fab fa-google"></i>
+        Sign in with Google
+    </button>
+    <div th:if="${error}" class="error-message" th:text="${error}"></div>
+</div>
+<script th:src="@{/js/login.js}"></script>
+</body>
+</html>
