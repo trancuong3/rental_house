@@ -55,6 +55,56 @@
         .dropdown-menu.show {
             display: block;
         }
+        .top-right-icons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #6c757d;
+            color: white;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+
+        .notification {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.5em;
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            font-size: 0.8em;
+            padding: 2px 6px;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 50px;
+            left: -80px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -62,7 +112,7 @@
     <div class="avatar" onclick="toggleDropdown()">C</div>
     <div id="avatarDropdown" class="dropdown-menu">
         <a class="dropdown-item" href="/profile">Hồ sơ</a>
-        <a class="dropdown-item" href="/account">tài khoản</a>
+        <a class="dropdown-item" href="/account">Tài khoản</a>
         <a class="dropdown-item" href="#">Trung tâm trợ giúp</a>
         <a class="dropdown-item" href="#">Ngôn ngữ và dịch</a>
         <a class="dropdown-item" href="#">Đăng xuất</a>
@@ -74,99 +124,115 @@
     </div>
 </div>
 
-<div class="container mt-5">
-    <div class="d-flex align-items-center mb-4">
-        <div class="profile-photo mr-3">
-            <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 100px; height: 100px; font-size: 2em;">
-                C
-            </div>
-            <button class="btn btn-link">Thêm</button>
-        </div>
-        <h2>Hồ sơ của bạn</h2>
-    </div>
+<div class="profile-photo mr-3">
+    <img th:src="@{${user.avatar}}" alt="User Avatar" class="rounded-circle" style="width: 100px; height: 100px;">
+    <button class="btn btn-link" onclick="showUrlForm()">chỉnh sửa</button>
+</div>
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Nơi đã từng theo học</label>
-                <input type="text" class="form-control" placeholder="Enter your school">
-            </div>
-            <div class="form-group">
-                <label>Nơi tôi sống</label>
-                <input type="text" class="form-control" placeholder="Enter your city">
-            </div>
-            <div class="form-group">
-                <label>Thập niên tôi sinh ra</label>
-                <input type="text" class="form-control" placeholder="Enter your birth decade">
-            </div>
-            <div class="form-group">
-                <label>Thú mà tôi thương nhất</label>
-                <input type="text" class="form-control" placeholder="Enter your favorite pet">
-            </div>
-            <div class="form-group">
-                <label>Kỹ năng vui vững nhất của tôi</label>
-                <input type="text" class="form-control" placeholder="Enter your top skill">
-            </div>
+<!-- Form nhập URL sẽ ẩn khi chưa bấm nút "Thêm" -->
+<div id="urlForm" style="display: none;">
+    <form action="/profile/saveUrl" method="post">
+        <div class="form-group">
+            <label for="url">Nhập URL:</label>
+            <input type="url" class="form-control" id="url" name="url" placeholder="Nhập URL của bạn" required>
         </div>
+        <button type="submit" class="btn btn-primary">Lưu URL</button>
+        <button type="button" class="btn btn-secondary" onclick="cancelUrlForm()">Hủy</button>
+    </form>
+</div>
+<h2>Hồ sơ của bạn</h2>
+</div>
 
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Công việc của tôi</label>
-                <input type="text" class="form-control" placeholder="Enter your job">
-            </div>
-            <div class="form-group">
-                <label>Ngôn ngữ của tôi</label>
-                <input type="text" class="form-control" placeholder="Enter your languages">
-            </div>
-            <div class="form-group">
-                <label>Suý nghĩ thú vị của tôi</label>
-                <input type="text" class="form-control" placeholder="Enter interesting thoughts">
-            </div>
-            <div class="form-group">
-                <label>Thành tích sử dụng thời gian tốt</label>
-                <input type="text" class="form-control" placeholder="Enter accomplishments">
-            </div>
-            <div class="form-group">
-                <label>Thú cưng</label>
-                <input type="text" class="form-control" placeholder="Enter pets">
-            </div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Nơi đã từng theo học</label>
+            <input type="text" class="form-control" placeholder="Enter your school">
+        </div>
+        <div class="form-group">
+            <label>Nơi tôi sống</label>
+            <input type="text" class="form-control" placeholder="Enter your city">
+        </div>
+        <div class="form-group">
+            <label>Thập niên tôi sinh ra</label>
+            <input type="text" class="form-control" placeholder="Enter your birth decade">
+        </div>
+        <div class="form-group">
+            <label>Thú mà tôi thương nhất</label>
+            <input type="text" class="form-control" placeholder="Enter your favorite pet">
+        </div>
+        <div class="form-group">
+            <label>Kỹ năng vui vững nhất của tôi</label>
+            <input type="text" class="form-control" placeholder="Enter your top skill">
         </div>
     </div>
 
-    <div class="form-group mt-4">
-        <label>Giới thiệu về bạn</label>
-        <textarea class="form-control" rows="3" placeholder="Viết vài dòng thú vị về bản thân..."></textarea>
-        <button class="btn btn-link">Thêm phần giới thiệu</button>
-    </div>
-
-    <div class="mt-4">
-        <h4>Nơi bạn từng đến</h4>
-        <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="togglePlaces">
-            <label class="form-check-label" for="togglePlaces">Bật/Tắt</label>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Công việc của tôi</label>
+            <input type="text" class="form-control" placeholder="Enter your job">
         </div>
-        <div class="d-flex justify-content-around mt-3">
-            <div class="place-icon bg-light text-center p-3 rounded">
-                <span>Địa điểm 1</span>
-            </div>
-            <div class="place-icon bg-light text-center p-3 rounded">
-                <span>Địa điểm 2</span>
-            </div>
-            <div class="place-icon bg-light text-center p-3 rounded">
-                <span>Địa điểm 3</span>
-            </div>
-            <div class="place-icon bg-light text-center p-3 rounded">
-                <span>Địa điểm 4</span>
-            </div>
+        <div class="form-group">
+            <label>Ngôn ngữ của tôi</label>
+            <input type="text" class="form-control" placeholder="Enter your languages">
+        </div>
+        <div class="form-group">
+            <label>Suý nghĩ thú vị của tôi</label>
+            <input type="text" class="form-control" placeholder="Enter interesting thoughts">
+        </div>
+        <div class="form-group">
+            <label>Thành tích sử dụng thời gian tốt</label>
+            <input type="text" class="form-control" placeholder="Enter accomplishments">
+        </div>
+        <div class="form-group">
+            <label>Thú cưng</label>
+            <input type="text" class="form-control" placeholder="Enter pets">
         </div>
     </div>
+</div>
 
-    <div class="mt-4 text-right">
-        <button class="btn btn-primary">Hoàn tất</button>
+<div class="form-group mt-4">
+    <label>Giới thiệu về bạn</label>
+    <textarea class="form-control" rows="3" placeholder="Viết vài dòng thú vị về bản thân..."></textarea>
+    <button class="btn btn-link">Thêm phần giới thiệu</button>
+</div>
+
+<div class="mt-4">
+    <h4>Nơi bạn từng đến</h4>
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="togglePlaces">
+        <label class="form-check-label" for="togglePlaces">Bật/Tắt</label>
     </div>
+    <div class="d-flex justify-content-around mt-3">
+        <div class="place-icon bg-light text-center p-3 rounded">
+            <span>Địa điểm 1</span>
+        </div>
+        <div class="place-icon bg-light text-center p-3 rounded">
+            <span>Địa điểm 2</span>
+        </div>
+        <div class="place-icon bg-light text-center p-3 rounded">
+            <span>Địa điểm 3</span>
+        </div>
+        <div class="place-icon bg-light text-center p-3 rounded">
+            <span>Địa điểm 4</span>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4 text-right">
+    <button class="btn btn-primary">Hoàn tất</button>
+</div>
 </div>
 </body>
 <script>
+    function showUrlForm() {
+        document.getElementById("urlForm").style.display = 'block';
+    }
+
+    function cancelUrlForm() {
+        document.getElementById("urlForm").style.display = 'none';
+    }
+
     function toggleDropdown() {
         document.getElementById("avatarDropdown").classList.toggle("show");
     }
@@ -182,4 +248,5 @@
         }
     }
 </script>
+
 </html>
