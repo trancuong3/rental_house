@@ -1,6 +1,7 @@
 package org.example.profilecase5.Config;
 
 
+import org.example.profilecase5.Service.CustomerUserDetailService;
 import org.example.profilecase5.common.CustomAuthenticationEntryPoint;
 import org.example.profilecase5.common.CustomAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 
 public class SecurityConfig {
+    @Autowired
+    private CustomerUserDetailService customerUserDetailService;
 
     @Autowired
     private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
@@ -31,6 +34,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .userDetailsService(customerUserDetailService)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/hosting").hasRole("USER")
@@ -42,6 +46,7 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .loginProcessingUrl("/perform_login")
                         .successHandler(customAuthenticationSuccessHandler)
+                        .failureUrl("/login?error=true")
                         .permitAll()
                 );
 
