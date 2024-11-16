@@ -7,17 +7,19 @@
     <link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
 <body>
-<div class="role-selector">
-    <label>ĐĂNG NHẬP VỚI:</label>
-    <div class="dropdown">
-        <button class="dropdown-btn">Chọn</button>
-        <div class="dropdown-content">
-            <a href="@{/hosting}" data-value="user">Người dùng</a>
-            <a href="@{/admin}" data-value="host">Chủ nhà</a>
-        </div>
-    </div>
-    <input type="hidden" id="loginAs" name="loginAs" value="">
-</div>
+<!--<div class="role-selector">-->
+<!--    <label>ĐĂNG NHẬP VỚI:</label>-->
+<!--    <div class="dropdown">-->
+<!--        <button class="dropdown-btn">Chọn</button>-->
+<!--        <div class="dropdown-content">-->
+<!--            <a href="@{/hosting}" data-value="user">Người dùng</a>-->
+<!--            <a href="@{/admin}" data-value="host">Chủ nhà</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <input type="hidden" id="loginAs" name="loginAs" value="">-->
+<!--</div>-->
+
+
 <div class="login-container">
     <h2>Welcome to NHÀ CHÒI</h2>
     <form th:action="@{/perform_login}" method="post">
@@ -29,6 +31,14 @@
         <div class="form-group">
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
+        </div>
+
+        <div class="form-group">
+            <label for="selectedRole">Role:</label>
+            <select id="selectedRole" name="selectedRole" required>
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+            </select>
         </div>
 
         <button type="submit" class="btn">Login</button>

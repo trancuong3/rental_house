@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -39,35 +40,46 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void createUser(User user) {
-        // Mã hóa passwor
-        // d trước khi lưu
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-    }
     public boolean validateUserAndRole(String username, String password, String selectedRole) {
-        User user = userRepository.findByUsername(username)
-                .orElse(null);
+        Optional<User> userOptional = userRepository.findByUsername(username);
 
-        if (user == null) {
-            return false;
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            //Check xem pass da duoc ma hoa chua
+            if (!isPasswordEncrypted(user.getPassword())) {
+
+                //neu chua ma hoa, ma hoa no va cap nhat vao dtb
+                String encodedPassword = passwordEncoder.encode(user.getPassword());
+                user.setPassword(encodedPassword);
+                user.setConfirmPassword(encodedPassword);
+                userRepository.save(user);
+            }
+
+            //check pass va role
+            boolean passwordMatches = passwordEncoder.matches(password, user.getPassword());
+            boolean hasRole = user.getRoles().stream()
+                    .anyMatch(role -> role.getRoleName().equalsIgnoreCase("ROLE_" + selectedRole));
+
+            return passwordMatches && hasRole;
         }
-
-        // Kiểm tra password
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            return false;
-        }
-
-        // Kiểm tra role
-        return user.getRoles().stream()
-                .anyMatch(role -> {
-                    if ("user".equals(selectedRole)) {
-                        return role.getRoleName().equals("ROLE_USER");
-                    } else {
-                        return role.getRoleName().equals("ROLE_ADMIN");
-                    }
-                });
+        return false;
     }
 
+    private boolean isPasswordEncrypted(String password) {
+        return password != null && password.startsWith("$2a$");
+    }
+
+    public void encryptAllPasswords() {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            if(!isPasswordEncrypted(user.getPassword())) {
+                String encodedPassword = passwordEncoder.encode(user.getPassword());
+                user.setPassword(encodedPassword);
+                user.setConfirmPassword(encodedPassword);
+                userRepository.save(user);
+            }
+        }
+    }
     
 }
