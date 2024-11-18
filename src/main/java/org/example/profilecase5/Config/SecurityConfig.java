@@ -39,8 +39,10 @@ public class SecurityConfig {
                 .userDetailsService(customerUserDetailService)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("/hosting").hasRole("USER")
+                        .requestMatchers("/hosting").hasRole("OWNER")
                         .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/home").hasRole("USER")
+
                         .anyRequest().authenticated()
                 )
 
@@ -50,6 +52,11 @@ public class SecurityConfig {
                         .successHandler(customAuthenticationSuccessHandler)
                         .failureUrl("/login?error=true")
                         .permitAll()
+                )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(customAuthenticationEntryPoint))
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/profile/update-avatar")
                 )
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(customAuthenticationEntryPoint))
