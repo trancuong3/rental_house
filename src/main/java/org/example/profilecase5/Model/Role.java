@@ -9,13 +9,14 @@ import java.util.Set;
 @Table(name = "roles")
 public class Role {
     @Id
+    @Column(name = "role_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer roleId;
-
-    @Column(unique = true, nullable = false)
+    @Column(name="role_name",unique = true, nullable = false)
     private String roleName;
 
-    @ManyToMany(mappedBy = "roles")
+
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
     private Set<User> users = new HashSet<>();
 
     public Integer getRoleId() {

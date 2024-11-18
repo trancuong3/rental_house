@@ -30,6 +30,8 @@ public class LoginController {
         return "hosting/hosting";
     }
 
+
+
     @PostMapping("/perform_login")
     public String processLogin(@RequestParam String username,
                                @RequestParam String password,
@@ -45,8 +47,16 @@ public class LoginController {
 
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                 if ("user".equals(selectedRole)) {
+                    return "redirect:/home";
+                }
+                if ("owner".equals(selectedRole)) {
                     return "redirect:/hosting";
-                }else {
+                }
+                if ("admin".equals(selectedRole)) {
+                    return "redirect:/admin";
+                }
+
+                else {
                     return "redirect:/login";
                 }
             } else {

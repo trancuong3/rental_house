@@ -189,6 +189,15 @@
         .notification-panel .fa-envelope {
             font-size: 20px;
         }
+        .card img {
+            height: 150px;
+            width: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin: 0 auto;
+            display: block;
+        }
+
     </style>
 </head>
 <body>
@@ -243,7 +252,7 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img th:src="@{${user.avatar != null && user.avatar != '' ? user.avatar : '/images/img_2.png'}}" alt="User Avatar" class="rounded-circle" style="width: 30px; height: 30px;">
+                    <img th:src="${user.avatar != null && user.avatar != '' ? 'data:image/jpeg;base64,' + user.avatar : '/images/img_2.png'}" alt="Avatar" width="30" height="30">
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                     <a class="dropdown-item" href="/profile">Hồ sơ</a>
@@ -261,104 +270,68 @@
     </div>
 </nav>
 
-<div class="profile-photo">
-    <img th:src="@{${user.avatar != null && user.avatar != '' ? user.avatar : '/images/img_2.png'}}" alt="User Avatar" class="rounded-circle" style="width: 100px; height: 100px;">
-    <button class="btn btn-link" onclick="showUrlForm()">Chỉnh sửa</button>
-</div>
-
-
-<div id="urlForm" style="display: none;">
-    <form action="/profile/saveUrl" method="post" class="mb-4">
-        <div class="form-group">
-            <label for="url">Nhập URL:</label>
-            <input type="url" class="form-control" id="url" name="url" placeholder="Nhập URL của bạn" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Lưu URL</button>
-        <button type="button" class="btn btn-secondary" onclick="cancelUrlForm()">Hủy</button>
-    </form>
-</div>
-
-<h2 class="section-title">Hồ sơ của bạn</h2>
-
-<div class="row">
-    <div class="col-md-6">
-        <div class="form-group">
-            <label>Nơi đã từng theo học</label>
-            <input type="text" class="form-control" placeholder="Enter your school">
-        </div>
-        <div class="form-group">
-            <label>Nơi tôi sống</label>
-            <input type="text" class="form-control" placeholder="Enter your city">
-        </div>
-        <div class="form-group">
-            <label>Thập niên tôi sinh ra</label>
-            <input type="text" class="form-control" placeholder="Enter your birth decade">
-        </div>
-        <div class="form-group">
-            <label>Thú mà tôi thương nhất</label>
-            <input type="text" class="form-control" placeholder="Enter your favorite pet">
-        </div>
-        <div class="form-group">
-            <label>Kỹ năng vui vững nhất của tôi</label>
-            <input type="text" class="form-control" placeholder="Enter your top skill">
+<div class="container mt-5">
+    <div class="header-content">
+        <h1>Hồ sơ của tôi</h1>
+        <div>
+            <a href="javascript:void(0)" class="btn btn-secondary btn-hover" onclick="enableEdit()" style="margin-left: -700px;">Chỉnh sửa hồ sơ </a>
         </div>
     </div>
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card">
+                <img th:src="${user.avatar != null && user.avatar != '' ? 'data:image/jpeg;base64,' + user.avatar : '/images/img_2.png'}" alt="Avatar" width="150" height="150"style="margin-left: 100px">
+                <div class="card-body">
+                    <p class="card-text">Ảnh đại diện của bạn</p>
+                    <button class="btn btn-outline-primary btn-underline" onclick="showUrlForm()">Cập Nhật</button>
+                    <div id="urlForm" style="display: none;">
+                        <form action="/profile/update-avatar" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="avatar">Chọn ảnh đại diện:</label>
+                                <input type="file" id="avatar" name="avatar" class="form-control">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Cập nhật ảnh</button>
+                            <button type="button" class="btn btn-secondary" onclick="cancelUrlForm()">Hủy</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <form th:action="@{/profile/update}" method="POST" id="profileForm" style="margin-left: 50px;">
+                <div>
+                    <div class="info-item">
+                        <label>Tên người dùng</label>
+                        <span class="form-control" th:text="${user.username}">Tên người dùng</span>
+                    </div>
 
-    <div class="col-md-6">
-        <div class="form-group">
-            <label>Công việc của tôi</label>
-            <input type="text" class="form-control" placeholder="Enter your job">
-        </div>
-        <div class="form-group">
-            <label>Ngôn ngữ của tôi</label>
-            <input type="text" class="form-control" placeholder="Enter your languages">
-        </div>
-        <div class="form-group">
-            <label>Suý nghĩ thú vị của tôi</label>
-            <input type="text" class="form-control" placeholder="Enter interesting thoughts">
-        </div>
-        <div class="form-group">
-            <label>Thành tích sử dụng thời gian tốt</label>
-            <input type="text" class="form-control" placeholder="Enter accomplishments">
-        </div>
-        <div class="form-group">
-            <label>Thú cưng</label>
-            <input type="text" class="form-control" placeholder="Enter pets">
+                    <div class="info-item">
+                        <label for="fullname">Họ và tên</label>
+                        <input class="form-control"  type="text" id="fullname" name="fullname" th:value="${user.fullname}" required readonly />
+                    </div>
+
+                    <div class="info-item">
+                        <label for="email">Email</label>
+                        <input class="form-control" type="email" id="email" name="email" th:value="${user.email}" required readonly />
+                    </div>
+
+                    <div class="info-item">
+                        <label for="phone">Số điện thoại</label>
+                        <input class="form-control" type="text" id="phone" name="phone" th:value="${user.phone}" required pattern="^\d{10}$" readonly />
+                    </div>
+
+                    <div class="info-item">
+                        <label for="address">Địa chỉ</label>
+                        <input class="form-control" type="text" id="address" name="address" th:value="${user.address}" readonly />
+                    </div>
+                    <div class="submit-btn">
+                        <button type="submit" id="submitBtn" style="display:none;">Cập nhật</button>
+                        <button type="button" onclick="hideEditForm()" style="display:none;" id="cancelBtn">Hủy</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-</div>
-
-<div class="form-group mt-4">
-    <label>Giới thiệu về bạn</label>
-    <textarea class="form-control" rows="3" placeholder="Viết vài dòng thú vị về bản thân..."></textarea>
-    <button class="btn btn-link">Thêm phần giới thiệu</button>
-</div>
-
-<div class="mt-4">
-    <h4>Nơi bạn từng đến</h4>
-    <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="togglePlaces">
-        <label class="form-check-label" for="togglePlaces">Bật/Tắt</label>
-    </div>
-    <div class="d-flex justify-content-around mt-3">
-        <div class="place-icon">
-            <span>Địa điểm 1</span>
-        </div>
-        <div class="place-icon">
-            <span>Địa điểm 2</span>
-        </div>
-        <div class="place-icon">
-            <span>Địa điểm 3</span>
-        </div>
-        <div class="place-icon">
-            <span>Địa điểm 4</span>
-        </div>
-    </div>
-</div>
-
-<div class="mt-4 text-right">
-    <button class="btn btn-primary">Hoàn tất</button>
-</div>
 </div>
 
 <footer class="footer bg-light text-center py-4">
@@ -379,6 +352,37 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
+    function showUrlForm() {
+        document.getElementById("urlForm").style.display = "block";
+    }
+
+    function cancelUrlForm() {
+        document.getElementById("urlForm").style.display = "none";
+    }
+    function enableEdit() {
+        // Remove the readonly attribute to enable editing
+        document.getElementById("fullname").removeAttribute("readonly");
+        document.getElementById("email").removeAttribute("readonly");
+        document.getElementById("phone").removeAttribute("readonly");
+        document.getElementById("address").removeAttribute("readonly");
+
+        // Show submit and cancel buttons
+        document.getElementById("submitBtn").style.display = "inline-block";
+        document.getElementById("cancelBtn").style.display = "inline-block";
+    }
+
+    // Function to hide the edit form (can be used with the cancel button)
+    function hideEditForm() {
+        // Revert the inputs back to readonly
+        document.getElementById("fullname").setAttribute("readonly", true);
+        document.getElementById("email").setAttribute("readonly", true);
+        document.getElementById("phone").setAttribute("readonly", true);
+        document.getElementById("address").setAttribute("readonly", true);
+
+        // Hide the submit and cancel buttons
+        document.getElementById("submitBtn").style.display = "none";
+        document.getElementById("cancelBtn").style.display = "none";
+    }
     function showUrlForm() {
         document.getElementById("urlForm").style.display = "block";
     }
@@ -404,6 +408,11 @@
             }
         }
     }
+
+    function showUrlForm() {
+        document.getElementById("urlForm").style.display = "block";
+    }
+
     function cancelUrlForm() {
         document.getElementById("urlForm").style.display = "none";
     }

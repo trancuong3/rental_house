@@ -24,10 +24,16 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         //Kiem tra role, sau do dieu huong ve trang tuong ung :
         if(authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))){
             targetUrl = "/admin";
-        } else if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_USER"))) {
-            targetUrl = "/hosting";
+        }
+         else if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_USER"))) {
+            targetUrl = "/home";
             
-        }else {
+        }
+        else if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_OWNER"))) {
+            targetUrl = "/hosting";
+
+        }
+            else {
             targetUrl = (String) request.getSession().getAttribute("REDIRECT_URL");
             if (targetUrl == null || targetUrl.isEmpty()) {
                 targetUrl = "/";
