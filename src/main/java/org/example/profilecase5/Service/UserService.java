@@ -167,13 +167,36 @@ public class UserService {
     }
 
     public void registerOwnerUser(User user) {
-        Role ownerRole = roleRepository.findByRoleName("ROLE_OWNER").orElse(null);
-        if (ownerRole != null) {
-            user.setRole(ownerRole);
-            userRepository.save(user);
-        } else {
-            throw new RuntimeException("Role OWNER không tồn tại");
+        if (isUsernameExist(user.getUsername())) {
+            throw new UsernameAlreadyExistsException("Vui lòng sử dụng tên đăng nhập khác.");
         }
+
+        // Kiểm tra email
+        if (isEmailExist(user.getEmail())) {
+            throw new EmailAlreadyExistsException("Vui lòng sử dụng email khác.");
+        }
+
+        // Kiểm tra mật khẩu xác nhận
+        if (!user.getPassword().equals(user.getConfirmPassword())) {
+            throw new PasswordValidationException("Mật khẩu xác nhận không khớp");
+        }
+
+        // Kiểm tra độ dài mật khẩu
+        if (user.getPassword().length() < 6 || user.getPassword().length() > 32) {
+            throw new PasswordValidationException("Mật khẩu phải có độ dài từ 6 đến 32 ký tự");
+        }
+
+        Timestamp currentTimestamp = Timestamp.from(Instant.now());
+        user.setCreatedAt(currentTimestamp);
+        user.setUpdatedAt(currentTimestamp);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
+
+        Role userRole = roleRepository.findByRoleName("ROLE_OWNER")
+                .orElseThrow(() -> new RuntimeException("Role không tồn tại"));
+        user.setRole(userRole);
+        userRepository.save(user);
+        encryptAllPasswords();
     }
 
     @Transactional(readOnly = true)

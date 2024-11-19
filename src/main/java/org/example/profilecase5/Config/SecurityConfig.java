@@ -1,11 +1,8 @@
-
 package org.example.profilecase5.Config;
-
 
 import org.example.profilecase5.Service.CustomerUserDetailService;
 import org.example.profilecase5.common.CustomAuthenticationEntryPoint;
 import org.example.profilecase5.common.CustomAuthenticationSuccessHandler;
-import org.example.profilecase5.common.CustomLogoutSuccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+
     @Autowired
     private CustomerUserDetailService customerUserDetailService;
 
@@ -30,8 +28,6 @@ public class SecurityConfig {
     @Autowired
     private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
-    @Autowired
-    private CustomLogoutSuccess logoutSucssessHandler;
     @Bean
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -41,16 +37,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .userDetailsService(customerUserDetailService)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/css/**", "/js/**", "/images/**").permitAll()
+                .authorizeRequests(auth -> auth
+                        .requestMatchers("/main", "/register", "/registerOwner", "/login", "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/hosting").hasRole("OWNER")
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/home").hasRole("USER")
-
                         .anyRequest().authenticated()
                 )
-
-                .formLogin(form ->form
+                .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/perform_login")
                         .successHandler(customAuthenticationSuccessHandler)
@@ -62,21 +56,19 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/profile/update-avatar")
                 )
-                .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(customAuthenticationEntryPoint))
                 .logout(logout -> logout
-                        .logoutUrl("/perform_logout")
-                        .logoutSuccessHandler(logoutSucssessHandler)
-                        .deleteCookies("JSESSIONID")
-                        .invalidateHttpSession(true)
-                        .clearAuthentication(true)
+                        .logoutUrl("/perform_logout")  // URL đăng xuất
+                        .logoutSuccessUrl("/main")     // Chuyển hướng đến /main sau khi đăng xuất
+                        .deleteCookies("JSESSIONID")   // Xóa cookie
+                        .invalidateHttpSession(true)   // Hủy session
+                        .clearAuthentication(true)     // Xóa thông tin xác thực
                         .permitAll()
                 )
-
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                         .maximumSessions(1)
-                        .maxSessionsPreventsLogin(false));
+                        .maxSessionsPreventsLogin(false)
+                );
 
         return http.build();
     }

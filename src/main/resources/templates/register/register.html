@@ -3,95 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Đăng ký</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/register.css}">
 </head>
 <body>
+<!-- Navbar -->
+<!-- Navbar -->
+<!-- Navbar -->
 <nav class="navbar navbar-light bg-light">
     <div class="container">
         <a class="navbar-brand" href="/home">
-            <img src="/images/img.png" alt="Logo">
+            <img src="/images/avatar.jpg" alt="Logo" style="height: 40px;">
             Airbnb
         </a>
-        <div class="ml-auto">
-
-            <a href="/login" class="btn btn-outline-primary">Đăng nhập</a>
+        <div class="dropdown ml-2">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Đăng ký
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/register">Đăng ký Người dùng</a>
+                <a class="dropdown-item" href="/registerOwner">Đăng ký chủ nhà</a>
+            </div>
+            <a href="/login" class="btn btn-outline-primary ml-2">Đăng nhập</a>
         </div>
-    </div>
+
+        <!-- Login button, placed next to the registration buttons --></div>
 </nav>
 
+
+
+<!-- Registration Form Container -->
 <div class="materialContainer">
     <div class="box">
         <form id="registerForm" th:action="@{/register}" th:object="${user}" method="post">
-            <h2 class="title">Đăng kí</h2>
+            <h2 class="title">Đăng kí tài khoản</h2>
 
-            <!-- Fullname field -->
+            <!-- Fullname Field -->
             <div class="input">
                 <label for="fullname">Họ và Tên</label>
-                <input type="text" id="fullname" name="fullname" th:field="*{fullname}" placeholder="Full Name" required>
+                <input type="text" id="fullname" name="fullname" th:field="*{fullname}" placeholder="Họ và tên" required>
                 <span class="error-message text-danger" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}"></span>
             </div>
 
-            <!-- Username field -->
+            <!-- Username Field -->
             <div class="input">
-                <label for="name">Tên người dùng</label>
-                <input type="text" id="name" name="username" th:field="*{username}" placeholder="Username" required>
+                <label for="username">Tên người dùng</label>
+                <input type="text" id="username" name="username" th:field="*{username}" placeholder="Tên người dùng" required>
                 <span class="error-message text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
             </div>
 
-            <!-- Email field -->
+            <!-- Email Field -->
             <div class="input">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" th:field="*{email}" placeholder="Email" required>
                 <span class="error-message text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
             </div>
 
-            <!-- Phone field -->
+            <!-- Phone Field -->
             <div class="input">
                 <label for="phone">Số điện thoại</label>
-                <input type="tel" id="phone" name="phone" th:field="*{phone}" placeholder="Phone Number" required>
+                <input type="tel" id="phone" name="phone" th:field="*{phone}" placeholder="Số điện thoại" required>
                 <span class="error-message text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
             </div>
 
-            <!-- Password fields -->
+            <!-- Password Field -->
             <div class="input">
                 <label for="password">Mật khẩu</label>
-                <input type="password" id="password" name="password" th:field="*{password}" placeholder="Password" minlength="6" maxlength="32" required>
+                <input type="password" id="password" name="password" th:field="*{password}" placeholder="Mật khẩu" minlength="6" maxlength="32" required>
                 <span class="error-message text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
-                <span class="error-message text-danger" id="password_error"></span>
             </div>
 
+            <!-- Confirm Password Field -->
             <div class="input">
                 <label for="confirmPassword">Nhập lại mật khẩu</label>
-                <input type="password" name="confirmPassword" id="confirmPassword" th:field="*{confirmPassword}" placeholder="Confirm Password" required>
+                <input type="password" name="confirmPassword" id="confirmPassword" th:field="*{confirmPassword}" placeholder="Xác nhận mật khẩu" required>
                 <span class="error-message text-danger" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></span>
-                <span class="error-message text-danger" id="confirmPassword_error"></span>
             </div>
 
-            <!-- Address field -->
+            <!-- Address Field -->
             <div class="input">
                 <label for="address">Địa chỉ</label>
-                <input type="text" id="address" name="address" th:field="*{address}" placeholder="Address">
-                <span class="error-message text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
+                <input type="text" id="address" name="address" th:field="*{address}" placeholder="Địa chỉ">
             </div>
 
-            <!-- Hidden fields -->
+            <!-- Hidden Fields -->
             <input type="hidden" name="status" th:field="*{status}" value="ACTIVE">
             <input type="hidden" name="role" th:field="*{role.roleId}" th:value="2">
-            <input type="hidden" name="createdAt" th:field="*{createdAt}" th:value="${#dates.format(user.createdAt, 'yyyy-MM-dd HH:mm:ss')}">
-            <input type="hidden" name="updatedAt" th:field="*{updatedAt}" th:value="${#dates.format(user.updatedAt, 'yyyy-MM-dd HH:mm:ss')}">
 
-            <!-- Submit button -->
+            <!-- Submit Button -->
             <div class="button">
-                <button type="submit" class="btn btn-primary">Đăng kí</button>
+                <button type="submit" class="btn btn-primary">Đăng ký</button>
             </div>
         </form>
     </div>
 </div>
 
-<!-- jQuery and Bootstrap JS -->
+<!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
