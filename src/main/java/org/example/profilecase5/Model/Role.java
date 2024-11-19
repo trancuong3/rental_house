@@ -1,22 +1,21 @@
 package org.example.profilecase5.Model;
 
 import jakarta.persistence.*;
-
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "roles")
 public class Role {
-    @Id
 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer roleId;
 
     @Column(unique = true, nullable = false)
     private String roleName;
 
-    @ManyToMany(mappedBy = "roles")
+    @OneToMany(mappedBy = "role")
     private Set<User> users = new HashSet<>();
 
     public Integer getRoleId() {

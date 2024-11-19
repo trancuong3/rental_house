@@ -60,25 +60,24 @@ public class UserService {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
 
-            //Check xem pass da duoc ma hoa chua
+            // Kiểm tra xem mật khẩu đã được mã hóa chưa
             if (!isPasswordEncrypted(user.getPassword())) {
-
-                //neu chua ma hoa, ma hoa no va cap nhat vao dtb
+                // Nếu chưa mã hóa, mã hóa và cập nhật vào DB
                 String encodedPassword = passwordEncoder.encode(user.getPassword());
                 user.setPassword(encodedPassword);
                 user.setConfirmPassword(encodedPassword);
                 userRepository.save(user);
             }
 
-            //check pass va role
+            // Kiểm tra mật khẩu và vai trò
             boolean passwordMatches = passwordEncoder.matches(password, user.getPassword());
-            boolean hasRole = user.getRoles().stream()
-                    .anyMatch(role -> role.getRoleName().equalsIgnoreCase("ROLE_" + selectedRole));
+            boolean hasRole = user.getRole() != null && user.getRole().getRoleName().equalsIgnoreCase("ROLE_" + selectedRole);
 
             return passwordMatches && hasRole;
         }
         return false;
     }
+
     public boolean isUsernameExist(String username) {
         return userRepository.existsByUsername(username);
     }
