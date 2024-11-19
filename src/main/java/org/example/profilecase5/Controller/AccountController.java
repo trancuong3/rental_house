@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.Base64;
 import java.util.List;
 
+import jakarta.servlet.http.HttpSession;
 import net.coobird.thumbnailator.Thumbnails;
 import org.example.profilecase5.Model.PasswordHistory;
 import org.example.profilecase5.Model.User;
@@ -42,25 +43,39 @@ public class AccountController {
 
 
     @GetMapping("")
-    public String getAccountPage(Model model) {
-        int userId = 1;
-        User user = userService.getUserById(userId);
-        if (user != null) {
-            model.addAttribute("user", user);
-            return "account/account";
+    public String getAccountPage(Model model, HttpSession session) {
+        // Lấy userId từ session
+        Integer userId = (Integer) session.getAttribute("userId");
+
+        if (userId != null) {
+            User user = userService.getUserById(userId);
+            if (user != null) {
+                model.addAttribute("user", user);
+                return "account/account";
+            } else {
+                model.addAttribute("error", "User not found");
+                return "error";
+            }
         } else {
-            model.addAttribute("error", "User not found");
+            model.addAttribute("error", "User not logged in");
             return "error";
         }
     }
 
     @PostMapping("/change-password")
-    public String changePassword(
-            @RequestParam String currentPassword,
-            @RequestParam String newPassword,
-            @RequestParam String confirmPassword,
-            RedirectAttributes redirectAttributes) {
-        int userId = 1;
+    public String changePassword(@RequestParam String currentPassword,
+                                 @RequestParam String newPassword,
+                                 @RequestParam String confirmPassword,
+                                 RedirectAttributes redirectAttributes,
+                                 HttpSession session) {
+
+        Integer userId = (Integer) session.getAttribute("userId");
+
+        if (userId == null) {
+            redirectAttributes.addFlashAttribute("error", "Người dùng chưa đăng nhập");
+            return "redirect:/login";
+        }
+
         User user = userService.getUserById(userId);
         if (user == null) {
             redirectAttributes.addFlashAttribute("error", "Người dùng không tồn tại");
@@ -76,10 +91,10 @@ public class AccountController {
             redirectAttributes.addFlashAttribute("error", "Mật khẩu mới không khớp với xác nhận");
             return "redirect:/account";
         }
+
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
         redirectAttributes.addFlashAttribute("success", "Đổi mật khẩu thành công");
         return "redirect:/account";
     }
-
 }

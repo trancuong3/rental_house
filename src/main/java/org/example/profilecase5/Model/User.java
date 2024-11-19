@@ -1,9 +1,6 @@
 package org.example.profilecase5.Model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
 
 
 import java.sql.Timestamp;
@@ -21,57 +18,39 @@ public class User  {
     @Column(name = "user_id")
     private int userId;
 
-    @Column(name = "username")
-    @NotEmpty(message = "Tên người dùng không được để trống")
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     @Column(name = "email", unique = true)
-    @NotEmpty(message = "Email không được để trống")
-    @Email(message = "Email không hợp lệ")
     private String email;
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     @Column(name = "password", nullable = false)
-    @NotEmpty(message = "Password không được để trống")
     private String password;
-    @Column(name = "confirm_password", nullable = false)
-    @NotEmpty(message = "Xác nhận mật khẩu không được để trống")
+    @Column(name="confirm_password")
     private String confirmPassword;
-
-    @NotEmpty(message = "Số điện thoại không được để trống")
+    @Column(name = "phone")
     private String phone;
-    @Column(name = "fullname")
-    @NotEmpty(message = "Tên không được để trống")
+    @Column(name="fullname")
     private String fullname;
+    @Column(name = "avatar", columnDefinition = "TEXT")
+    private String avatar;
 
-    @NotEmpty(message = "Địa chỉ không được để trống")
+
+    @Column(name = "address")
     private String address;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition = "ENUM('Active', 'Locked') DEFAULT 'Active'")
     private Status status = Status.Active;
 
-    @Column(columnDefinition = "LONGTEXT")
-    private String avatar;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
 
-    @Column(name = "created_at", updatable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
 
-    @Column(name = "updated_at")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "updated_at", nullable = false)
     private Timestamp updatedAt;
+
     public String getConfirmPassword() {
         return confirmPassword;
     }

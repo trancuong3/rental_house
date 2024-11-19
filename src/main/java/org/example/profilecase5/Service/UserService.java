@@ -30,6 +30,11 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private RoleRepository roleRepository;
+    public User getUserByUsername(String username) {
+        // Sử dụng orElse(null) để trả về null nếu không tìm thấy người dùng
+        return userRepository.findByUsername(username).orElse(null);
+    }
+
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -93,53 +98,7 @@ public class UserService {
     public void saveUser(User user) {
         userRepository.save(user);
     }
-    public void registerUser(User user) {
-        // Kiểm tra tên người dùng
-        if (isUsernameExist(user.getUsername())) {
-            throw new UsernameAlreadyExistsException("Vui lòng sử dụng tên đăng nhập khác.");
-        }
 
-        // Kiểm tra email
-        if (isEmailExist(user.getEmail())) {
-            throw new EmailAlreadyExistsException("Vui lòng sử dụng email khác.");
-        }
-
-        // Kiểm tra mật khẩu xác nhận
-        if (!user.getPassword().equals(user.getConfirmPassword())) {
-            throw new PasswordValidationException("Mật khẩu xác nhận không khớp");
-        }
-
-        // Kiểm tra mật khẩu thô có thỏa mãn độ dài không
-        if (user.getPassword().length() < 6 || user.getPassword().length() > 32) {
-            throw new PasswordValidationException("Mật khẩu phải có độ dài từ 6 đến 32 ký tự");
-        }
-
-        Timestamp currentTimestamp = Timestamp.from(Instant.now());
-        user.setCreatedAt(currentTimestamp);
-        user.setUpdatedAt(currentTimestamp);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
-
-        // Kiểm tra roleId hợp lệ
-        if (user.getRole() == null || user.getRole().getRoleId() == 0) {
-            throw new RuntimeException("Role không hợp lệ");
-        }
-
-        Role userRole = roleRepository.findByRoleId(user.getRole().getRoleId())
-                .orElseGet(() -> roleRepository.findByRoleName("ROLE_USER")
-                        .orElseThrow(() -> new RuntimeException("Không tìm thấy role với roleId hoặc roleName")));
-        user.setRole(userRole);
-
-        userRepository.save(user);
-        if(validateUserAndRole(user.getUsername(), user.getPassword(),  user.getRole().getRoleName())) {
-            encryptAllPasswords();
-        }
-    }
-
-    public void registerOwnerUser(User user) {
-        user.setRole(roleRepository.findByRoleName("ROLE_OWNER").orElse(null));
-        userRepository.save(user);
-    }
     @Transactional(readOnly = true) // Đảm bảo không thay đổi dữ liệu khi truy vấn
     public User getCurrentUser() {
         // Lấy Authentication từ SecurityContextHolder

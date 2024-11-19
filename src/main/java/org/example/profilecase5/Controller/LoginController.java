@@ -1,6 +1,8 @@
 package org.example.profilecase5.Controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.example.profilecase5.Model.User;
 import org.example.profilecase5.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,21 +33,33 @@ public class LoginController {
     }
 
 
-
     @PostMapping("/perform_login")
     public String processLogin(@RequestParam String username,
                                @RequestParam String password,
                                @RequestParam String selectedRole,
-                               RedirectAttributes redirectAttributes) {
+                               RedirectAttributes redirectAttributes,
+                               HttpServletRequest request) {
         try {
             // Kiểm tra thông tin đăng nhập và role
             boolean isValid = userService.validateUserAndRole(username, password, selectedRole);
 
             if (isValid) {
+                // Lấy đối tượng Authentication để xác thực người dùng
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(username, password);
 
+                // Cập nhật Authentication trong SecurityContext
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+
+                // Lấy thông tin người dùng từ Authentication
+                User user = userService.getUserByUsername(username);  // Tìm người dùng từ cơ sở dữ liệu
+                HttpSession session = request.getSession();
+
+                // Lưu id người dùng vào session
+                session.setAttribute("userId", user.getUserId());
+
+                // Điều hướng dựa trên vai trò người dùng
                 if ("user".equals(selectedRole)) {
                     return "redirect:/home";
                 }
@@ -56,6 +70,7 @@ public class LoginController {
                     return "redirect:/admin";
                 }
 
+                // Nếu vai trò không hợp lệ, quay lại trang đăng nhập
                 else {
                     return "redirect:/login";
                 }
@@ -69,4 +84,5 @@ public class LoginController {
             return "redirect:/login";
         }
     }
+
 }
