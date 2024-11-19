@@ -9,6 +9,19 @@
     <link rel="stylesheet" th:href="@{/css/register.css}">
 </head>
 <body>
+<nav class="navbar navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="/home">
+            <img src="/images/img.png" alt="Logo">
+            Airbnb
+        </a>
+        <div class="ml-auto">
+
+            <a href="/login" class="btn btn-outline-primary">Đăng nhập</a>
+        </div>
+    </div>
+</nav>
+
 <div class="materialContainer">
     <div class="box">
         <form id="registerForm" th:action="@{/register}" th:object="${user}" method="post">

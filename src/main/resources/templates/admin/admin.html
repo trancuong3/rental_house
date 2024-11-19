@@ -33,9 +33,9 @@
             <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
                 <i class="fas fa-chart-bar"></i> #
             </a>
-            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
-                <i class="fas fa-sign-out-alt"></i> #
-            </a>
+            <form th:action="@{/perform_logout}" method="POST" class="dropdown-item p-0">
+                <button type="submit" class="dropdown-item w-100 text-left">Đăng xuất</button>
+            </form>
         </div>
     </div>
 

@@ -103,20 +103,6 @@ public class UserService {
         userRepository.save(user);
     }
 
-    @Transactional(readOnly = true) // Đảm bảo không thay đổi dữ liệu khi truy vấn
-    public User getCurrentUser() {
-        // Lấy Authentication từ SecurityContextHolder
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        // Kiểm tra nếu người dùng đã đăng nhập và đã được xác thực
-        if (authentication != null && authentication.isAuthenticated()) {
-            String username = authentication.getName();
-            return userRepository.findByUsername(username).orElse(null);
-        }
-
-        // Trả về null nếu người dùng không đăng nhập hoặc không xác thực
-        return null;
-    }
     public Set<RentalHistory> getRentalHistoriesByUserId(int userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
@@ -144,5 +130,59 @@ public class UserService {
     }
     public boolean isPasswordCorrect(String currentPassword, String storedPassword) {
         return passwordEncoder.matches(currentPassword, storedPassword);
+    }
+    public void registerUser(User user) {
+        // Kiểm tra tên người dùng
+        if (isUsernameExist(user.getUsername())) {
+            throw new UsernameAlreadyExistsException("Vui lòng sử dụng tên đăng nhập khác.");
+        }
+
+        // Kiểm tra email
+        if (isEmailExist(user.getEmail())) {
+            throw new EmailAlreadyExistsException("Vui lòng sử dụng email khác.");
+        }
+
+        // Kiểm tra mật khẩu xác nhận
+        if (!user.getPassword().equals(user.getConfirmPassword())) {
+            // Ném exception nếu mật khẩu không khớp
+            throw new PasswordValidationException("Mật khẩu xác nhận không khớp");
+        }
+
+        // Kiểm tra mật khẩu thô có thỏa mãn độ dài không
+        if (user.getPassword().length() < 6 || user.getPassword().length() > 32) {
+            // Ném exception nếu mật khẩu không hợp lệ
+            throw new PasswordValidationException("Mật khẩu phải có độ dài từ 6 đến 32 ký tự");
+        }
+        Timestamp currentTimestamp = Timestamp.from(Instant.now());
+        user.setCreatedAt(currentTimestamp);
+        user.setUpdatedAt(currentTimestamp);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
+        Role userRole = roleRepository.findByRoleId(user.getRole().getRoleId())
+                .orElseGet(() -> roleRepository.findByRoleName("ROLE_USER")
+                        .orElseThrow(() -> new RuntimeException("Role not found")));
+        user.setRole(userRole);
+        userRepository.save(user);
+        if(validateUserAndRole(user.getUsername(), user.getPassword(),  user.getRole().getRoleName())) {
+            encryptAllPasswords();
+        }
+    }
+    public void registerOwnerUser(User user) {
+        user.setRole(roleRepository.findByRoleName("ROLE_OWNER").orElse(null));
+        userRepository.save(user);
+    }
+    @Transactional(readOnly = true) // Đảm bảo không thay đổi dữ liệu khi truy vấn
+    public User getCurrentUser() {
+        // Lấy Authentication từ SecurityContextHolder
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Kiểm tra nếu người dùng đã đăng nhập và đã được xác thực
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            return userRepository.findByUsername(username).orElse(null);
+        }
+
+        // Trả về null nếu người dùng không đăng nhập hoặc không xác thực
+        return null;
     }
 }
