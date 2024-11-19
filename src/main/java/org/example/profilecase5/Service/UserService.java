@@ -1,11 +1,6 @@
 package org.example.profilecase5.Service;
+
 import org.example.profilecase5.Model.RentalHistory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
-
-
 import org.example.profilecase5.Exception.User.EmailAlreadyExistsException;
 import org.example.profilecase5.Exception.User.PasswordValidationException;
 import org.example.profilecase5.Exception.User.UsernameAlreadyExistsException;
@@ -14,10 +9,14 @@ import org.example.profilecase5.Model.User;
 import org.example.profilecase5.Repository.RoleRepository;
 import org.example.profilecase5.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -28,24 +27,26 @@ import java.util.Set;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
+    // Constructor injection
     @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private RoleRepository roleRepository;
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
+    }
+
     public User getUserByUsername(String username) {
-        // Sử dụng orElse(null) để trả về null nếu không tìm thấy người dùng
         return userRepository.findByUsername(username).orElse(null);
     }
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
     public User getUserById(int userId) {
         return userRepository.findById(userId).orElse(null);
     }
+
     public void updateUser(User user) {
         userRepository.save(user);
     }
@@ -56,13 +57,11 @@ public class UserService {
 
     public boolean validateUserAndRole(String username, String password, String selectedRole) {
         Optional<User> userOptional = userRepository.findByUsername(username);
-
         if (userOptional.isPresent()) {
             User user = userOptional.get();
 
-            // Kiểm tra xem mật khẩu đã được mã hóa chưa
+            // Kiểm tra mật khẩu mã hóa
             if (!isPasswordEncrypted(user.getPassword())) {
-                // Nếu chưa mã hóa, mã hóa và cập nhật vào DB
                 String encodedPassword = passwordEncoder.encode(user.getPassword());
                 user.setPassword(encodedPassword);
                 user.setConfirmPassword(encodedPassword);
@@ -81,9 +80,11 @@ public class UserService {
     public boolean isUsernameExist(String username) {
         return userRepository.existsByUsername(username);
     }
+
     public boolean isEmailExist(String email) {
         return userRepository.existsByEmail(email);
     }
+
     private boolean isPasswordEncrypted(String password) {
         return password != null && password.startsWith("$2a$");
     }
@@ -91,7 +92,7 @@ public class UserService {
     public void encryptAllPasswords() {
         List<User> users = userRepository.findAll();
         for (User user : users) {
-            if(!isPasswordEncrypted(user.getPassword())) {
+            if (!isPasswordEncrypted(user.getPassword())) {
                 String encodedPassword = passwordEncoder.encode(user.getPassword());
                 user.setPassword(encodedPassword);
                 user.setConfirmPassword(encodedPassword);
@@ -99,6 +100,7 @@ public class UserService {
             }
         }
     }
+
     public void saveUser(User user) {
         userRepository.save(user);
     }
@@ -112,14 +114,11 @@ public class UserService {
     public void toggleUserStatus(int userId) {
         User user = userRepository.findById(userId).orElse(null);
         if (user != null) {
-            if (user.getStatus() == User.Status.ACTIVE) {
-                user.setStatus(User.Status.LOCKED);
-            } else {
-                user.setStatus(User.Status.ACTIVE);
-            }
+            user.setStatus(user.getStatus() == User.Status.ACTIVE ? User.Status.LOCKED : User.Status.ACTIVE);
             userRepository.save(user);
         }
     }
+
     public Page<User> getUsersWithPagination(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return userRepository.findAll(pageable);
@@ -128,9 +127,11 @@ public class UserService {
     public String encodePassword(String password) {
         return passwordEncoder.encode(password);
     }
+
     public boolean isPasswordCorrect(String currentPassword, String storedPassword) {
         return passwordEncoder.matches(currentPassword, storedPassword);
     }
+
     public void registerUser(User user) {
         // Kiểm tra tên người dùng
         if (isUsernameExist(user.getUsername())) {
@@ -144,45 +145,43 @@ public class UserService {
 
         // Kiểm tra mật khẩu xác nhận
         if (!user.getPassword().equals(user.getConfirmPassword())) {
-            // Ném exception nếu mật khẩu không khớp
             throw new PasswordValidationException("Mật khẩu xác nhận không khớp");
         }
 
-        // Kiểm tra mật khẩu thô có thỏa mãn độ dài không
+        // Kiểm tra độ dài mật khẩu
         if (user.getPassword().length() < 6 || user.getPassword().length() > 32) {
-            // Ném exception nếu mật khẩu không hợp lệ
             throw new PasswordValidationException("Mật khẩu phải có độ dài từ 6 đến 32 ký tự");
         }
+
         Timestamp currentTimestamp = Timestamp.from(Instant.now());
         user.setCreatedAt(currentTimestamp);
         user.setUpdatedAt(currentTimestamp);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
-        Role userRole = roleRepository.findByRoleId(user.getRole().getRoleId())
-                .orElseGet(() -> roleRepository.findByRoleName("ROLE_USER")
-                        .orElseThrow(() -> new RuntimeException("Role not found")));
+
+        Role userRole = roleRepository.findByRoleName("ROLE_USER")
+                .orElseThrow(() -> new RuntimeException("Role không tồn tại"));
         user.setRole(userRole);
         userRepository.save(user);
-        if(validateUserAndRole(user.getUsername(), user.getPassword(),  user.getRole().getRoleName())) {
-            encryptAllPasswords();
-        }
+        encryptAllPasswords();
     }
+
     public void registerOwnerUser(User user) {
-        user.setRole(roleRepository.findByRoleName("ROLE_OWNER").orElse(null));
-        userRepository.save(user);
-    }
-    @Transactional(readOnly = true) // Đảm bảo không thay đổi dữ liệu khi truy vấn
-    public User getCurrentUser() {
-        // Lấy Authentication từ SecurityContextHolder
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        // Kiểm tra nếu người dùng đã đăng nhập và đã được xác thực
-        if (authentication != null && authentication.isAuthenticated()) {
-            String username = authentication.getName();
-            return userRepository.findByUsername(username).orElse(null);
+        Role ownerRole = roleRepository.findByRoleName("ROLE_OWNER").orElse(null);
+        if (ownerRole != null) {
+            user.setRole(ownerRole);
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("Role OWNER không tồn tại");
         }
+    }
 
-        // Trả về null nếu người dùng không đăng nhập hoặc không xác thực
+    @Transactional(readOnly = true)
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            return userRepository.findByUsername(authentication.getName()).orElse(null);
+        }
         return null;
     }
 }

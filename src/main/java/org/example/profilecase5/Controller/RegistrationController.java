@@ -11,12 +11,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-
 @Controller
 @RequestMapping("/register")
 public class RegistrationController {
+
     private final UserService userService;
 
+    // Constructor injection
     public RegistrationController(UserService userService) {
         this.userService = userService;
     }
@@ -30,7 +31,6 @@ public class RegistrationController {
     @PostMapping
     public String registerUser(@Validated @ModelAttribute("user") User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            System.out.println(result.getAllErrors());
             return "register/register";
         }
         try {
@@ -44,21 +44,21 @@ public class RegistrationController {
         } catch (PasswordValidationException e) {
             result.rejectValue("password", "error.password", e.getMessage());
             return "register/register";
-
         }
         return "redirect:/login";
     }
-
 
     @GetMapping("/owner")
     public String showOwnerRegistrationForm() {
         return "owner/register";
     }
+
     @PostMapping("/owner")
     public String registerOwnerUser(@RequestParam String password, Model model) {
         User user = userService.getCurrentUser();
-        userService.registerOwnerUser(user);
+        if (user != null) {
+            userService.registerOwnerUser(user);
+        }
         return "redirect:/login/owner";
     }
-
 }
