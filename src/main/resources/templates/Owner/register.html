@@ -1,48 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Register Owner</title>
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <link th:href="@{/css/your-css-file.css}" rel="stylesheet">
-</head>
-<body>
-<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register</title>
+  <title>Đăng ký</title>
   <!-- Bootstrap CSS -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" th:href="@{/css/register.css}">
 </head>
 <body>
-<div class="materialContainer container">
-  <h2 class="title">Đăng ký chủ nhà</h2>
-  <p class="text-center text-muted">Hệ thống sẽ tự động lấy thông tin của bạn</p>
-  <p class="text-center text-muted">Vui lòng nhập mật khẩu để đăng ký</p>
-  <form th:action="@{/register/owner}" method="post">
-    <div class="input form-group">
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" class="form-control" required minlength="6" maxlength="32">
-      <span th:if="${error}" class="error-message" th:text="${error}"></span>
+<!-- Navbar -->
+<!-- Navbar -->
+<!-- Navbar -->
+<nav class="navbar navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="/home">
+      <img src="/images/avatar.jpg" alt="Logo" style="height: 40px;">
+      Airbnb
+    </a>
+    <div class="dropdown ml-2">
+      <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Đăng ký
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="/register">Đăng ký Người dùng</a>
+        <a class="dropdown-item" href="/registerOwner">Đăng ký chủ nhà</a>
+      </div>
+      <a href="/login" class="btn btn-outline-primary ml-2">Đăng nhập</a>
     </div>
-    <div class="button">
-      <button type="submit" class="btn btn-primary mt-3">Submit</button>
-    </div>
-  </form>
+
+    <!-- Login button, placed next to the registration buttons --></div>
+</nav>
+
+
+
+<!-- Registration Form Container -->
+<div class="materialContainer">
+  <div class="box">
+    <form id="registerForm" th:action="@{/registerOwner}" th:object="${user}" method="post">
+      <h2 class="title">Đăng kí Chủ nhà</h2>
+
+      <!-- Fullname Field -->
+      <div class="input">
+        <label for="fullname">Họ và Tên</label>
+        <input type="text" id="fullname" name="fullname" th:field="*{fullname}" placeholder="Họ và tên" required>
+        <span class="error-message text-danger" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}"></span>
+      </div>
+
+      <!-- Username Field -->
+      <div class="input">
+        <label for="username">Tên người dùng</label>
+        <input type="text" id="username" name="username" th:field="*{username}" placeholder="Tên người dùng" required>
+        <span class="error-message text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+      </div>
+
+      <!-- Email Field -->
+      <div class="input">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" th:field="*{email}" placeholder="Email" required>
+        <span class="error-message text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+      </div>
+
+      <!-- Phone Field -->
+      <div class="input">
+        <label for="phone">Số điện thoại</label>
+        <input type="tel" id="phone" name="phone" th:field="*{phone}" placeholder="Số điện thoại" required>
+        <span class="error-message text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+      </div>
+
+      <!-- Password Field -->
+      <div class="input">
+        <label for="password">Mật khẩu</label>
+        <input type="password" id="password" name="password" th:field="*{password}" placeholder="Mật khẩu" minlength="6" maxlength="32" required>
+        <span class="error-message text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+      </div>
+
+      <!-- Confirm Password Field -->
+      <div class="input">
+        <label for="confirmPassword">Nhập lại mật khẩu</label>
+        <input type="password" name="confirmPassword" id="confirmPassword" th:field="*{confirmPassword}" placeholder="Xác nhận mật khẩu" required>
+        <span class="error-message text-danger" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></span>
+      </div>
+
+      <!-- Address Field -->
+      <div class="input">
+        <label for="address">Địa chỉ</label>
+        <input type="text" id="address" name="address" th:field="*{address}" placeholder="Địa chỉ">
+      </div>
+
+      <!-- Hidden Fields -->
+      <input type="hidden" name="status" th:field="*{status}" value="ACTIVE">
+      <input type="hidden" name="role" th:field="*{role.roleId}" th:value="2">
+
+      <!-- Submit Button -->
+      <div class="button">
+        <button type="submit" class="btn btn-primary">Đăng ký</button>
+      </div>
+    </form>
+  </div>
 </div>
-<!-- jQuery and Bootstrap JS -->
+
+<!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script th:src="@{/js/register.js}"></script>
-</body>
-</html>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

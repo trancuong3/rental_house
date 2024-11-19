@@ -1,77 +1,80 @@
-/* Căn giữa form container */
+/* General Styling */
 body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+/* Centering the Registration Form */
+.materialContainer {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f7f0f7;
-    margin: 0;
-    font-family: Arial, sans-serif;
+    padding: 15px;
 }
 
-.materialContainer {
+.box {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 600px; /* Đổi max-width để form rộng hơn */
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
 }
 
-/* Tiêu đề form */
+/* Form Title */
 .title {
-    font-size: 36px; /* Tăng kích thước chữ "Đăng ký" */
-    font-weight: 600;
-    margin-bottom: 20px;
+    font-size: 28px;
+    color: #333;
     text-align: center;
-    color: #d63384;
+    margin-bottom: 20px;
 }
 
-/* Styling các trường nhập liệu */
+/* Styling Input Fields */
 .input {
     position: relative;
-    margin-bottom: 30px; /* Tăng khoảng cách để lỗi không bị chồng */
-    min-height: 70px;    /* Đảm bảo đủ chỗ cho cả input và lỗi */
+    margin-bottom: 20px;
 }
 
 .input label {
-    display: block;
-    font-weight: 500;
+    font-weight: 600;
     color: #333;
     margin-bottom: 8px;
+    display: block;
 }
 
 .input input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
+    font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 16px;
     box-sizing: border-box;
 }
 
 .input input:focus {
-    border-color: #d63384;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     outline: none;
-    box-shadow: 0 0 4px rgba(214, 51, 132, 0.25);
 }
 
-/* Styling thông báo lỗi */
-.input .error-message {
-    display: none;
-    color: red;
-    font-size: 12px;
+/* Error Message */
+.error-message {
     position: absolute;
     bottom: -18px;
     left: 0;
+    font-size: 12px;
+    color: red;
+    display: none;
 }
 
-/* Hiển thị lỗi khi có nội dung */
-.input .error-message:not(:empty) {
+.error-message:not(:empty) {
     display: block;
 }
 
-/* Nút submit */
+/* Submit Button */
 .button {
     text-align: center;
 }
@@ -80,9 +83,8 @@ body {
     width: 100%;
     padding: 12px;
     font-size: 16px;
-    font-weight: 500;
-    color: #fff;
-    background-color: #d63384;
+    background-color: #007bff;
+    color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -90,47 +92,15 @@ body {
 }
 
 .button button:hover {
-    background-color: #c12f73;
+    background-color: #0056b3;
 }
 
-/* Media query cho màn hình nhỏ */
+/* Responsive for Small Screens */
 @media (max-width: 576px) {
     .materialContainer {
-        padding: 15px;
+        padding: 10px;
     }
-}
-
-/* Styling cho role buttons */
-.role-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-.role-btn {
-    padding: 10px 20px;
-    background-color: #f0f0f0;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.role-btn.selected {
-    background-color: #d63384;
-    color: white;
-    border-color: #d63384;
-}
-
-.role-btn:hover {
-    background-color: #e0e0e0;
-}
-
-.role-btn:active {
-    transform: scale(0.98);
-}
-
-/* Debug lỗi (có thể xóa sau khi hoàn thiện) */
-.error-message {
-    outline: 1px dashed red; /* Đánh dấu để kiểm tra vị trí lỗi */
+    .box {
+        width: 100%;
+    }
 }

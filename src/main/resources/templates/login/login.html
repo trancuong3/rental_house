@@ -34,6 +34,10 @@
     </button>
 
     <div th:if="${error}" class="error-message" th:text="${error}"></div>
+
+    <div class="register-link">
+        <p>Không có tài khoản ? <a th:href="@{/register}">Đăng ký</a></p>
+    </div>
 </div>
 
 <script th:src="@{/js/login.js}"></script>

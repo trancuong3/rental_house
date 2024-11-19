@@ -247,3 +247,22 @@ body {
         transform: translateY(0);
     }
 }
+.register-link {
+    margin-top: 20px;
+}
+
+.register-link p {
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+.register-link a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.register-link a:hover {
+    color: #2980b9;
+}
