@@ -63,7 +63,8 @@ public class User  {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
+    private Role role; // Thay đổi thành đối tượng Role duy nhất
+
 
     @Column(name = "created_at", updatable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -82,7 +83,7 @@ public class User  {
 
     public enum Status {
         ACTIVE,   // Make sure the enum constant matches the value being passed.
-        Active, Locked
+        Active, LOCKED, Locked
     }
 
     public String getAvatar() {
@@ -184,24 +185,32 @@ public class User  {
 
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles = new HashSet<>();
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "user_roles",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "role_id")
+//    )
+//    private Set<Role> roles = new HashSet<>();
+//
+//    public Set<Role> getRoles() {
+//        return roles;
+//    }
+//
+//    public void setRoles(Set<Role> roles) {
+//        this.roles = roles;
+//    }
 
-    public Set<Role> getRoles() {
-        return roles;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<RentalHistory> rentalHistories = new HashSet<>();
+
+    // Getter and Setter for rentalHistories
+    public Set<RentalHistory> getRentalHistories() {
+        return rentalHistories;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRentalHistories(Set<RentalHistory> rentalHistories) {
+        this.rentalHistories = rentalHistories;
     }
-
-    public enum UserStatus {
-        Active, Locked
-    }
-
 }

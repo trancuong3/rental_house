@@ -12,8 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import java.util.stream.Collectors;
+import java.util.Collections;
 
 @Service
 public class CustomerUserDetailService implements UserDetailsService {
@@ -27,24 +26,26 @@ public class CustomerUserDetailService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // Lấy User từ repository
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
 
-
+        // Kiểm tra mật khẩu chưa mã hóa và mã hóa nếu cần
         if (!isPasswordEncrypted(user.getPassword())) {
             String encodedPassword = passwordEncoder.encode(user.getPassword());
             user.setPassword(encodedPassword);
             user.setConfirmPassword(encodedPassword);
             userRepository.save(user);
         }
+
+        // Trả về đối tượng UserDetails, với vai trò là một đối tượng Role duy nhất
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                user.getRoles().stream()
-                        .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
-                        .collect(Collectors.toList())
+                Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getRoleName())) // Lấy Role duy nhất
         );
     }
+
     private boolean isPasswordEncrypted(String password) {
         return password != null && password.startsWith("$2a$");
     }

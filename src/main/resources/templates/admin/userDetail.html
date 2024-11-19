@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Người Dùng</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Thông Tin Chi Tiết Người Dùng</h2>
+    <div class="card mt-4">
+        <div class="card-header text-center">
+            <img th:src="${user.avatar}" alt="Avatar" class="rounded-circle" width="150">
+        </div>
+        <div class="card-body">
+            <h4 class="card-title" th:text="${user.fullname}"></h4>
+            <p><strong>Username:</strong> <span th:text="${user.username}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+            <p><strong>Số Điện Thoại:</strong> <span th:text="${user.phone}"></span></p>
+            <p><strong>Trạng Thái:</strong>
+                <span th:text="${user.status == 'Active' ? 'Đang hoạt động' : 'Khóa'}"></span>
+            </p>
+            <p><strong>Tổng tiền đã chi tiêu:</strong> <span th:text="${totalSpent}"></span> VND</p>
+        </div>
+        <div class="card-footer text-center">
+            <a href="/admin" class="btn btn-secondary">Quay Lại</a>
+        </div>
+    </div>
+
+    <h3 class="mt-5">Lịch Sử Thuê Nhà</h3>
+    <table class="table table-striped mt-3">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Nhà</th>
+            <th>Ngày Bắt Đầu</th>
+            <th>Ngày Kết Thúc</th>
+            <th>Tổng Chi Phí</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="history, iterStat : ${rentalHistories}">
+            <td th:text="${iterStat.index + 1}"></td>
+            <td th:text="${history.house.propertyName}"></td>
+            <td th:text="${#dates.format(history.startDate, 'yyyy-MM-dd')}"></td>
+            <td th:text="${#dates.format(history.endDate, 'yyyy-MM-dd')}"></td>
+            <td th:text="${history.totalCost}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

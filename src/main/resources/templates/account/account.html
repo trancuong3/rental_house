@@ -150,6 +150,54 @@
             background-color: #f44336;
             color: white;
         }
+        /* Định dạng logo trong navbar */
+        .navbar-brand img {
+            max-height: 50px;  /* Điều chỉnh chiều cao tối đa của logo */
+            width: auto;       /* Giữ tỷ lệ của logo */
+        }
+
+        /* Định dạng avatar (nếu cần thay đổi hình ảnh người dùng) */
+        .navbar-nav .nav-item img {
+            border-radius: 50%;  /* Tạo hình tròn cho ảnh avatar */
+            width: 35px;         /* Đặt chiều rộng cho ảnh avatar */
+            height: 35px;        /* Đặt chiều cao cho ảnh avatar */
+            object-fit: cover;   /* Giữ tỷ lệ và cắt nếu cần */
+        }
+
+        /* Định dạng dropdown menu */
+        .navbar-nav .nav-item .dropdown-menu {
+            background-color: #f8f9fa; /* Màu nền của dropdown */
+            border: none;              /* Loại bỏ viền mặc định */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Thêm bóng cho dropdown */
+            min-width: 220px;          /* Đặt chiều rộng tối thiểu của dropdown */
+        }
+
+        /* Định dạng phần các mục trong dropdown */
+        .navbar-nav .nav-item .dropdown-item {
+            padding: 10px 15px;       /* Thêm đệm cho mục */
+            font-size: 14px;           /* Kích thước font chữ trong dropdown */
+            color: #333;               /* Màu chữ */
+            transition: background-color 0.3s ease; /* Hiệu ứng khi di chuột */
+        }
+
+        /* Thay đổi màu nền khi hover trên item dropdown */
+        .navbar-nav .nav-item .dropdown-item:hover {
+            background-color: #e9ecef;  /* Màu nền khi hover */
+        }
+
+        /* Định dạng thông báo trong navbar */
+        .notification-panel {
+            max-width: 300px;        /* Đặt chiều rộng tối đa cho phần thông báo */
+            padding: 15px;           /* Thêm đệm cho phần thông báo */
+            font-size: 14px;         /* Kích thước font chữ trong thông báo */
+            max-height: 300px;       /* Đặt chiều cao tối đa cho thông báo */
+            overflow-y: auto;        /* Hiển thị thanh cuộn nếu thông báo quá dài */
+        }
+
+        /* Thay đổi màu nền khi hover trên thông báo */
+        .notification-panel .dropdown-item:hover {
+            background-color: #f1f1f1;  /* Màu nền khi hover trên thông báo */
+        }
 
     </style>
 </head>
@@ -157,7 +205,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">
-        <img src="/images/img.png" alt="Logo">
+        <img src="/images/avatar.jpg" alt="Logo">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -218,7 +266,9 @@
                     <a class="dropdown-item" href="#">VNĐ</a>
                     <a class="dropdown-item" href="#">Tổ chức trải nghiệm</a>
                     <a class="dropdown-item" href="#">Chuyển sang chế độ du lịch</a>
-                    <a class="dropdown-item" href="#">Đăng xuất</a>
+                    <form th:action="@{/perform_logout}" method="POST" class="dropdown-item p-0">
+                        <button type="submit" class="dropdown-item w-100 text-left">Đăng xuất</button>
+                    </form>
                 </div>
             </li>
         </ul>
@@ -256,7 +306,7 @@
             <h2>Bảo mật tài khoản</h2>
             <div class="info-item">
                 <label>Mật khẩu</label>
-                <span id="passwordDisplay" th:text="${user.password}"></span>
+                <span id="passwordDisplay" ></span>
                 <a href="javascript:void(0);" onclick="showChangePasswordForm()">Đổi mật khẩu</a>
             </div>
             <div class="info-item">
