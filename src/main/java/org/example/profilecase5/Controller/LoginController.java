@@ -27,11 +27,11 @@ public class LoginController {
     public String login(Model model) {
         return "login/login";
     }
+
     @GetMapping("/hosting")
     public String userDashboard(Authentication authentication) {
         return "hosting/hosting";
     }
-
 
     @PostMapping("/perform_login")
     public String processLogin(@RequestParam String username,
@@ -84,5 +84,4 @@ public class LoginController {
             return "redirect:/login";
         }
     }
-
 }

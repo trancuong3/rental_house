@@ -1,4 +1,8 @@
 package org.example.profilecase5.Service;
+import org.example.profilecase5.Model.RentalHistory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -19,6 +23,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -112,5 +117,33 @@ public class UserService {
 
         // Trả về null nếu người dùng không đăng nhập hoặc không xác thực
         return null;
+    }
+    public Set<RentalHistory> getRentalHistoriesByUserId(int userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        return user.getRentalHistories();
+    }
+
+    public void toggleUserStatus(int userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            if (user.getStatus() == User.Status.ACTIVE) {
+                user.setStatus(User.Status.LOCKED);
+            } else {
+                user.setStatus(User.Status.ACTIVE);
+            }
+            userRepository.save(user);
+        }
+    }
+    public Page<User> getUsersWithPagination(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findAll(pageable);
+    }
+
+    public String encodePassword(String password) {
+        return passwordEncoder.encode(password);
+    }
+    public boolean isPasswordCorrect(String currentPassword, String storedPassword) {
+        return passwordEncoder.matches(currentPassword, storedPassword);
     }
 }

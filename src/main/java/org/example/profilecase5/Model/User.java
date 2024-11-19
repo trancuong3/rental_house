@@ -61,8 +61,9 @@ public class User  {
 
     public enum Status {
         ACTIVE,   // Make sure the enum constant matches the value being passed.
-        Active, Locked
+        Active, LOCKED, Locked
     }
+
 
     public String getAvatar() {
         return avatar;
@@ -182,5 +183,14 @@ public class User  {
     public enum UserStatus {
         Active, Locked
     }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<RentalHistory> rentalHistories = new HashSet<>();
 
+    public Set<RentalHistory> getRentalHistories() {
+        return rentalHistories;
+    }
+
+    public void setRentalHistories(Set<RentalHistory> rentalHistories) {
+        this.rentalHistories = rentalHistories;
+    }
 }

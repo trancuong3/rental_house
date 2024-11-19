@@ -72,7 +72,9 @@
                     <a class="dropdown-item" href="#">VNĐ</a>
                     <a class="dropdown-item" href="#">Tổ chức trải nghiệm</a>
                     <a class="dropdown-item" href="#">Chuyển sang chế độ du lịch</a>
-                    <a class="dropdown-item" href="#">Đăng xuất</a>
+                    <form th:action="@{/perform_logout}" method="POST" class="dropdown-item p-0">
+                        <button type="submit" class="dropdown-item w-100 text-left">Đăng xuất</button>
+                    </form>
                 </div>
             </li>
         </ul>

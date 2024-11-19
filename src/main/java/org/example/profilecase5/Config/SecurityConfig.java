@@ -5,6 +5,7 @@ package org.example.profilecase5.Config;
 import org.example.profilecase5.Service.CustomerUserDetailService;
 import org.example.profilecase5.common.CustomAuthenticationEntryPoint;
 import org.example.profilecase5.common.CustomAuthenticationSuccessHandler;
+import org.example.profilecase5.common.CustomLogoutSuccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,8 @@ public class SecurityConfig {
     @Autowired
     private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
+    @Autowired
+    private CustomLogoutSuccess logoutSucssessHandler;
     @Bean
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -61,6 +64,14 @@ public class SecurityConfig {
                 )
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(customAuthenticationEntryPoint))
+                .logout(logout -> logout
+                        .logoutUrl("/perform_logout")
+                        .logoutSuccessHandler(logoutSucssessHandler)
+                        .deleteCookies("JSESSIONID")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .permitAll()
+                )
 
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
