@@ -38,12 +38,16 @@ public class SecurityConfig {
         http
                 .userDetailsService(customerUserDetailService)
                 .authorizeRequests(auth -> auth
-                        .requestMatchers("/main", "/register", "/registerOwner", "/login", "/css/**", "/js/**", "/images/**").permitAll()
+                        // Các URL không yêu cầu xác thực
+                        .requestMatchers("/", "/main", "/register", "/registerOwner", "/login", "/css/**", "/js/**", "/images/**").permitAll()
+                        // Chỉ OWNER, ADMIN, USER được truy cập các URL tương ứng
                         .requestMatchers("/hosting").hasRole("OWNER")
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/home").hasRole("USER")
+                        // Các yêu cầu khác yêu cầu xác thực
                         .anyRequest().authenticated()
                 )
+                // Cấu hình đăng nhập form
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/perform_login")
@@ -51,11 +55,20 @@ public class SecurityConfig {
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )
+                // Cấu hình OAuth2 Login
+                .oauth2Login(oauth2Login -> oauth2Login
+                        .loginPage("/login") // Trang login mặc định
+                        .successHandler((request, response, authentication) ->
+                                response.sendRedirect("/register")) // Redirect sau khi login thành công
+                )
+                // Xử lý ngoại lệ
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(customAuthenticationEntryPoint))
+                // Cấu hình CSRF
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/profile/update-avatar")
                 )
+                // Cấu hình đăng xuất
                 .logout(logout -> logout
                         .logoutUrl("/perform_logout")  // URL đăng xuất
                         .logoutSuccessUrl("/main")     // Chuyển hướng đến /main sau khi đăng xuất
@@ -64,6 +77,7 @@ public class SecurityConfig {
                         .clearAuthentication(true)     // Xóa thông tin xác thực
                         .permitAll()
                 )
+                // Cấu hình quản lý session
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                         .maximumSessions(1)

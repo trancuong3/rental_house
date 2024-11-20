@@ -131,7 +131,9 @@ public class UserService {
     public String encodePassword(String password) {
         return passwordEncoder.encode(password);
     }
-
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
     public boolean isPasswordCorrect(String currentPassword, String storedPassword) {
         return passwordEncoder.matches(currentPassword, storedPassword);
     }
