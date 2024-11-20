@@ -11,7 +11,9 @@
     <h2>Thông Tin Chi Tiết Người Dùng</h2>
     <div class="card mt-4">
         <div class="card-header text-center">
-            <img th:src="${user.avatar}" alt="Avatar" class="rounded-circle" width="150">
+
+            <img th:src="${user.avatar != null && user.avatar != '' ? 'data:image/jpeg;base64,' + user.avatar : '/images/img_2.png'}" alt="Avatar"class="rounded-circle" width="150">
+
         </div>
         <div class="card-body">
             <h4 class="card-title" th:text="${user.fullname}"></h4>

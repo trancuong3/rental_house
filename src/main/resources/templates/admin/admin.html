@@ -33,9 +33,10 @@
             <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
                 <i class="fas fa-chart-bar"></i> #
             </a>
-            <form th:action="@{/perform_logout}" method="POST" class="dropdown-item p-0">
-                <button type="submit" class="dropdown-item w-100 text-left">Đăng xuất</button>
-            </form>
+            <a href="/perform_logout" class="list-group-item list-group-item-action bg-dark text-white">
+                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+            </a>
+
         </div>
     </div>
 
@@ -90,5 +91,6 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:src="@{/js/Admin.js}"></script>
 </body>
 </html>
