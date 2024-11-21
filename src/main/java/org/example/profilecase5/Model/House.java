@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -54,6 +55,8 @@ public class House {
     @DecimalMin(value = "0.0", inclusive = false, message = "Giá tiền phải lớn hơn 0")
     @Digits(integer = 10, fraction = 2, message = "Giá tiền không hợp lệ")
     private BigDecimal pricePerDay; // Giá tiền theo ngày
+    @OneToMany(mappedBy = "house", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HouseImage> houseImages = new ArrayList<>();
 
     // Mối quan hệ với bảng User
     @ManyToOne
@@ -92,6 +95,14 @@ public class House {
 
     public Status getStatus() {
         return status;
+    }
+
+    public List<HouseImage> getHouseImages() {
+        return houseImages;
+    }
+
+    public void setHouseImages(List<HouseImage> houseImages) {
+        this.houseImages = houseImages;
     }
 
     public void setStatus(Status status) {
