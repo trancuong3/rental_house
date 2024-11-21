@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhà Mới</title>
+    <!-- Thêm CSS Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <!-- Thêm FontAwesome cho các biểu tượng -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Thêm custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #007bff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .form-control {
+            border-radius: 5px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .form-group select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="none" stroke="black" stroke-width="1" d="M0 0l2 2 2-2"></path></svg>');
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 8px 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h2><i class="fas fa-home"></i> Đăng Nhà Mới</h2>
+
+    <form th:action="@{/house/new}" th:object="${house}" method="post" enctype="multipart/form-data" id="houseForm">
+        <div class="form-group">
+            <label for="propertyName">Tên Nhà</label>
+            <input type="text" id="propertyName" name="propertyName" class="form-control" th:field="*{propertyName}" required>
+        </div>
+        <div class="form-group">
+            <label for="address">Địa Chỉ</label>
+            <input type="text" id="address" name="address" class="form-control" th:field="*{address}" required>
+        </div>
+        <div class="form-group">
+            <label for="status">Trạng Thái</label>
+            <select id="status" name="status" class="form-control" th:field="*{status}" required>
+                <option value="AVAILABLE">Available</option>
+                <option value="RENTED">Rented</option>
+                <option value="CLOSED">Closed</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="bedrooms">Số Phòng Ngủ</label>
+            <input type="number" id="bedrooms" name="bedrooms" class="form-control" th:field="*{bedrooms}" min="1" max="10" required>
+        </div>
+        <div class="form-group">
+            <label for="bathrooms">Số Phòng Tắm</label>
+            <input type="number" id="bathrooms" name="bathrooms" class="form-control" th:field="*{bathrooms}" min="1" max="3" required>
+        </div>
+        <div class="form-group">
+            <label for="pricePerDay">Giá Thuê Theo Ngày</label>
+            <input type="number" step="0.01" id="pricePerDay" name="pricePerDay" class="form-control" th:field="*{pricePerDay}" min="1" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Mô Tả</label>
+            <textarea id="description" name="description" class="form-control" th:field="*{description}" rows="5"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="image">Ảnh</label>
+            <input type="file" id="image" name="image" class="form-control" accept="image/jpeg, image/png">
+            <small class="form-text text-muted">Chỉ cho phép ảnh .jpeg, .png</small>
+        </div>
+        <div class="form-group mt-3">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Đăng Nhà
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Thêm JS Bootstrap và jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Thêm hiệu ứng loading spinner khi submit form (tùy chọn) -->
+<script>
+    $(document).ready(function() {
+        // Validate before submit
+        $("#houseForm").submit(function(event) {
+            // Check if required fields are empty
+            if (!$('#propertyName').val() || !$('#address').val() || !$('#bedrooms').val() || !$('#bathrooms').val() || !$('#pricePerDay').val()) {
+                alert("Các trường có dấu (*) không được để trống.");
+                event.preventDefault(); // Prevent form submission
+            }
+
+            // Image validation for correct file type
+            const imageFile = $('#image')[0].files[0];
+            if (imageFile && !["image/jpeg", "image/png"].includes(imageFile.type)) {
+                alert("Ảnh chỉ có thể là định dạng .jpeg hoặc .png.");
+                event.preventDefault(); // Prevent form submission
+            }
+
+            $(".btn-primary").attr("disabled", true); // Disable button to prevent multiple submissions
+            $(".btn-primary").html('<i class="fas fa-spinner fa-spin"></i> Đang Đăng...'); // Thêm biểu tượng loading
+        });
+    });
+</script>
+</body>
+</html>
