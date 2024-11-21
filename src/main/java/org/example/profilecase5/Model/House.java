@@ -65,7 +65,8 @@ public class House {
 
     // Enum for Status
     public enum Status {
-        AVAILABLE, RENTED, CLOSED
+        AVAILABLE,available ,RENTED  , rented, CLOSED
+        , closed
     }
 
     // Getters và Setters

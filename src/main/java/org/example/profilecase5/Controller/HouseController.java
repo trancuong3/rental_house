@@ -43,7 +43,11 @@ public class HouseController {
     private final String UPLOAD_DIR = "uploads/";
 
     @GetMapping("/new")
-    public String showHouseForm(Model model) {
+    public String showHouseForm(Model model,Authentication authentication) {
+        String username = authentication.getName();  // Lấy username của người dùng hiện tại
+        User user = userService.getUserByUsername(username);  // Tìm người dùng từ username
+        model.addAttribute("user", user);
+
         model.addAttribute("house", new House());
         return "house/house_form";
     }

@@ -1,4 +1,5 @@
 package org.example.profilecase5.Model;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -10,7 +11,7 @@ public class HouseImage {
     @Column(name = "image_id")
     private int imageId;
 
-    @Column(name = "image_url", nullable = false)
+    @Column(name = "image_url", columnDefinition = "TEXT", nullable = false)
     private String imageUrl;
 
     @Column(name = "is_main", nullable = false)
@@ -20,7 +21,7 @@ public class HouseImage {
     @JoinColumn(name = "house_id", nullable = false)
     private House house;
 
-    // Getters and Setters
+    // Getters và Setters
     public int getImageId() {
         return imageId;
     }
