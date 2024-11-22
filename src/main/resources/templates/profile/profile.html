@@ -282,7 +282,9 @@
     <div class="row mt-4">
         <div class="col-md-4">
             <div class="card">
-                <img th:src="${user.avatar != null && user.avatar != '' ? 'data:image/jpeg;base64,' + user.avatar : '/images/img_2.png'}" alt="Avatar" width="150" height="150"style="margin-left: 100px">
+                <img th:src="${user.avatar != null && user.avatar != '' ? 'data:image/jpeg;base64,' + user.avatar : '/images/img_2.png'}"
+                     alt="Avatar"
+                     class="avatar-image">
                 <div class="card-body">
                     <p class="card-text">Ảnh đại diện của bạn</p>
                     <button class="btn btn-outline-primary btn-underline" onclick="showUrlForm()">Cập Nhật</button>

@@ -139,25 +139,26 @@
 <div class="container mt-4">
     <h3 class="text-center mb-4">Danh sách Nhà/Phòng cho thuê</h3>
     <div class="row">
-        <!-- Loop over house listings -->
         <div class="col-md-4 mb-4" th:each="house : ${houses}">
-            <div class="card">
-                <img th:src="${house.houseImages != null && house.houseImages.size() > 0
-                        ? 'data:image/jpeg;base64,' + house.houseImages[0].imageUrl
-                        : '/images/default-image.png'}" class="card-img-top" alt="House Image">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${house.propertyName}">Tên nhà/phòng</h5>
-                    <p class="card-text" th:text="${house.address}">Vị trí</p>
-                    <p class="card-text">
-                        <span class="text-muted" th:text="${house.pricePerDay + ' VND/night'}">Giá</span>
-                    </p>
+            <!-- Closing the anchor tag correctly -->
+            <a th:href="@{/house/edit/{id}(id=${house.houseId})}">
+                <div class="card">
+                    <img th:src="${house.houseImages != null && house.houseImages.size() > 0
+                            ? 'data:image/jpeg;base64,' + house.houseImages[0].imageUrl
+                            : '/images/default-image.png'}" class="card-img-top" alt="House Image">
+
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${house.propertyName}">Tên nhà/phòng</h5>
+                        <p class="card-text" th:text="${house.address}">Vị trí</p>
+                        <p class="card-text">
+                            <span class="text-muted" th:text="${house.pricePerDay + ' VND/night'}">Giá</span>
+                        </p>
+                    </div>
                 </div>
-            </div>
+            </a> <!-- Close the anchor tag here -->
         </div>
-        <!-- End Loop -->
     </div>
 </div>
-
 
 
 
