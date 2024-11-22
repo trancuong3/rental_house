@@ -27,6 +27,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/house")
@@ -139,4 +140,69 @@ public class HouseController {
 
         return "redirect:/hosting/listings"; // Đảm bảo có một trang thành công hiển thị thông tin sau khi lưu
     }
+
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable("id") int id, Model model) {
+        Optional<House> house = houseService.findById(id);
+        if (house.isPresent()) {
+            model.addAttribute("house", house.get());
+            return "house/edit"; // Tên view chỉnh sửa nhà.
+        } else {
+            model.addAttribute("errorMessage", "Không tìm thấy nhà với ID: " + id);
+            return "redirect:/house/list"; // Quay lại danh sách nếu không tìm thấy.
+        }
+    }
+    @PostMapping("/edit")
+    public String editHouse(@ModelAttribute("house") House house,
+                            @RequestParam(value = "image", required = false) MultipartFile image,
+                            @RequestParam(value = "houseId", required = false) Integer houseId,
+                            Model model) {
+        try {
+            // Kiểm tra và gán houseId từ URL nếu không có trong đối tượng house
+            if (house.getHouseId() == 0 && houseId != null) {
+                house.setHouseId(houseId);
+            }
+
+            // Xử lý ảnh nếu có
+            if (image != null && !image.isEmpty()) {
+                // Kiểm tra kích thước ảnh
+                if (image.getSize() > MAX_FILE_SIZE) {
+                    model.addAttribute("errorMessage", "Ảnh quá lớn, vui lòng chọn ảnh nhỏ hơn 5MB.");
+                    return "house/edit";
+                }
+
+                // Tạo Base64 ảnh nếu có
+                byte[] imageBytes = image.getBytes();
+                String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+                // Tạo đối tượng HouseImage và lưu chuỗi Base64 vào database
+                HouseImage houseImage = new HouseImage();
+                houseImage.setImageUrl(base64Image); // Lưu chuỗi Base64
+                houseImage.setHouse(house);
+                houseImage.setMain(false); // Đánh dấu ảnh này không phải ảnh chính
+
+                // Thêm ảnh vào danh sách ảnh của nhà
+                house.getHouseImages().add(houseImage);
+            }
+
+            // Kiểm tra xem house có ảnh không
+            if (house.getHouseImages().isEmpty()) {
+                model.addAttribute("errorMessage", "Cần phải thêm ít nhất một ảnh.");
+                return "house/edit";
+            }
+
+            // Cập nhật house vào database
+            houseService.updateHouse(house, image);
+            return "redirect:/house/edit/" + house.getHouseId();
+        } catch (Exception e) {
+            // Xử lý lỗi và hiển thị thông báo
+            model.addAttribute("errorMessage", "Đã xảy ra lỗi: " + e.getMessage());
+            return "house/edit"; // Quay lại form chỉnh sửa nếu có lỗi
+        }
+    }
+
+
+
+
+
 }
