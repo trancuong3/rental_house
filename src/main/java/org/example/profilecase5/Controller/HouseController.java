@@ -185,11 +185,7 @@ public class HouseController {
                 house.getHouseImages().add(houseImage);
             }
 
-            // Kiểm tra xem house có ảnh không
-            if (house.getHouseImages().isEmpty()) {
-                model.addAttribute("errorMessage", "Cần phải thêm ít nhất một ảnh.");
-                return "house/edit";
-            }
+
 
             // Cập nhật house vào database
             houseService.updateHouse(house, image);
