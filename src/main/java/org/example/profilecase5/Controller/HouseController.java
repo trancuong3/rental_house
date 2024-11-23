@@ -142,7 +142,10 @@ public class HouseController {
     }
 
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable("id") int id, Model model) {
+    public String showEditForm(@PathVariable("id") int id, Model model,Authentication authentication) {
+        String username = authentication.getName();  // Lấy tên người dùng từ Authentication
+        User user = userService.getUserByUsername(username);
+        model.addAttribute("user", user);// Lấy người dùng từ dịch vụ
         Optional<House> house = houseService.findById(id);
         if (house.isPresent()) {
             model.addAttribute("house", house.get());
