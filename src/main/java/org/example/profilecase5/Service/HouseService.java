@@ -23,6 +23,7 @@ public class HouseService {
     private HouseImageRepository houseImageRepository;
 
 
+
     // Phương thức lưu nhà vào cơ sở dữ liệu
     public void saveHouse(House house) {
         houseRepository.save(house);
@@ -73,6 +74,20 @@ public class HouseService {
 
         // Lưu lại đối tượng house đã chỉnh sửa
         houseRepository.save(existingHouse);
+    }
+
+
+    public List<HouseImage> getMainImages() {
+        return houseImageRepository.findMainImages();
+    }
+
+    public House getHouseById(Integer id) {
+        return houseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Have not found"));
+    }
+
+    public List<HouseImage> getImagesByHouseId(Integer houseId) {
+        return houseImageRepository.findByHouseId(houseId);
     }
 
 

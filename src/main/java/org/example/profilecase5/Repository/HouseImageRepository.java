@@ -11,5 +11,9 @@ import java.util.List;
 public interface HouseImageRepository extends JpaRepository<HouseImage, Integer> {
 
     @Query("SELECT i FROM HouseImage i WHERE i.house.houseId = :houseId")
-    List<HouseImage> findByHouseId(@Param("houseId") Long houseId);
+    List<HouseImage> findByHouseId(@Param("houseId") Integer houseId);
+
+    @Query("SELECT hi FROM HouseImage hi WHERE hi.isMain = true")
+    List<HouseImage> findMainImages();
+
 }
