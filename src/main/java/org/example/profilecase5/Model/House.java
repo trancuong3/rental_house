@@ -50,6 +50,8 @@ public class House {
     @Column(name = "description", columnDefinition = "TEXT")
     @Size(max = 1000, message = "Mô tả không được vượt quá 1000 ký tự")
     private String description; // Mô tả chung
+    @Column(name = "rental_count", nullable = false)
+    private int rentalCount = 0; // Số lượt thuê, mặc định là 0
 
     @Column(name = "price_per_day", nullable = false)
     @DecimalMin(value = "0.0", inclusive = false, message = "Giá tiền phải lớn hơn 0")

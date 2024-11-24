@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface HouseRepository extends JpaRepository<House, Integer> {
     List<House> findByUser_UserId(int userId);
+    List<House> findTop5ByOrderByRentalCountDesc();
+
 }

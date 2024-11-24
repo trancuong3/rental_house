@@ -74,6 +74,11 @@ public class HouseService {
         // Lưu lại đối tượng house đã chỉnh sửa
         houseRepository.save(existingHouse);
     }
-
+    public List<House> getAllHouses() {
+        return houseRepository.findAll();
+    }
+    public List<House> getTop5MostRentedHouses() {
+        return houseRepository.findTop5ByOrderByRentalCountDesc();
+    }
 
 }
