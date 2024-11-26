@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .userDetailsService(customerUserDetailService)
                 .authorizeRequests(auth -> auth
                         // Các URL không yêu cầu xác thực
-                        .requestMatchers("/", "/main", "/register", "/registerOwner", "/login", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/home/detail/**", "/main", "/register", "/registerOwner", "/login", "/css/**", "/js/**", "/images/**").permitAll()
                         // Chỉ OWNER, ADMIN, USER được truy cập các URL tương ứng
                         .requestMatchers("/hosting").hasRole("OWNER")
                         .requestMatchers("/admin").hasRole("ADMIN")

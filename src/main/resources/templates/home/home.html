@@ -95,19 +95,18 @@
 
     <!-- Cards -->
     <div class="row">
-        <div th:each ="image : ${mainImages}" class="col-md mb-4">
+        <div th:each="image : ${mainImages}" class="col-md mb-4">
             <div class="card">
                 <a th:href="@{/home/detail/{id}(id=${image.house.houseId})}">
-                    <img th:src="${image.imageUrl}" class="card-img-top" alt="Main Image">
+                    <img th:src="${image.imageUrl != null && image.imageUrl != '' ? 'data:image/jpeg;base64,' + image.imageUrl : '/images/img_2.png'}" class="card-img-top" alt="Main Image">
                 </a>
                 <div class="card-body">
                     <h5 class="card-title" th:text="${image.house.propertyName}"></h5>
                     <p class="card-text">
-                        <span th:text ="${image.house.address}"></span> -
-                        <span th:text = "${image.house.pricePerDay}"></span>(VND)/days
+                        <span th:text="${image.house.address}"></span> -
+                        <span th:text="${image.house.pricePerDay}"></span> (VND)/days
                     </p>
                 </div>
-                
             </div>
         </div>
     </div>

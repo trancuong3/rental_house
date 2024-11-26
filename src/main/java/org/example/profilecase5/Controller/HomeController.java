@@ -41,7 +41,7 @@ public class HomeController {
         return "home/home";
     }
     @GetMapping("/detail/{id}")
-    public String showDetail(@PathVariable("id") Integer id, Model model, Authentication authentication) {
+    public String showDetail(@PathVariable("id") Integer id, Model model) {
         House house = houseService.getHouseById(id);
         List<HouseImage> images = houseService.getImagesByHouseId(id);
 
@@ -50,6 +50,7 @@ public class HomeController {
 
         return "detail/detail";
     }
+
 
 
 }
