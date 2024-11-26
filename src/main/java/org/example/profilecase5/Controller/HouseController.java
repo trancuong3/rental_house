@@ -160,8 +160,8 @@ public class HouseController {
                             @RequestParam(value = "image", required = false) MultipartFile image,
                             @RequestParam(value = "houseId", required = false) Integer houseId,
                             Model model) {
+
         try {
-            // Kiểm tra và gán houseId từ URL nếu không có trong đối tượng house
             if (house.getHouseId() == 0 && houseId != null) {
                 house.setHouseId(houseId);
             }
