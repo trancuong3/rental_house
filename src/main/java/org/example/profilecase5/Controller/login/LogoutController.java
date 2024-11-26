@@ -1,4 +1,4 @@
-package org.example.profilecase5.Controller;
+package org.example.profilecase5.Controller.login;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

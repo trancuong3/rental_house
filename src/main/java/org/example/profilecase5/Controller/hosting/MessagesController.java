@@ -1,4 +1,4 @@
-package org.example.profilecase5.Controller;
+package org.example.profilecase5.Controller.hosting;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,4 +1,4 @@
-package org.example.profilecase5.Controller;
+package org.example.profilecase5.Controller.register;
 
 import org.example.profilecase5.Exception.User.EmailAlreadyExistsException;
 import org.example.profilecase5.Exception.User.PasswordValidationException;

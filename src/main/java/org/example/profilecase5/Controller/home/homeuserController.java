@@ -1,7 +1,6 @@
-package org.example.profilecase5.Controller;
+package org.example.profilecase5.Controller.home;
 
 import org.example.profilecase5.Model.HouseImage;
-import org.example.profilecase5.Model.User;
 import org.example.profilecase5.Service.HouseService;
 import org.example.profilecase5.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
