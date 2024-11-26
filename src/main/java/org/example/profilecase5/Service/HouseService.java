@@ -22,18 +22,19 @@ public class HouseService {
     @Autowired
     private HouseImageRepository houseImageRepository;
 
-
     // Phương thức lưu nhà vào cơ sở dữ liệu
     public void saveHouse(House house) {
         houseRepository.save(house);
     }
+
     public List<House> getHousesByUserId(int userId) {
         return houseRepository.findByUser_UserId(userId);
-
     }
+
     public Optional<House> findById(int id) {
         return houseRepository.findById(id);
     }
+
     @Transactional
     public void updateHouse(House house, MultipartFile image) throws Exception {
         // Lấy đối tượng house từ cơ sở dữ liệu để cập nhật
@@ -75,6 +76,17 @@ public class HouseService {
         houseRepository.save(existingHouse);
     }
 
+    // Phương thức từ nhánh main
+    public List<HouseImage> getMainImages() {
+        return houseImageRepository.findMainImages();
+    }
 
+    public House getHouseById(Integer id) {
+        return houseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Have not found"));
+    }
 
+    public List<HouseImage> getImagesByHouseId(Integer houseId) {
+        return houseImageRepository.findByHouseId(houseId);
+    }
 }

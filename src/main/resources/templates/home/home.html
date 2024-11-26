@@ -95,34 +95,19 @@
 
     <!-- Cards -->
     <div class="row">
-        <!-- Card 1 -->
-        <div class="col-md-4 mb-4">
+        <div th:each ="image : ${mainImages}" class="col-md mb-4">
             <div class="card">
-                <img src="/images/img_home_1.jpg" class="card-img-top" alt="Pulau Seribu">
+                <a th:href="@{/home/detail/{id}(id=${image.house.houseId})}">
+                    <img th:src="${image.imageUrl}" class="card-img-top" alt="Main Image">
+                </a>
                 <div class="card-body">
-                    <h5 class="card-title">Pulau Seribu, Jakarta</h5>
-                    <p class="card-text">2,426 kilometers away - <span class="text-muted">7,115,274 VND/night</span></p>
+                    <h5 class="card-title" th:text="${image.house.propertyName}"></h5>
+                    <p class="card-text">
+                        <span th:text ="${image.house.address}"></span> -
+                        <span th:text = "${image.house.pricePerDay}"></span>(VND)/days
+                    </p>
                 </div>
-            </div>
-        </div>
-        <!-- Card 2 -->
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <img src="/images/img_home_2.jpg" class="card-img-top" alt="Lovina">
-                <div class="card-body">
-                    <h5 class="card-title">Lovina, Indonesia</h5>
-                    <p class="card-text">2,801 kilometers away - <span class="text-muted">5,846,315 VND/night</span></p>
-                </div>
-            </div>
-        </div>
-        <!-- Card 3 -->
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <img src="/images/img_home_3.jpg" class="card-img-top" alt="Anambas">
-                <div class="card-body">
-                    <h5 class="card-title">Anambas, Indonesia</h5>
-                    <p class="card-text">6.5 hectares - <span class="text-muted">2,417,545 VND/night</span></p>
-                </div>
+                
             </div>
         </div>
     </div>
