@@ -1,56 +1,53 @@
-package org.example.profilecase5.Controller;
+package org.example.profilecase5.Controller.register;
 
 import org.example.profilecase5.Exception.User.EmailAlreadyExistsException;
 import org.example.profilecase5.Exception.User.PasswordValidationException;
 import org.example.profilecase5.Exception.User.UsernameAlreadyExistsException;
 import org.example.profilecase5.Model.User;
-
-import org.example.profilecase5.Model.WaitingOwner;
 import org.example.profilecase5.Service.UserService;
-import org.example.profilecase5.Service.WaitingOwnerService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
-@RequestMapping("/registerOwner")
-public class registerOwnerController {
+@RequestMapping("/register")
+public class RegistrationController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private WaitingOwnerService waitingOwnerService;
     // Constructor injection
+    public RegistrationController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
-    public String showOwnerRegistrationForm(Model model) {
+    public String showRegistrationForm(Model model) {
         model.addAttribute("user", new User());
-
-        return "Owner/register";
+        return "register/register";
     }
-    @PostMapping("")
-    public String registerOwnerUser(@Validated @ModelAttribute("user") WaitingOwner waitingOwner, BindingResult result, Model model) {
+
+    @PostMapping
+    public String registerUser(@Validated @ModelAttribute("user") User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "Owner/register";
+            return "register/register";
         }
         try {
-            waitingOwnerService.addWaitingOwner(waitingOwner);
+            userService.registerUser(user);
         } catch (UsernameAlreadyExistsException e) {
             result.rejectValue("username", "error.username", e.getMessage());
-            return "Owner/register";
+            return "register/register";
         } catch (EmailAlreadyExistsException e) {
             result.rejectValue("email", "error.email", e.getMessage());
-            return "Owner/register";
+            return "register/register";
         } catch (PasswordValidationException e) {
             result.rejectValue("password", "error.password", e.getMessage());
-            return "Owner/register";
+            return "register/register";
         }
         return "redirect:/login";
     }
+
+
+
 }

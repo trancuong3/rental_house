@@ -113,13 +113,16 @@ public class UserService {
     }
 
     public void toggleUserStatus(int userId) {
+        // Fetch user by ID from the database
         User user = userRepository.findById(userId).orElse(null);
         if (user != null) {
-            if (user.getStatus() == User.Status.ACTIVE) {
-                user.setStatus(User.Status.LOCKED);
+            // Toggle the status between ACTIVE and LOCKED
+            if (user.getStatus() == User.Status.Active) {
+                user.setStatus(User.Status.Locked);
             } else {
-                user.setStatus(User.Status.ACTIVE);
+                user.setStatus(User.Status.Active);
             }
+            // Save the updated user status to the database
             userRepository.save(user);
         }
     }

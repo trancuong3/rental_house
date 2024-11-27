@@ -101,7 +101,7 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img th:src="${user.avatar != null && user.avatar != '' ? 'data:image/jpeg;base64,' + user.avatar : '/images/img_2.png'}" alt="Avatar" width="30" height="30">                </a>
+                    <img th:src="${user.avatar != null && user.avatar != '' ? 'data:image/jpeg;base64,' + user.avatar : '/images/img_2.png'}" alt="Avatar" width="30" height="30">
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                     <a class="dropdown-item" href="/profile">Hồ sơ</a>
@@ -156,9 +156,9 @@
         <div class="form-group mb-3">
             <label for="status">Trạng Thái</label>
             <select id="status" name="status" class="form-control" th:field="*{status}">
-                <option value="AVAILABLE" th:selected="${house.status == 'AVAILABLE'}">Available</option>
-                <option value="RENTED" th:selected="${house.status == 'RENTED'}">Rented</option>
-                <option value="CLOSED" th:selected="${house.status == 'CLOSED'}">Closed</option>
+                <option value="available" th:selected="${house.status == 'available'}">Available</option>
+                <option value="available" th:selected="${house.status == 'rented'}">Rented</option>
+                <option value="available" th:selected="${house.status == 'closed'}">Closed</option>
 
             </select>
             <span class="error-message" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></span>
@@ -210,12 +210,38 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    document.querySelector('#houseForm').addEventListener('submit', function () {
+    document.querySelector('#houseForm').addEventListener('submit', function (event) {
+        const propertyName = document.querySelector('#propertyName').value.trim();
+        const address = document.querySelector('#address').value.trim();
+        const bedrooms = document.querySelector('#bedrooms').value;
+        const bathrooms = document.querySelector('#bathrooms').value;
+        const pricePerDay = document.querySelector('#pricePerDay').value;
+        if (!propertyName || !address) {
+            alert("Tên Nhà và Địa Chỉ không được để trống.");
+            event.preventDefault();
+            return;
+        }
+        if (bedrooms < 1 || bedrooms > 10) {
+            alert("Số phòng ngủ phải từ 1 đến 10.");
+            event.preventDefault();
+            return;
+        }
+        if (bathrooms < 1 || bathrooms > 3) {
+            alert("Số phòng tắm phải từ 1 đến 3.");
+            event.preventDefault();
+            return;
+        }
+        if (pricePerDay < 1) {
+            alert("Giá thuê theo ngày phải lớn hơn 0.");
+            event.preventDefault();
+            return;
+        }
         const submitButton = this.querySelector('.btn-primary');
         submitButton.setAttribute('disabled', 'true');
         submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
     });
 </script>
+
 
 </body>
 </html>
