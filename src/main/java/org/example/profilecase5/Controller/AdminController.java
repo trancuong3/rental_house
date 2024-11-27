@@ -3,7 +3,9 @@ package org.example.profilecase5.Controller;
 
 import org.example.profilecase5.Model.RentalHistory;
 import org.example.profilecase5.Model.User;
+import org.example.profilecase5.Model.WaitingOwner;
 import org.example.profilecase5.Service.UserService;
+import org.example.profilecase5.Service.WaitingOwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,8 @@ import java.util.Set;
 public class AdminController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private WaitingOwnerService waitingOwnerService;
     @GetMapping()
     public String getUsers(Model model) {
         List<User> user = userService.getAllUsers();
@@ -58,6 +62,36 @@ public class AdminController {
         model.addAttribute("totalSpent", totalSpent);
 
         return "admin/userDetail";  // Tên file Thymeleaf
+    }
+
+    @GetMapping("/waiting-owners")
+    public String showWaitingOwners(Model model) {
+        List<WaitingOwner> waitingOwners = waitingOwnerService.getAllWaitingOwners();
+        model.addAttribute("waitingOwners", waitingOwners);
+        return "admin/waiting-owners"; // Trang JSP cho danh sách chờ duyệt
+    }
+
+    // Accept waiting owner
+    @PostMapping("/waiting-owners/accept/{id}")
+    public String acceptOwner(@PathVariable("id") int id) {
+        // Gọi service để chấp nhận chủ nhà và chuyển sang bảng user
+        waitingOwnerService.acceptWaitingOwner(id);
+
+        // Sau khi chuyển thành công, chuyển hướng lại trang danh sách chủ nhà chờ duyệt
+        return "redirect:/admin/waiting-owners";
+    }
+    // Refuse waiting owner
+    @PostMapping("/waiting-owners/refuse/{id}")
+    public String refuseOwner(@PathVariable("id") int id) {
+        waitingOwnerService.refuseWaitingOwner(id);
+        return "redirect:/admin/waiting-owners";
+    }
+
+    @GetMapping("/owners")
+    public String listOwners(Model model) {
+        List<User> owners = userService.getAllOwners();
+        model.addAttribute("owners", owners); // Đảm bảo biến "owners" được truyền
+        return "admin/owner-list";
     }
 
 }

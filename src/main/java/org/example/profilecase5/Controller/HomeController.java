@@ -38,8 +38,17 @@ public class HomeController {
         List<HouseImage> mainImages = houseService.getMainImages();
         model.addAttribute("mainImages", mainImages);
 
-        return "home/home";
+        // Dữ liệu banner
+        List<String> banners = List.of(
+                "/images/banner1.png",
+                "/images/banner2.png",
+                "/images/banner3.png"
+        );
+        model.addAttribute("banners", banners);
+
+        return "home/home"; // Đảm bảo sử dụng đúng tên của file HTML
     }
+
     @GetMapping("/detail/{id}")
     public String showDetail(@PathVariable("id") Integer id, Model model, Authentication authentication) {
         House house = houseService.getHouseById(id);
@@ -50,6 +59,5 @@ public class HomeController {
 
         return "detail/detail";
     }
-
 
 }

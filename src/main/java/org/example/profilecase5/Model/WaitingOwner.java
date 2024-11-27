@@ -1,26 +1,18 @@
 package org.example.profilecase5.Model;
 
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-@Getter
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@Table(name = "User")
-public class User  {
-
-    // Getters and Setters
+@Table(name = "waiting_owner")
+public class WaitingOwner{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -35,6 +27,10 @@ public class User  {
     @Email(message = "Email không hợp lệ")
     private String email;
 
+    public Role getRole() {
+        return role;
+    }
+
     public void setRole(Role role) {
         this.role = role;
     }
@@ -43,7 +39,7 @@ public class User  {
     @NotEmpty(message = "Password không được để trống")
     private String password;
     @Column(name = "confirm_password", nullable = false)
-    @NotBlank(message = "Xác nhận mật khẩu không được để trống")
+    @NotEmpty(message = "Xác nhận mật khẩu không được để trống")
     private String confirmPassword;
 
     @NotEmpty(message = "Số điện thoại không được để trống")
@@ -57,7 +53,7 @@ public class User  {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition = "ENUM('Active', 'Locked') DEFAULT 'Active'")
-    private Status status = Status.Active;
+    private User.Status status = User.Status.Active;
 
     @Column(columnDefinition = "LONGTEXT")
     private String avatar;
@@ -74,6 +70,9 @@ public class User  {
     @Column(name = "updated_at")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp updatedAt;
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
@@ -84,14 +83,31 @@ public class User  {
         Active, LOCKED, Locked
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    // Getters and Setters
+    public int getUserId() {
+        return userId;
     }
 
     public void setUserId(int userId) {
         this.userId = userId;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+
+    public String getFullname() {
+        return fullname;
+    }
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
@@ -101,30 +117,63 @@ public class User  {
         this.username = username;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
 
 
+
+
+
+
+    public String getPassword() {
+        return password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
     public void setAddress(String address) {
         this.address = address;
     }
 
-    public void setStatus(Status status) {
+    public User.Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(User.Status status) {
         this.status = status;
     }
 
 
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
     }
 
     public void setUpdatedAt(Timestamp updatedAt) {
@@ -133,28 +182,6 @@ public class User  {
 
 
 
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name = "user_roles",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "role_id")
-//    )
-//    private Set<Role> roles = new HashSet<>();
-//
-//    public Set<Role> getRoles() {
-//        return roles;
-//    }
-//
-//    public void setRoles(Set<Role> roles) {
-//        this.roles = roles;
-//    }
 
 
-    // Getter and Setter for rentalHistories
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<RentalHistory> rentalHistories = new HashSet<>();
-
-    public void setRentalHistories(Set<RentalHistory> rentalHistories) {
-        this.rentalHistories = rentalHistories;
-    }
 }

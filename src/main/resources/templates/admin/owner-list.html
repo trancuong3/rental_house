@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - User List</title>
+    <title>Admin Dashboard - Danh sách chủ nhà</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="/css/admin.css">
@@ -11,6 +11,7 @@
 </head>
 <body>
 <div class="d-flex" id="wrapper">
+    <!-- Sidebar -->
     <div class="bg-dark text-white" id="sidebar-wrapper">
         <div class="sidebar-heading text-center py-4">
             <img src="https://i.pinimg.com/736x/3f/8c/f9/3f8cf9bba87c5a0ea870af088da6bf8d.jpg"
@@ -24,7 +25,7 @@
             <a href="/admin/waiting-owners" class="list-group-item list-group-item-action bg-dark text-white">
                 <i class="fas fa-box-open"></i> Danh sách duyệt chủ nhà
             </a>
-            <a href="/admin/owners" class="list-group-item list-group-item-action bg-dark text-white">
+            <a href="/admin/owners" class="list-group-item list-group-item-action bg-dark text-white active">
                 <i class="fas fa-user-tie"></i> Danh sách chủ nhà
             </a>
             <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
@@ -36,18 +37,18 @@
             <a href="/perform_logout" class="list-group-item list-group-item-action bg-dark text-white">
                 <i class="fas fa-sign-out-alt"></i> Đăng xuất
             </a>
-
         </div>
     </div>
 
+    <!-- Page Content -->
     <div id="page-content-wrapper">
         <div class="container-fluid">
-            <h2 class="mt-4">Danh sách người dùng</h2>
-            <a href="/addUser" class="btn btn-primary mb-3">
-                <i class="fas fa-plus"></i> Thêm Người Dùng
+            <h2 class="mt-4">Danh sách chủ nhà</h2>
+            <a href="/addOwner" class="btn btn-primary mb-3">
+                <i class="fas fa-plus"></i> Thêm Chủ Nhà
             </a>
-            <form class="d-flex me-3 position-relative">
-                <input class="form-control me-2" type="search" placeholder="Tìm kiếm người dùng..." aria-label="Search"
+            <form class="d-flex mb-3">
+                <input class="form-control me-2" type="search" placeholder="Tìm kiếm chủ nhà..." aria-label="Search"
                        name="query" id="searchInput">
                 <button class="btn btn-outline-success" type="button" id="searchButton">
                     <i class="fas fa-search"></i>
@@ -59,27 +60,29 @@
                 <tr>
                     <th>Họ và Tên</th>
                     <th>Số Điện Thoại</th>
+                    <th>Email</th>
                     <th>Trạng Thái</th>
                     <th>Hành Động</th>
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Loop through the list of users and display each user's data -->
-                <tr th:each="user : ${user}">
+                <!-- Loop through the list of owners and display each owner's data -->
+                <tr th:each="owner : ${owners}">
                     <td>
-                        <a th:href="@{'/admin/detail/' + ${user.userId}}" th:text="${user.fullname}"></a>
+                        <a th:href="@{'/admin/owners/detail/' + ${owner.userId}}" th:text="${owner.fullname}"></a>
                     </td>
-                    <td th:text="${user.phone}"></td>
+                    <td th:text="${owner.phone}"></td>
+                    <td th:text="${owner.email}"></td>
                     <td>
-                        <span th:if="${user.status.name() == 'ACTIVE'}" class="badge badge-success ">Đang hoạt động</span>
-                        <span th:if="${user.status.name() == 'LOCKED'}" class="badge badge-danger">Khóa</span>
+                        <span th:if="${owner.status.name() == 'ACTIVE'}" class="badge badge-success">Đang hoạt động</span>
+                        <span th:if="${owner.status.name() == 'LOCKED'}" class="badge badge-danger">Khóa</span>
                     </td>
                     <td>
-                        <form th:action="@{'/admin/toggleStatus/' + ${user.userId}}" method="post">
+                        <form th:action="@{'/admin/owners/toggleStatus/' + ${owner.userId}}" method="post">
                             <button type="submit" class="btn btn-sm"
-                                    th:classappend="${user.status.name() == 'ACTIVE' ? 'btn-danger' : 'btn-success'}"
-                                    th:text="${user.status.name() == 'ACTIVE' ? 'Khóa' : 'Mở khóa'}">
-                                <i th:classappend="${user.status.name() == 'ACTIVE' ? 'fas fa-lock' : 'fas fa-unlock'}"></i>
+                                    th:classappend="${owner.status.name() == 'ACTIVE' ? 'btn-danger' : 'btn-success'}"
+                                    th:text="${owner.status.name() == 'ACTIVE' ? 'Khóa' : 'Mở khóa'}">
+                                <i th:classappend="${owner.status.name() == 'ACTIVE' ? 'fas fa-lock' : 'fas fa-unlock'}"></i>
                             </button>
                         </form>
                     </td>

@@ -115,3 +115,42 @@
             height: 150px;
         }
     }
+
+    /* Định dạng container của nút "Đăng ký chủ nhà" */
+    .register-landlord-container {
+        margin-left: auto; /* Đẩy nút sang trái */
+    }
+
+    /* Định dạng nút "Đăng ký chủ nhà" */
+    .register-landlord-btn {
+        background-color: white; /* Màu nền nút */
+        color: grey; /* Màu chữ */
+        border: 1px solid grey; /* Viền màu xám */
+        border-radius: 20px; /* Bo tròn góc */
+        padding: 10px 20px; /* Khoảng cách bên trong */
+        text-align: center; /* Canh giữa chữ */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+        transition: all 0.3s ease; /* Hiệu ứng khi hover */
+    }
+
+
+    .carousel-control-prev, .carousel-control-next {
+        background: none; /* Bỏ nền */
+        border: none; /* Bỏ khung */
+        color: black; /* Màu chữ là đen, bạn có thể thay đổi nếu cần */
+    }
+
+
+    .carousel-item img {
+        height: 600px; /* Chiều cao banner */
+        width: 100%;
+        object-fit: contain; /* Hiển thị toàn bộ ảnh */
+        background-color: #000; /* Thêm màu nền để lấp khoảng trống (nếu cần) */
+    }
+    .carousel {
+        margin-bottom: 20px; /* Thêm khoảng cách dưới carousel */
+    }
+
+    .filters {
+        margin-top: 20px; /* Thêm khoảng cách phía trên bộ lọc */
+    }
