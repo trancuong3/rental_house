@@ -30,9 +30,10 @@ public class AdminController {
 
     @PostMapping("/toggleStatus/{userId}")
     public String toggleStatus(@PathVariable int userId) {
-        userService.toggleUserStatus(userId);
-        return "redirect:/admin";
+        userService.toggleUserStatus(userId);  // Toggle user status
+        return "redirect:/admin";  // Redirect to admin page
     }
+
 //    @GetMapping
 //    public String getUsers(@RequestParam(defaultValue = "0") int page, Model model) {
 //        Page<User> usersPage = userService.getUsersWithPagination(page, 10);

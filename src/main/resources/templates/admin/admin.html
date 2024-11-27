@@ -64,14 +64,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Loop through the list of users and display each user's data -->
+
+                <tbody>
                 <tr th:each="user : ${user}">
                     <td>
                         <a th:href="@{'/admin/detail/' + ${user.userId}}" th:text="${user.fullname}"></a>
                     </td>
                     <td th:text="${user.phone}"></td>
                     <td>
-                        <span th:if="${user.status.name() == 'Active'}" class="badge badge-success ">Đang hoạt động</span>
+                        <span th:if="${user.status.name() == 'Active'}" class="badge badge-success">Đang hoạt động</span>
                         <span th:if="${user.status.name() == 'Locked'}" class="badge badge-danger">Khóa</span>
                     </td>
                     <td>
@@ -85,6 +86,9 @@
                     </td>
                 </tr>
                 </tbody>
+
+                </tbody>
+
             </table>
         </div>
     </div>
