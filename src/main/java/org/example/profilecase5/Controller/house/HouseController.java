@@ -1,4 +1,4 @@
-package org.example.profilecase5.Controller;
+package org.example.profilecase5.Controller.house;
 
 import net.coobird.thumbnailator.Thumbnails;
 import org.example.profilecase5.Model.House;
@@ -14,16 +14,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -142,7 +138,10 @@ public class HouseController {
     }
 
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable("id") int id, Model model) {
+    public String showEditForm(@PathVariable("id") int id, Model model,Authentication authentication) {
+        String username = authentication.getName();  // Lấy tên người dùng từ Authentication
+        User user = userService.getUserByUsername(username);
+        model.addAttribute("user", user);// Lấy người dùng từ dịch vụ
         Optional<House> house = houseService.findById(id);
         if (house.isPresent()) {
             model.addAttribute("house", house.get());
@@ -157,8 +156,8 @@ public class HouseController {
                             @RequestParam(value = "image", required = false) MultipartFile image,
                             @RequestParam(value = "houseId", required = false) Integer houseId,
                             Model model) {
+
         try {
-            // Kiểm tra và gán houseId từ URL nếu không có trong đối tượng house
             if (house.getHouseId() == 0 && houseId != null) {
                 house.setHouseId(houseId);
             }
@@ -185,11 +184,7 @@ public class HouseController {
                 house.getHouseImages().add(houseImage);
             }
 
-            // Kiểm tra xem house có ảnh không
-            if (house.getHouseImages().isEmpty()) {
-                model.addAttribute("errorMessage", "Cần phải thêm ít nhất một ảnh.");
-                return "house/edit";
-            }
+
 
             // Cập nhật house vào database
             houseService.updateHouse(house, image);

@@ -57,6 +57,8 @@ public class House {
     @DecimalMin(value = "0.0", inclusive = false, message = "Giá tiền phải lớn hơn 0")
     @Digits(integer = 10, fraction = 2, message = "Giá tiền không hợp lệ")
     private BigDecimal pricePerDay; // Giá tiền theo ngày
+
+    
     @OneToMany(mappedBy = "house", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HouseImage> houseImages = new ArrayList<>();
 
@@ -67,7 +69,7 @@ public class House {
 
     // Enum for Status
     public enum Status {
-        AVAILABLE,available ,RENTED  , rented, CLOSED
+        available, rented
         , closed
     }
 

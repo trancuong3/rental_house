@@ -1,4 +1,4 @@
-package org.example.profilecase5.Controller;
+package org.example.profilecase5.Controller.admin;
 
 
 import org.example.profilecase5.Model.House;

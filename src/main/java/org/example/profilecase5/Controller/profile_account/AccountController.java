@@ -1,4 +1,4 @@
-package org.example.profilecase5.Controller;
+package org.example.profilecase5.Controller.profile_account;
 
 import org.example.profilecase5.Model.User;
 import org.example.profilecase5.Service.UserService;

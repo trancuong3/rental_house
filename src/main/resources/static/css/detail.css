@@ -1,0 +1,122 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h4 {
+    color: #333;
+    font-weight: 700; /* Làm cho tiêu đề đậm và rõ ràng */
+    margin-bottom: 20px;
+    letter-spacing: 1px; /* Khoảng cách chữ hơi rộng để tạo cảm giác hiện đại */
+}
+
+h6 {
+    color: #666;
+    font-weight: 500;
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+}
+
+.navbar-brand img {
+    width: 60px;  /* Adjust logo size */
+    height: auto;
+}
+
+/* Main Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* Carousel Styles */
+.carousel-inner img {
+    max-height: 500px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.carousel-indicators button {
+    background-color: #333;
+}
+
+/* Property Info */
+.property-info .row .col-md-6 {
+    margin-bottom: 20px;
+}
+
+.feature-icon {
+    font-size: 2.1rem;
+    color: #ff5a5f;  /* Airbnb style color */
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Property Description */
+.mt-4 {
+    margin-top: 30px;
+}
+
+.text-justify {
+    text-align: justify;
+    line-height: 1.6; /* Tăng độ cao dòng cho dễ đọc */
+}
+
+/* Booking Section */
+.card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.rent-button {
+    background-color: #ff5a5f;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.rent-button:hover {
+    background-color: #ff3b3f;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .carousel-inner img {
+        max-height: 300px;
+    }
+
+    .property-info .row {
+        flex-direction: column;
+    }
+
+    .col-md-8, .col-md-4 {
+        margin-bottom: 20px;
+    }
+
+    .rent-button {
+        font-size: 1rem;
+    }
+}

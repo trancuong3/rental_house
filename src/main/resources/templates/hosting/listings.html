@@ -23,9 +23,12 @@
         .card-img-top {
             border-top-left-radius: 15px;
             border-top-right-radius: 15px;
+            width: 100%;
             height: 200px;
-            object-fit: cover;
+            object-fit: contain;  /* Đảm bảo ảnh không bị cắt, sẽ xuất hiện đầy đủ trong phần tử */
+            object-position: center;  /* Đảm bảo ảnh được căn giữa */
         }
+
 
         .card-title {
             font-size: 18px;
@@ -48,12 +51,42 @@
                 height: 150px;
             }
         }
+
+        /* Navbar Custom Styles */
+        .navbar-nav .nav-item.active .nav-link {
+            color: #007bff !important;
+        }
+
+        /* Notification Panel */
+        .notification-panel {
+            width: 300px;
+            padding: 10px;
+        }
+
+        .notification-panel h4 {
+            margin-bottom: 10px;
+        }
+
+        .notification-panel .dropdown-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .notification-panel .dropdown-item i {
+            margin-right: 10px;
+        }
+
+        /* Action Buttons */
+        .action-buttons button {
+            margin-right: 10px;
+        }
+
     </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">
-        <img href="/main" src="/images/img.png" alt="Logo">
+    <a class="navbar-brand" href="/hosting">
+        <img href="/main" src="/images/avatar.jpg" alt="Logo">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -99,11 +132,10 @@
                     <a class="dropdown-item" href="#"><i class="fas fa-envelope mr-2"></i>Thông báo 2</a>
                     <a class="dropdown-item" href="#"><i class="fas fa-envelope mr-2"></i>Thông báo 3</a>
                 </div>
-
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img th:src="${user.avatar != null && user.avatar != '' ? 'data:image/jpeg;base64,' + user.avatar : '/images/img_2.png'}" alt="Avatar" width="30" height="30">                </a>
+                    <img th:src="${user.avatar != null && user.avatar != '' ? 'data:image/jpeg;base64,' + user.avatar : '/images/img_2.png'}" alt="Avatar" width="30" height="30">
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                     <a class="dropdown-item" href="/profile">Hồ sơ</a>
@@ -122,6 +154,7 @@
         </ul>
     </div>
 </nav>
+
 <div class="container mt-4">
     <div class="header-content d-flex align-items-center justify-content-between">
         <h4>Nhà/phòng cho thuê của bạn</h4>
@@ -135,36 +168,31 @@
     </div>
 </div>
 
-
 <div class="container mt-4">
     <h3 class="text-center mb-4">Danh sách Nhà/Phòng cho thuê</h3>
     <div class="row">
         <div class="col-md-4 mb-4" th:each="house : ${houses}">
-            <!-- Closing the anchor tag correctly -->
             <a th:href="@{/house/edit/{id}(id=${house.houseId})}">
                 <div class="card">
                     <img th:src="${house.houseImages != null && house.houseImages.size() > 0
                             ? 'data:image/jpeg;base64,' + house.houseImages[0].imageUrl
-                            : '/images/default-image.png'}" class="card-img-top" alt="House Image">
+                            : '/images/img_2.png'}" class="card-img-top" alt="House Image">
 
                     <div class="card-body">
                         <h5 class="card-title" th:text="${house.propertyName}">Tên nhà/phòng</h5>
                         <p class="card-text" th:text="${house.address}">Vị trí</p>
                         <p class="card-text">
-                            <span class="text-muted" th:text="${house.pricePerDay + ' VND/night'}">Giá</span>
+                            <span class="text-muted" th:text="${house.pricePerDay + ' VND/ngày'}">Giá</span>
                         </p>
                     </div>
                 </div>
-            </a> <!-- Close the anchor tag here -->
+            </a>
         </div>
     </div>
 </div>
 
-
-
-
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
