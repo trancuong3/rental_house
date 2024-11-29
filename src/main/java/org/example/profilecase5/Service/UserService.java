@@ -114,10 +114,10 @@ public class UserService {
     public void toggleUserStatus(int userId) {
         User user = userRepository.findById(userId).orElse(null);
         if (user != null) {
-            if (user.getStatus() == User.Status.ACTIVE) {
-                user.setStatus(User.Status.LOCKED);
+            if (user.getStatus() == User.Status.Active) {
+                user.setStatus(User.Status.Locked);
             } else {
-                user.setStatus(User.Status.ACTIVE);
+                user.setStatus(User.Status.Active);
             }
             userRepository.save(user);
         }

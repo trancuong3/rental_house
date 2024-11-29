@@ -82,8 +82,7 @@ public class User  {
     }
 
     public enum Status {
-        ACTIVE,   // Make sure the enum constant matches the value being passed.
-        Active, LOCKED, Locked
+        Active, Locked
     }
 
     public String getAvatar() {
@@ -94,7 +93,6 @@ public class User  {
         this.avatar = avatar;
     }
 
-    // Getters and Setters
     public int getUserId() {
         return userId;
     }
@@ -106,7 +104,6 @@ public class User  {
     public String getUsername() {
         return username;
     }
-
 
     public String getFullname() {
         return fullname;
@@ -127,11 +124,6 @@ public class User  {
     public void setEmail(String email) {
         this.email = email;
     }
-
-
-
-
-
 
     public String getPassword() {
         return password;
@@ -165,8 +157,6 @@ public class User  {
         this.status = status;
     }
 
-
-
     public Timestamp getCreatedAt() {
         return createdAt;
     }
@@ -183,29 +173,9 @@ public class User  {
         this.updatedAt = updatedAt;
     }
 
-
-
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name = "user_roles",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "role_id")
-//    )
-//    private Set<Role> roles = new HashSet<>();
-//
-//    public Set<Role> getRoles() {
-//        return roles;
-//    }
-//
-//    public void setRoles(Set<Role> roles) {
-//        this.roles = roles;
-//    }
-
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RentalHistory> rentalHistories = new HashSet<>();
 
-    // Getter and Setter for rentalHistories
     public Set<RentalHistory> getRentalHistories() {
         return rentalHistories;
     }

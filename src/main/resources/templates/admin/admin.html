@@ -71,15 +71,15 @@
                     </td>
                     <td th:text="${user.phone}"></td>
                     <td>
-                        <span th:if="${user.status.name() == 'ACTIVE'}" class="badge badge-success ">Đang hoạt động</span>
-                        <span th:if="${user.status.name() == 'LOCKED'}" class="badge badge-danger">Khóa</span>
+                        <span th:if="${user.status.name() == 'Active'}" class="badge badge-success ">Đang hoạt động</span>
+                        <span th:if="${user.status.name() == 'Locked'}" class="badge badge-danger">Khóa</span>
                     </td>
                     <td>
                         <form th:action="@{'/admin/toggleStatus/' + ${user.userId}}" method="post">
                             <button type="submit" class="btn btn-sm"
-                                    th:classappend="${user.status.name() == 'ACTIVE' ? 'btn-danger' : 'btn-success'}"
-                                    th:text="${user.status.name() == 'ACTIVE' ? 'Khóa' : 'Mở khóa'}">
-                                <i th:classappend="${user.status.name() == 'ACTIVE' ? 'fas fa-lock' : 'fas fa-unlock'}"></i>
+                                    th:classappend="${user.status.name() == 'Active' ? 'btn-danger' : 'btn-success'}"
+                                    th:text="${user.status.name() == 'Active' ? 'Khóa' : 'Mở khóa'}">
+                                <i th:classappend="${user.status.name() == 'Active' ? 'fas fa-lock' : 'fas fa-unlock'}"></i>
                             </button>
                         </form>
                     </td>

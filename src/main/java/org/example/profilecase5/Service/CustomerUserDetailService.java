@@ -37,6 +37,9 @@ public class CustomerUserDetailService implements UserDetailsService {
             user.setConfirmPassword(encodedPassword);
             userRepository.save(user);
         }
+        if (user.getStatus() == User.Status.Locked) {
+            throw new UsernameNotFoundException("Tài khoản đã bị khóa");
+        }
 
         // Trả về đối tượng UserDetails, với vai trò là một đối tượng Role duy nhất
         return new org.springframework.security.core.userdetails.User(
