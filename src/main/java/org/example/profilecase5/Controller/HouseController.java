@@ -206,10 +206,26 @@
 
 
         @GetMapping("/edit/{id}")
-        public String showEditForm(@PathVariable("id") int id, Model model,Authentication authentication) {
+        public String showEditForm(@PathVariable("id") int id, Model model, Authentication authentication) {
+            if (authentication == null) {
+                model.addAttribute("errorMessage", "Bạn cần đăng nhập để chỉnh sửa");
+                return "redirect:/login"; // Quay về trang đăng nhập nếu chưa đăng nhập
+            }
+
             String username = authentication.getName();  // Lấy tên người dùng từ Authentication
             User user = userService.getUserByUsername(username);
-            model.addAttribute("user", user);// Lấy người dùng từ dịch vụ
+
+            if (user == null) {
+                model.addAttribute("errorMessage", "Người dùng không tồn tại");
+                return "redirect:/login"; // Quay về trang đăng nhập nếu không tìm thấy người dùng
+            }
+
+            if (user.getAvatar() == null) {
+                user.setAvatar("/images/img_2.png"); // Cung cấp ảnh mặc định nếu không có avatar
+            }
+
+            model.addAttribute("user", user); // Lấy người dùng từ dịch vụ
+
             Optional<House> house = houseService.findById(id);
             if (house.isPresent()) {
                 model.addAttribute("house", house.get());
@@ -219,50 +235,48 @@
                 return "redirect:/house/list"; // Quay lại danh sách nếu không tìm thấy.
             }
         }
+
         @PostMapping("/edit")
         public String editHouse(@ModelAttribute("house") House house,
                                 @RequestParam(value = "image", required = false) MultipartFile image,
-                                @RequestParam(value = "houseId", required = false) Integer houseId,
                                 @RequestParam(value = "imageUrl", required = false) String imageUrl,
+                                @RequestParam(value = "houseId", required = false) Integer houseId,
                                 Model model) {
 
             try {
+                // Kiểm tra houseId và gán nếu cần
                 if (house.getHouseId() == 0 && houseId != null) {
                     house.setHouseId(houseId);
                 }
 
-                // Kiểm tra chỉ chọn một trong hai ảnh từ file hoặc URL
+                // Kiểm tra nếu cả hai trường đều trống hoặc có ảnh
                 if ((image == null || image.isEmpty()) && (imageUrl == null || imageUrl.trim().isEmpty())) {
                     model.addAttribute("errorMessage", "Vui lòng tải lên ảnh hoặc nhập URL.");
                     return "house/edit";
                 }
 
+                // Kiểm tra nếu cả hai trường đều có giá trị
                 if ((image != null && !image.isEmpty()) && (imageUrl != null && !imageUrl.trim().isEmpty())) {
                     model.addAttribute("errorMessage", "Chỉ được chọn một trong hai: tải lên ảnh hoặc nhập URL.");
                     return "house/edit";
                 }
 
-                // Xử lý ảnh từ file
+                // Xử lý ảnh nếu có file ảnh
                 if (image != null && !image.isEmpty()) {
-                    if (image.getSize() > MAX_FILE_SIZE) {
-                        model.addAttribute("errorMessage", "Ảnh quá lớn, vui lòng chọn ảnh nhỏ hơn 5MB.");
-                        return "house/edit";
-                    }
-
                     byte[] imageBytes = image.getBytes();
                     String base64Image = Base64.getEncoder().encodeToString(imageBytes);
 
                     HouseImage houseImage = new HouseImage();
-                    houseImage.setImageUrl(base64Image); // Lưu chuỗi Base64
+                    houseImage.setImageUrl(base64Image);  // Chắc chắn ảnh được chuyển thành Base64
                     houseImage.setHouse(house);
                     houseImage.setMain(false); // Đánh dấu ảnh này không phải ảnh chính
-
-                    house.getHouseImages().add(houseImage);
+                    house.getHouseImages().add(houseImage);  // Thêm ảnh vào danh sách của house
                 }
 
-                // Xử lý ảnh từ URL
+                // Xử lý ảnh nếu có URL
                 if (imageUrl != null && !imageUrl.trim().isEmpty()) {
                     if (imageUrl.startsWith("data:")) {
+                        // Nếu là data URL, xử lý nó như một chuỗi Base64
                         try {
                             String base64Image = imageUrl.split(",")[1];  // Tách phần Base64 từ data URL
                             byte[] imageBytes = Base64.getDecoder().decode(base64Image);
@@ -278,24 +292,24 @@
                             String resizedBase64Image = Base64.getEncoder().encodeToString(resizedImage);
 
                             HouseImage houseImage = new HouseImage();
-                            houseImage.setImageUrl(resizedBase64Image);
+                            houseImage.setImageUrl(resizedBase64Image);  // Lưu ảnh đã được resize vào cơ sở dữ liệu
                             houseImage.setHouse(house);
-                            houseImage.setMain(false);
+                            houseImage.setMain(true); // Đánh dấu đây là ảnh chính
 
                             house.getHouseImages().add(houseImage);
                         } catch (Exception e) {
-                            logger.error("Error while processing data URL", e);
                             model.addAttribute("errorMessage", "Đã xảy ra lỗi khi xử lý ảnh từ URL.");
                             return "house/edit";
                         }
                     } else {
+                        // Xử lý ảnh từ URL bình thường
                         try {
                             URL url = new URL(imageUrl);
                             InputStream inputStream = url.openStream();
-
                             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
                             Thumbnails.of(inputStream)
-                                    .size(800, 800)
+                                    .size(800, 800) // Kích thước mới
                                     .outputFormat("JPEG")
                                     .outputQuality(0.8f)
                                     .toOutputStream(outputStream);
@@ -304,29 +318,29 @@
                             String base64Image = Base64.getEncoder().encodeToString(resizedImage);
 
                             HouseImage houseImage = new HouseImage();
-                            houseImage.setImageUrl(base64Image);
+                            houseImage.setImageUrl(base64Image);  // Lưu ảnh vào cơ sở dữ liệu
                             houseImage.setHouse(house);
-                            houseImage.setMain(false);
+                            houseImage.setMain(false); // Đánh dấu ảnh này không phải ảnh chính
 
                             house.getHouseImages().add(houseImage);
                         } catch (IOException e) {
-                            logger.error("Error while processing image URL", e);
-                            model.addAttribute("errorMessage", "Đã xảy ra lỗi khi xử lý ảnh từ URL.");
+                            model.addAttribute("errorMessage", "Không thể tải ảnh từ URL. Lỗi: " + e.getMessage());
                             return "house/edit";
                         }
                     }
                 }
 
-            } catch (IOException e) {
-                logger.error("Error while processing image file or URL", e);
-                model.addAttribute("errorMessage", "Đã xảy ra lỗi khi xử lý ảnh. Vui lòng thử lại.");
+                // Cập nhật nhà vào database
+                houseService.updateHouse(house, image);
+
+                // Chuyển hướng về trang edit của house sau khi cập nhật
+                return "redirect:/house/edit/" + house.getHouseId();
+
+            } catch (Exception e) {
+                model.addAttribute("errorMessage", "Đã xảy ra lỗi: " + e.getMessage());
                 return "house/edit";
             }
-
-            return "redirect:/hosting/listings";
         }
-
-
 
 
 
