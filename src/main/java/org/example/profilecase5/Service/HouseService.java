@@ -37,11 +37,10 @@ public class HouseService {
 
     @Transactional
     public void updateHouse(House house, MultipartFile image) throws Exception {
-        // Lấy đối tượng house từ cơ sở dữ liệu để cập nhật
         House existingHouse = houseRepository.findById(house.getHouseId())
                 .orElseThrow(() -> new Exception("House không tồn tại"));
 
-        // Cập nhật thông tin từ đối tượng house được truyền vào
+        // Cập nhật thông tin của house
         existingHouse.setPropertyName(house.getPropertyName());
         existingHouse.setAddress(house.getAddress());
         existingHouse.setStatus(house.getStatus());
@@ -50,31 +49,19 @@ public class HouseService {
         existingHouse.setPricePerDay(house.getPricePerDay());
         existingHouse.setDescription(house.getDescription());
 
-        // Nếu có ảnh mới, thêm ảnh mà không xóa ảnh cũ
-        if (image != null && !image.isEmpty()) {
-            try {
-                // Chuyển ảnh thành mảng byte
-                byte[] imageBytes = image.getBytes();
-
-                // Mã hóa mảng byte thành chuỗi Base64
-                String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-
-                // Tạo đối tượng HouseImage để lưu vào cơ sở dữ liệu
-                HouseImage newImage = new HouseImage();
-                newImage.setHouse(existingHouse);
-                newImage.setImageUrl(base64Image); // Lưu chuỗi Base64 vào imageUrl
-                newImage.setMain(false); // Đánh dấu ảnh này không phải ảnh chính
-
-                // Lưu ảnh vào bảng HouseImage
-                houseImageRepository.save(newImage);
-            } catch (IOException e) {
-                throw new Exception("Đã xảy ra lỗi khi xử lý ảnh: " + e.getMessage(), e);
+        // Nếu có ảnh, thêm vào danh sách ảnh
+        if (!house.getHouseImages().isEmpty()) {
+            for (HouseImage houseImage : house.getHouseImages()) {
+                if (houseImage.getImageUrl() != null && !houseImage.getImageUrl().isEmpty()) {
+                    houseImageRepository.save(houseImage);
+                }
             }
         }
 
-        // Lưu lại đối tượng house đã chỉnh sửa
+        // Lưu lại đối tượng house vào cơ sở dữ liệu
         houseRepository.save(existingHouse);
     }
+
 
     // Phương thức từ nhánh main
     public List<HouseImage> getMainImages() {
