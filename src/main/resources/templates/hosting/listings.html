@@ -25,10 +25,9 @@
             border-top-right-radius: 15px;
             width: 100%;
             height: 200px;
-            object-fit: contain;  /* Đảm bảo ảnh không bị cắt, sẽ xuất hiện đầy đủ trong phần tử */
-            object-position: center;  /* Đảm bảo ảnh được căn giữa */
+            object-fit: contain;
+            object-position: center;
         }
-
 
         .card-title {
             font-size: 18px;
@@ -154,6 +153,7 @@
         </ul>
     </div>
 </nav>
+
 <div class="container mt-4">
     <div class="header-content d-flex align-items-center justify-content-between">
         <h4></h4>
@@ -165,20 +165,20 @@
         </div>
     </div>
 </div>
-<form id="search-form" th:action="@{/house/search}" method="get" class="d-flex">
+
+<!-- Search Form -->
+<form id="search-form" class="d-flex">
     <input type="text" name="propertyName" id="search-name" class="form-control mr-2"
-           placeholder="Tìm theo tên" th:value="${param.propertyName}" />
+           placeholder="Tìm theo tên" />
     <select name="status" id="search-status" class="form-control mr-2">
         <option value="">Chọn trạng thái</option>
-        <option value="available" th:selected="${param.status == 'available'}">Có sẵn</option>
-        <option value="rented" th:selected="${param.status == 'rented'}">Đã thuê</option>
-        <option value="closed" th:selected="${param.status == 'closed'}">Đóng cửa</option>
+        <option value="available">Có sẵn</option>
+        <option value="rented">Đã thuê</option>
+        <option value="closed">Đóng cửa</option>
     </select>
-    <button type="submit" class="btn btn-secondary">
-        <i class="fas fa-search"></i>
-    </button>
 </form>
 
+<!-- House Listings -->
 <div class="container mt-4">
     <h3 class="text-center mb-4">Danh sách Nhà/Phòng cho thuê</h3>
     <div id="house-list" class="row" th:fragment="house-list">
@@ -207,38 +207,57 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function() {
-        $('#search-form').on('submit', function(e) {
-            e.preventDefault(); // Ngăn chặn form submit truyền thống
-
-            // Lấy giá trị từ các trường input
-            var propertyName = $('#search-name').val();
-            var status = $('#search-status').val();
-
-            // Gọi AJAX
-            $.ajax({
-                url: '/house/search', // Điều chỉnh đường dẫn phù hợp
-                type: 'GET',
-                data: {
-                    propertyName: propertyName,
-                    status: status
-                },
-                success: function(response) {
-                    // Xóa danh sách cũ
-                    $('#house-list').html(response);
-                },
-                error: function() {
-                    alert('Có lỗi xảy ra khi tìm kiếm');
-                }
-            });
-        });
-    });
-</script>
-
-
+<!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        function searchHouses(propertyName = '', status = '') {
+            // Kiểm tra nếu ô tìm kiếm có giá trị và trạng thái được chọn
+            if (propertyName.trim() !== '' || status !== '') {
+                // Gửi yêu cầu tìm kiếm nếu ô tìm kiếm có giá trị
+                $.ajax({
+                    url: '/house/search', // Điều chỉnh đường dẫn phù hợp
+                    type: 'GET',
+                    data: {
+                        propertyName: propertyName,
+                        status: status
+                    },
+                    success: function(response) {
+                        // Cập nhật danh sách nhà với dữ liệu tìm kiếm
+                        $('#house-list').html(response);
+                    },
+                    error: function() {
+                        console.log('Có lỗi xảy ra khi tìm kiếm.');
+                    }
+                });
+            } else {
+                // Nếu không có giá trị tìm kiếm hoặc trạng thái, không làm gì
+                // Hoặc có thể quay lại trang chủ
+                window.location.href = '/hosting/listings';
+            }
+        }
+
+        // Tìm kiếm khi gõ vào ô tìm kiếm
+        $('#search-name').on('keyup', function() {
+            var propertyName = $('#search-name').val().trim();
+            var status = $('#search-status').val();
+            searchHouses(propertyName, status);  // Truyền cả tên và trạng thái
+        });
+
+        // Tìm kiếm khi thay đổi trạng thái
+        $('#search-status').on('change', function() {
+            var propertyName = $('#search-name').val().trim();
+            var status = $('#search-status').val();
+            searchHouses(propertyName, status);  // Truyền cả tên và trạng thái
+        });
+    });
+
+
+</script>
+
+
 </body>
 </html>
