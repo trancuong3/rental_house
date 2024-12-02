@@ -99,10 +99,8 @@
   <!-- Cards -->
   <div class="row">
     <div th:each="image : ${mainImages}" class="col-md mb-4">
-      <div class="card">
-        <a th:href="@{/home/detail/{id}(id=${image.house.houseId})}">
-          <img th:src="${image.imageUrl != null && image.imageUrl != '' ? 'data:image/jpeg;base64,' + image.imageUrl : '/images/img_2.png'}" class="card-img-top" alt="Main Image">
-        </a>
+      <div class="card" onclick="showLoginAlert()">
+        <img th:src="${image.imageUrl != null && image.imageUrl != '' ? 'data:image/jpeg;base64,' + image.imageUrl : '/images/img_2.png'}" class="card-img-top" alt="Main Image">
         <div class="card-body">
           <h5 class="card-title" th:text="${image.house.propertyName}"></h5>
           <p class="card-text">
@@ -120,7 +118,11 @@
     <p class="text-muted">&copy; 2024 Airbnb - <a href="#">Privacy</a> - <a href="#">Terms</a></p>
   </div>
 </footer>
-
+<script>
+  function showLoginAlert() {
+    alert("Bạn phải đăng nhập để xem chi tiết sản phẩm.");
+  }
+</script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
