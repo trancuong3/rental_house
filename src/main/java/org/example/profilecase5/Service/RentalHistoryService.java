@@ -17,4 +17,7 @@ public class RentalHistoryService {
     public List<RentalHistory> getRentalHistoriesByHouseId(int houseId) {
         return rentalHistoryRepository.findByHouse_HouseId(houseId);  // Assume findByHouseId is implemented in the repository
     }
+    public void save(RentalHistory rentalHistory) {
+        rentalHistoryRepository.save(rentalHistory);
+    }
 }
