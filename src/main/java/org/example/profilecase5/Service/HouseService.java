@@ -73,6 +73,13 @@ public class HouseService {
                 .orElseThrow(() -> new RuntimeException("Have not found"));
     }
 
+    public List<House> searchHousesByName(String propertyName) {
+        return houseRepository.findByPropertyNameContainingIgnoreCase(propertyName);
+    }
+
+    public List<House> searchHousesByStatus(House.Status status) {
+        return houseRepository.findByStatus(status);
+    }
     public List<HouseImage> getImagesByHouseId(Integer houseId) {
         return houseImageRepository.findByHouseId(houseId);
     }

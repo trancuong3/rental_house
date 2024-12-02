@@ -4,6 +4,7 @@ import net.coobird.thumbnailator.Thumbnails;
 import org.example.profilecase5.Model.House;
 import org.example.profilecase5.Model.HouseImage;
 import org.example.profilecase5.Model.User;
+import org.example.profilecase5.Repository.HouseRepository;
 import org.example.profilecase5.Service.HouseService;
 import org.example.profilecase5.Service.UserService;
 import jakarta.validation.Valid;
@@ -36,7 +37,8 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/house")
 public class HouseController {
-
+    @Autowired
+    HouseRepository houseRepository;
     @Autowired
     private HouseService houseService;
 
@@ -342,6 +344,25 @@ public class HouseController {
         }
     }
 
+    @GetMapping("/search")
+    public String searchHouses(@RequestParam(required = false) String propertyName,
+                               @RequestParam(required = false) String status,
+                               Model model,Authentication authentication) {
+        List<House> houses;
+        String username = authentication.getName();  // Lấy tên người dùng từ Authentication
+        User user = userService.getUserByUsername(username);
+        model.addAttribute("user", user);
+        if (propertyName != null && !propertyName.isEmpty()) {
+            houses = houseService.searchHousesByName(propertyName);
+        } else if (status != null) {
+            houses = houseService.searchHousesByStatus(House.Status.valueOf(status.toLowerCase()));
+        } else {
+            houses = houseRepository.findAll();
+        }
+
+        model.addAttribute("houses", houses);
+        return "house/search";  // Template mới sẽ được sử dụng tại đây
+    }
 
 
 
