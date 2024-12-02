@@ -83,4 +83,5 @@ public class HouseService {
     public List<HouseImage> getImagesByHouseId(Integer houseId) {
         return houseImageRepository.findByHouseId(houseId);
     }
+
 }
