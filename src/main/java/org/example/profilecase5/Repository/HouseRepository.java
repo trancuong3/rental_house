@@ -10,11 +10,6 @@ import java.util.Optional;
 @Repository
 public interface HouseRepository extends JpaRepository<House, Integer> {
     List<House> findByUser_UserId(int userId);
-<<<<<<< HEAD
-    List<House> findTop5ByOrderByRentalCountDesc();
-
-=======
 
     Optional<House> findById(Integer id);
->>>>>>> 67356983602746b5267b36784cd2a10abd6ddef0
 }

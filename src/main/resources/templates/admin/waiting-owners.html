@@ -18,14 +18,14 @@
             <h4>Admin Panel</h4>
         </div>
         <div class="list-group list-group-flush">
-            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+            <a href="/admin" class="list-group-item list-group-item-action bg-dark text-white">
                 <i class="fas fa-users"></i> Quản lý User
             </a>
             <a href="/admin/waiting-owners" class="list-group-item list-group-item-action bg-dark text-white">
                 <i class="fas fa-box-open"></i> Danh sách duyệt chủ nhà
             </a>
-            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
-                <i class="fas fa-user-tie"></i> #
+            <a href="/admin/owners" class="list-group-item list-group-item-action bg-dark text-white">
+                <i class="fas fa-user-tie"></i> Danh sách chủ nhà
             </a>
             <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
                 <i class="fas fa-file-invoice"></i> #
@@ -36,6 +36,7 @@
             <a href="/perform_logout" class="list-group-item list-group-item-action bg-dark text-white">
                 <i class="fas fa-sign-out-alt"></i> Đăng xuất
             </a>
+
         </div>
     </div>
 
@@ -60,11 +61,14 @@
                     <td th:text="${owner.address}"></td>
                     <td>
                         <form th:action="@{'/admin/waiting-owners/accept/' + ${owner.userId}}" method="post" style="display:inline;">
-                            <button class="btn btn-success btn-sm">Chấp nhận</button>
+                            <button class="btn btn-success btn-sm">Accept</button>
                         </form>
-                        <form th:action="@{'/admin/waiting-owners/refuse/' + ${owner.userId}}" method="post" style="display:inline;">
-                            <button class="btn btn-danger btn-sm">Từ chối</button>
-                        </form>
+                        <a th:href="@{'/admin/waiting-owners/refuse/' + ${owner.userId}}"
+                           class="btn btn-danger btn-sm"
+                           style="display:inline;">
+                            Refuse
+                        </a>
+
                     </td>
                 </tr>
                 </tbody>

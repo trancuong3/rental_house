@@ -1,14 +1,13 @@
-package org.example.profilecase5.Controller.admin;
+package org.example.profilecase5.Controller;
 
 
-import org.example.profilecase5.Model.House;
 import org.example.profilecase5.Model.RentalHistory;
 import org.example.profilecase5.Model.User;
 import org.example.profilecase5.Model.WaitingOwner;
-import org.example.profilecase5.Service.HouseService;
 import org.example.profilecase5.Service.UserService;
 import org.example.profilecase5.Service.WaitingOwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +21,6 @@ public class AdminController {
     @Autowired
     private UserService userService;
     @Autowired
-    private HouseService houseService;
-    @Autowired
     private WaitingOwnerService waitingOwnerService;
     @GetMapping()
     public String getUsers(Model model) {
@@ -34,10 +31,9 @@ public class AdminController {
 
     @PostMapping("/toggleStatus/{userId}")
     public String toggleStatus(@PathVariable int userId) {
-        userService.toggleUserStatus(userId);  // Toggle user status
-        return "redirect:/admin";  // Redirect to admin page
+        userService.toggleUserStatus(userId);
+        return "redirect:/admin";
     }
-
 //    @GetMapping
 //    public String getUsers(@RequestParam(defaultValue = "0") int page, Model model) {
 //        Page<User> usersPage = userService.getUsersWithPagination(page, 10);
@@ -67,21 +63,6 @@ public class AdminController {
 
         return "admin/userDetail";  // Tên file Thymeleaf
     }
-    @GetMapping("/house")
-    public String house(Model model) {
-        // Lấy danh sách tất cả nhà
-        List<House> house = houseService.getAllHouses();
-
-        // Lấy top 5 căn nhà có nhiều lượt thuê nhất
-        List<House> topHouses = houseService.getTop5MostRentedHouses();
-
-        // Thêm danh sách nhà và top 5 vào model
-        model.addAttribute("house", house);          // Danh sách tất cả nhà
-        model.addAttribute("topHouses", topHouses);  // Top 5 căn nhà có nhiều lượt thuê nhất
-
-        return "admin/house";
-    }
-
 
     @GetMapping("/waiting-owners")
     public String showWaitingOwners(Model model) {
@@ -100,7 +81,7 @@ public class AdminController {
         return "redirect:/admin/waiting-owners";
     }
     // Refuse waiting owner
-    @PostMapping("/waiting-owners/refuse/{id}")
+    @GetMapping("/waiting-owners/refuse/{id}")
     public String refuseOwner(@PathVariable("id") int id) {
         waitingOwnerService.refuseWaitingOwner(id);
         return "redirect:/admin/waiting-owners";

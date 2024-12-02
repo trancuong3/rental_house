@@ -19,7 +19,7 @@
             <h4>Admin Panel</h4>
         </div>
         <div class="list-group list-group-flush">
-            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+            <a href="/admin" class="list-group-item list-group-item-action bg-dark text-white">
                 <i class="fas fa-users"></i> Quản lý User
             </a>
             <a href="/admin/waiting-owners" class="list-group-item list-group-item-action bg-dark text-white">
@@ -74,15 +74,15 @@
                     <td th:text="${owner.phone}"></td>
                     <td th:text="${owner.email}"></td>
                     <td>
-                        <span th:if="${owner.status.name() == 'ACTIVE'}" class="badge badge-success">Đang hoạt động</span>
-                        <span th:if="${owner.status.name() == 'LOCKED'}" class="badge badge-danger">Khóa</span>
+                        <span th:if="${owner.status.name() == 'Active'}" class="badge badge-success">Đang hoạt động</span>
+                        <span th:if="${owner.status.name() == 'Locked'}" class="badge badge-danger">Khóa</span>
                     </td>
                     <td>
-                        <form th:action="@{'/admin/owners/toggleStatus/' + ${owner.userId}}" method="post">
+                        <form th:action="@{'/admin/users/toggleStatus/' + ${owner.userId}}" method="post">
                             <button type="submit" class="btn btn-sm"
-                                    th:classappend="${owner.status.name() == 'ACTIVE' ? 'btn-danger' : 'btn-success'}"
-                                    th:text="${owner.status.name() == 'ACTIVE' ? 'Khóa' : 'Mở khóa'}">
-                                <i th:classappend="${owner.status.name() == 'ACTIVE' ? 'fas fa-lock' : 'fas fa-unlock'}"></i>
+                                    th:classappend="${owner.status.name() == 'Active' ? 'btn-danger' : 'btn-success'}"
+                                    th:text="${owner.status.name() == 'Active' ? 'Khóa' : 'Mở khóa'}">
+                                <i th:classappend="${owner.status.name() == 'Active' ? 'fas fa-lock' : 'fas fa-unlock'}"></i>
                             </button>
                         </form>
                     </td>

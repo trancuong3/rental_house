@@ -1,4 +1,4 @@
-package org.example.profilecase5.Controller.profile_account;
+package org.example.profilecase5.Controller;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

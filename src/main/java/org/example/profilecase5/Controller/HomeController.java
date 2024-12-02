@@ -1,4 +1,4 @@
-package org.example.profilecase5.Controller.home;
+package org.example.profilecase5.Controller;
 
 import org.example.profilecase5.Model.House;
 import org.example.profilecase5.Model.HouseImage;
@@ -50,7 +50,7 @@ public class HomeController {
     }
 
     @GetMapping("/detail/{id}")
-    public String showDetail(@PathVariable("id") Integer id, Model model) {
+    public String showDetail(@PathVariable("id") Integer id, Model model, Authentication authentication) {
         House house = houseService.getHouseById(id);
         List<HouseImage> images = houseService.getImagesByHouseId(id);
 
@@ -59,6 +59,5 @@ public class HomeController {
 
         return "detail/detail";
     }
-
 
 }

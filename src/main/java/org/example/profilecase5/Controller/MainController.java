@@ -1,7 +1,8 @@
-package org.example.profilecase5.Controller.home;
+package org.example.profilecase5.Controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 
@@ -12,7 +13,6 @@ public class MainController {
     public String home() {
         return "hosting";
     }
-
 
     @RequestMapping("/user")
     public Principal user(Principal user) {

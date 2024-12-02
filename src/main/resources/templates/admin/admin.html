@@ -18,13 +18,11 @@
             <h4>Admin Panel</h4>
         </div>
         <div class="list-group list-group-flush">
-            <a href="/admin" class="list-group-item list-group-item-action bg-dark text-white">
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
                 <i class="fas fa-users"></i> Quản lý User
             </a>
             <a href="/admin/waiting-owners" class="list-group-item list-group-item-action bg-dark text-white">
                 <i class="fas fa-box-open"></i> Danh sách duyệt chủ nhà
-            <a href="/house" class="list-group-item list-group-item-action bg-dark text-white">
-                <i class="fas fa-box-open"></i> Quản Lý Nhà Cho Thuê
             </a>
             <a href="/admin/owners" class="list-group-item list-group-item-action bg-dark text-white">
                 <i class="fas fa-user-tie"></i> Danh sách chủ nhà
@@ -66,15 +64,14 @@
                 </tr>
                 </thead>
                 <tbody>
-
-                <tbody>
+                <!-- Loop through the list of users and display each user's data -->
                 <tr th:each="user : ${user}">
                     <td>
                         <a th:href="@{'/admin/detail/' + ${user.userId}}" th:text="${user.fullname}"></a>
                     </td>
                     <td th:text="${user.phone}"></td>
                     <td>
-                        <span th:if="${user.status.name() == 'Active'}" class="badge badge-success">Đang hoạt động</span>
+                        <span th:if="${user.status.name() == 'Active'}" class="badge badge-success ">Đang hoạt động</span>
                         <span th:if="${user.status.name() == 'Locked'}" class="badge badge-danger">Khóa</span>
                     </td>
                     <td>
@@ -88,9 +85,6 @@
                     </td>
                 </tr>
                 </tbody>
-
-                </tbody>
-
             </table>
         </div>
     </div>

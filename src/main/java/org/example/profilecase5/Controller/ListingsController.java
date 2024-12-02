@@ -1,4 +1,4 @@
-package org.example.profilecase5.Controller.hosting;
+package org.example.profilecase5.Controller;
 
 import org.example.profilecase5.Model.House;
 import org.example.profilecase5.Model.User;

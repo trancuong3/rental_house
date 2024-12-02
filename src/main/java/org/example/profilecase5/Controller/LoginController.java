@@ -1,4 +1,4 @@
-package org.example.profilecase5.Controller.login;
+package org.example.profilecase5.Controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

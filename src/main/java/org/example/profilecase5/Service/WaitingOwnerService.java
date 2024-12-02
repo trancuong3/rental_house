@@ -1,5 +1,6 @@
 package org.example.profilecase5.Service;
 
+import jakarta.transaction.Transactional;
 import org.example.profilecase5.Exception.User.EmailAlreadyExistsException;
 import org.example.profilecase5.Exception.User.PasswordValidationException;
 import org.example.profilecase5.Exception.User.UsernameAlreadyExistsException;
@@ -85,14 +86,11 @@ public class WaitingOwnerService extends UserService{
         waitingOwnerRepository.delete(waitingOwner);
     }
 
-
-
-
+    @Transactional
     public void refuseWaitingOwner(int userId) {
-        WaitingOwner owner = waitingOwnerRepository.findById(userId)
+        waitingOwnerRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("WaitingOwner không tồn tại"));
-        waitingOwnerRepository.delete(owner);
+        waitingOwnerRepository.deleteByUserId(userId);
     }
-
 
 }
