@@ -24,6 +24,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'javax.servlet:jstl:1.2' // Thêm JSTL tại đây
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final' // Hibernate Validator
     implementation 'jakarta.validation:jakarta.validation-api:3.0.2'

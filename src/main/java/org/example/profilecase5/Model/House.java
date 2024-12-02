@@ -67,7 +67,7 @@ public class House {
 
     // Enum for Status
     public enum Status {
-        available, rented
+        AVAILABLE,available ,RENTED  , rented, CLOSED
         , closed
     }
 

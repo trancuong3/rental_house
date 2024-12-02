@@ -21,7 +21,8 @@
             <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
             <p><strong>Số Điện Thoại:</strong> <span th:text="${user.phone}"></span></p>
             <p><strong>Trạng Thái:</strong>
-                <span th:text="${user.status == 'Active' ? 'Đang hoạt động' : 'Khóa'}"></span>
+                <span th:if="${user.status.name() == 'Active'}" class="badge badge-success">Đang hoạt động</span>
+                <span th:if="${user.status.name() == 'Locked'}" class="badge badge-danger">Khóa</span>
             </p>
             <p><strong>Tổng tiền đã chi tiêu:</strong> <span th:text="${totalSpent}"></span> VND</p>
         </div>

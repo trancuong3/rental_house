@@ -8,6 +8,7 @@ import org.example.profilecase5.Model.Role;
 import org.example.profilecase5.Model.User;
 import org.example.profilecase5.Repository.RoleRepository;
 import org.example.profilecase5.Repository.UserRepository;
+import org.example.profilecase5.Repository.WaitingOwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,9 +28,9 @@ import java.util.Set;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final RoleRepository roleRepository;
+    protected final UserRepository userRepository;
+    protected final PasswordEncoder passwordEncoder;
+    protected final RoleRepository roleRepository;
 
     // Constructor injection
     @Autowired
@@ -150,6 +151,10 @@ public class UserService {
         }
 
         // Kiểm tra mật khẩu xác nhận
+        if (user.getConfirmPassword() == null || user.getConfirmPassword().isEmpty()) {
+            throw new PasswordValidationException("Xác nhận mật khẩu không được để trống");
+        }
+
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             throw new PasswordValidationException("Mật khẩu xác nhận không khớp");
         }
@@ -203,6 +208,10 @@ public class UserService {
         user.setRole(userRole);
         userRepository.save(user);
         encryptAllPasswords();
+    }
+
+    public List<User> getAllOwners() {
+        return userRepository.findAllOwners();
     }
 
     @Transactional(readOnly = true)
