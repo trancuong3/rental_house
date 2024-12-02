@@ -52,9 +52,20 @@ public class HomeController {
         return "home/home"; // Đảm bảo sử dụng đúng tên của file HTML
     }
     @GetMapping("/detail/{id}")
-    public String showDetail(@PathVariable("id") Integer id, Model model, Authentication authentication) {
+    public String showDetail(@PathVariable("id") Integer id, Model model,Authentication authentication) {
         House house = houseService.getHouseById(id);
         List<HouseImage> images = houseService.getImagesByHouseId(id);
+        String username = authentication.getName();  // Lấy username của người dùng hiện tại
+        User user = userService.getUserByUsername(username);
+        // Kiểm tra nếu người dùng tồn tại
+        if (user != null) {
+            model.addAttribute("user", user);  // Truyền người dùng vào model
+            List<House> houses = houseService.getHousesByUserId(user.getUserId());  // Lấy danh sách nhà của người dùng
+            model.addAttribute("houses", houses);
+        } else {
+            model.addAttribute("error", "User not found");
+        }
+
 
         model.addAttribute("house", house);
         model.addAttribute("images", images);

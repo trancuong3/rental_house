@@ -122,7 +122,8 @@ public class RentalController {
             rental.setEndDate(Timestamp.valueOf(endDate));
             rental.setTotalCost(totalCost);
             rental.setHouse(house);
-            rental.setUser(currentUser); // Lưu thông tin người dùng vào rental history
+            rental.setUser(currentUser);
+            rental.setStatus(RentalHistory.RentalStatus.Checked_in);
             rentalHistoryService.save(rental);
 
             model.addAttribute("successMessage", "Thuê căn nhà thành công!");
