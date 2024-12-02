@@ -29,7 +29,17 @@ public class RentalHistory {
     @Column(name = "total_cost", nullable = false)
     private double totalCost;
 
-    // Getters and Setters
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, columnDefinition = "ENUM('Pending', 'Checked_in', 'Checked_out', 'Cancelled') DEFAULT 'Pending'")
+    private RentalStatus status;
+
+    public enum RentalStatus {
+        Pending,
+        Checked_in,
+        Checked_out,
+        Cancelled
+    }
+
     public int getRentalId() {
         return rentalId;
     }
@@ -76,5 +86,13 @@ public class RentalHistory {
 
     public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
+    }
+
+    public RentalStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(RentalStatus status) {
+        this.status = status;
     }
 }

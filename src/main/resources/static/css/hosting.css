@@ -125,8 +125,13 @@
 .card-text {
     font-weight: bold; /* In đậm văn bản */
     text-align: center; /* Căn giữa văn bản */
-    font-size: 14px; /* Điều chỉnh kích thước chữ */
+    font-size: 18px; /* Điều chỉnh kích thước chữ */
 }
+.card-title {
+     font-weight: bold; /* In đậm văn bản */
+     text-align: center; /* Căn giữa văn bản */
+     font-size: 28px; /* Điều chỉnh kích thước chữ */
+ }
 
 .card img {
     height: 150px; /* Đặt chiều cao cố định cho ảnh */
