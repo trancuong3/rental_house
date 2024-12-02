@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface RentalHistoryRepository extends JpaRepository<RentalHistory, Integer> {
+    RentalHistory findByRentalId(int rentalId);
     List<RentalHistory> findByHouse_HouseId(int houseId);
 }
