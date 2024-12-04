@@ -56,7 +56,16 @@ public class House {
     @Digits(integer = 10, fraction = 2, message = "Giá tiền không hợp lệ")
     private BigDecimal pricePerDay; // Giá tiền theo ngày
 
-    
+    @Column(name = "rental_count", nullable = false)
+    private int rentalCount = 0; // Giá trị mặc định
+    public int getRentalCount() {
+        return rentalCount;
+    }
+
+    public void setRentalCount(int rentalCount) {
+        this.rentalCount = rentalCount;
+    }
+
     @OneToMany(mappedBy = "house", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HouseImage> houseImages = new ArrayList<>();
 

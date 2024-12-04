@@ -1,9 +1,11 @@
 package org.example.profilecase5.Controller;
 
 
+import org.example.profilecase5.Model.House;
 import org.example.profilecase5.Model.RentalHistory;
 import org.example.profilecase5.Model.User;
 import org.example.profilecase5.Model.WaitingOwner;
+import org.example.profilecase5.Service.HouseService;
 import org.example.profilecase5.Service.UserService;
 import org.example.profilecase5.Service.WaitingOwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ import java.util.Set;
 public class AdminController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private HouseService houseService;
     @Autowired
     private WaitingOwnerService waitingOwnerService;
     @GetMapping()
@@ -63,6 +67,21 @@ public class AdminController {
 
         return "admin/userDetail";  // Tên file Thymeleaf
     }
+    @GetMapping("/house")
+    public String house(Model model) {
+        // Lấy danh sách tất cả nhà
+        List<House> house = houseService.getAllHouses();
+
+        // Lấy top 5 căn nhà có nhiều lượt thuê nhất
+        List<House> topHouses = houseService.getTop5MostRentedHouses();
+
+        // Thêm danh sách nhà và top 5 vào model
+        model.addAttribute("house", house);
+        model.addAttribute("topHouses", topHouses);
+
+        return "admin/house";
+    }
+
 
     @GetMapping("/waiting-owners")
     public String showWaitingOwners(Model model) {

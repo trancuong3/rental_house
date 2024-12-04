@@ -5,54 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi Tiết Người Dùng</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        #sidebar-wrapper {
+            min-height: 100vh;
+            width: 250px;
+        }
+        .container {
+            margin-left: 270px;
+        }
+        .card img {
+            object-fit: cover;
+        }
+        table {
+            background-color: white;
+        }
+    </style>
 </head>
 <body>
-<div class="container mt-5">
-    <h2>Thông Tin Chi Tiết Người Dùng</h2>
-    <div class="card mt-4">
-        <div class="card-header text-center">
-
-            <img th:src="${user.avatar != null && user.avatar != '' ? 'data:image/jpeg;base64,' + user.avatar : '/images/img_2.png'}" alt="Avatar"class="rounded-circle" width="150">
-
+<div class="d-flex">
+    <!-- Sidebar -->
+    <div class="bg-dark text-white" id="sidebar-wrapper">
+        <div class="sidebar-heading text-center py-4">
+            <img src="https://i.pinimg.com/736x/3f/8c/f9/3f8cf9bba87c5a0ea870af088da6bf8d.jpg"
+                 class="rounded-circle w-50 mb-3" alt="Admin Image">
+            <h4>Admin Panel</h4>
         </div>
-        <div class="card-body">
-            <h4 class="card-title" th:text="${user.fullname}"></h4>
-            <p><strong>Username:</strong> <span th:text="${user.username}"></span></p>
-            <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
-            <p><strong>Số Điện Thoại:</strong> <span th:text="${user.phone}"></span></p>
-            <p><strong>Trạng Thái:</strong>
-                <span th:if="${user.status.name() == 'Active'}" class="badge badge-success">Đang hoạt động</span>
-                <span th:if="${user.status.name() == 'Locked'}" class="badge badge-danger">Khóa</span>
-            </p>
-            <p><strong>Tổng tiền đã chi tiêu:</strong> <span th:text="${totalSpent}"></span> VND</p>
-        </div>
-        <div class="card-footer text-center">
-            <a href="/admin" class="btn btn-secondary">Quay Lại</a>
+        <div class="list-group list-group-flush">
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                <i class="fas fa-users"></i> Quản lý User
+            </a>
+            <a href="/admin/waiting-owners" class="list-group-item list-group-item-action bg-dark text-white">
+                <i class="fas fa-box-open"></i> Danh sách duyệt chủ nhà
+            </a>
+            <a href="/admin/owners" class="list-group-item list-group-item-action bg-dark text-white">
+                <i class="fas fa-user-tie"></i> Danh sách chủ nhà
+            </a>
+            <a href="/admin/house" class="list-group-item list-group-item-action bg-dark text-white">
+                <i class="fas fa-file-invoice"></i> Quản Lý Nhà
+            </a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                <i class="fas fa-chart-bar"></i> #
+            </a>
+            <a href="/perform_logout" class="list-group-item list-group-item-action bg-dark text-white">
+                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+            </a>
         </div>
     </div>
 
-    <h3 class="mt-5">Lịch Sử Thuê Nhà</h3>
-    <table class="table table-striped mt-3">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>Nhà</th>
-            <th>Ngày Bắt Đầu</th>
-            <th>Ngày Kết Thúc</th>
-            <th>Tổng Chi Phí</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="history, iterStat : ${rentalHistories}">
-            <td th:text="${iterStat.index + 1}"></td>
-            <td th:text="${history.house.propertyName}"></td>
-            <td th:text="${#dates.format(history.startDate, 'yyyy-MM-dd')}"></td>
-            <td th:text="${#dates.format(history.endDate, 'yyyy-MM-dd')}"></td>
-            <td th:text="${history.totalCost}"></td>
-        </tr>
-        </tbody>
-    </table>
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <h2>Thông Tin Chi Tiết Người Dùng</h2>
+        <div class="card mt-4 shadow-sm">
+            <div class="card-header text-center bg-light">
+                <img th:src="${user.avatar != null && user.avatar != '' ? 'data:image/jpeg;base64,' + user.avatar : '/images/img_2.png'}"
+                     alt="Avatar" class="rounded-circle" width="150" height="150">
+            </div>
+            <div class="card-body">
+                <h4 class="card-title text-center" th:text="${user.fullname}"></h4>
+                <p><strong>Username:</strong> <span th:text="${user.username}"></span></p>
+                <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+                <p><strong>Số Điện Thoại:</strong> <span th:text="${user.phone}"></span></p>
+                <p><strong>Trạng Thái:</strong>
+                    <span th:if="${user.status.name() == 'Active'}" class="badge badge-success">Đang hoạt động</span>
+                    <span th:if="${user.status.name() == 'Locked'}" class="badge badge-danger">Khóa</span>
+                </p>
+                <p><strong>Tổng tiền đã chi tiêu:</strong> <span th:text="${totalSpent}"></span> VND</p>
+            </div>
+            <div class="card-footer text-center bg-light">
+                <a href="/admin" class="btn btn-secondary">Quay Lại</a>
+            </div>
+        </div>
+
+        <h3 class="mt-5">Lịch Sử Thuê Nhà</h3>
+        <table class="table table-striped mt-3 shadow-sm">
+            <thead class="thead-dark">
+            <tr>
+                <th>#</th>
+                <th>Nhà</th>
+                <th>Ngày Bắt Đầu</th>
+                <th>Ngày Kết Thúc</th>
+                <th>Tổng Chi Phí</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="history, iterStat : ${rentalHistories}">
+                <td th:text="${iterStat.index + 1}"></td>
+                <td th:text="${history.house.propertyName}"></td>
+                <td th:text="${#dates.format(history.startDate, 'yyyy-MM-dd')}"></td>
+                <td th:text="${#dates.format(history.endDate, 'yyyy-MM-dd')}"></td>
+                <td th:text="${history.totalCost}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

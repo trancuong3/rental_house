@@ -76,6 +76,14 @@ public class HouseService {
     public List<House> searchHousesByName(String propertyName) {
         return houseRepository.findByPropertyNameContainingIgnoreCase(propertyName);
     }
+    public List<House> getAllHouses() {
+        return houseRepository.findAll();
+    }
+    public List<House> getTop5MostRentedHouses() {
+        return houseRepository.findTop5ByOrderByRentalCountDesc();
+    }
+
+
 
     public List<House> searchHousesByStatus(House.Status status) {
         return houseRepository.findByStatus(status);
