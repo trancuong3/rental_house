@@ -44,6 +44,25 @@ public class RentalHistoryController {
         RentalHistory rentalHistory = rentalHistoryService.getRentalHistoryById(id);
         model.addAttribute("rentalHistory", rentalHistory);
         return "hosting/rentalHistory/detailRentalHistory";
+    }
 
+    @GetMapping("/check-in/{id}")
+    public String checkIn(@PathVariable int id) {
+        RentalHistory rentalHistory = rentalHistoryService.getRentalHistoryById(id);
+        rentalHistoryService.checkIn(rentalHistory);
+        return "redirect:/hosting/rental-history";
+    }
+
+    @GetMapping("/check-out/{id}")
+    public String checkOut(@PathVariable int id) {
+        RentalHistory rentalHistory = rentalHistoryService.getRentalHistoryById(id);
+        rentalHistoryService.checkOut(rentalHistory);
+        return "redirect:/hosting/rental-history";
+    }
+    @GetMapping("/cancel/{id}")
+    public String cancel(@PathVariable int id) {
+        RentalHistory rentalHistory = rentalHistoryService.getRentalHistoryById(id);
+        rentalHistoryService.cancel(rentalHistory);
+        return "redirect:/hosting/rental-history";
     }
 }

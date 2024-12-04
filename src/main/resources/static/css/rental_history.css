@@ -1,0 +1,56 @@
+.status {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 50px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+}
+
+.status.pending {
+    background-color: #ffc107;
+}
+
+.status.checked-in {
+    background-color: #28a745;
+}
+
+.status.checked-out {
+    background-color: #007bff;
+}
+
+.status.cancelled {
+    background-color: #dc3545;
+}
+
+.action-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    color: white;
+    margin-right: 0.5rem;
+    transition: background-color 0.3s;
+}
+
+.action-btn.check-in-btn {
+    background-color: #28a745;
+}
+
+.action-btn.check-out-btn {
+    background-color: #007bff;
+}
+
+.action-btn.review-btn {
+    background-color: #17a2b8;
+}
+
+.action-btn.view-details-btn {
+    background-color: #6c757d;
+}
+
+.action-btn:hover {
+    opacity: 0.9;
+}

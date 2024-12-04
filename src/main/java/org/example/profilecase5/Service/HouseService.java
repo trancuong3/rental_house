@@ -82,9 +82,6 @@ public class HouseService {
     public List<House> getTop5MostRentedHouses() {
         return houseRepository.findTop5ByOrderByRentalCountDesc();
     }
-
-
-
     public List<House> searchHousesByStatus(House.Status status) {
         return houseRepository.findByStatus(status);
     }

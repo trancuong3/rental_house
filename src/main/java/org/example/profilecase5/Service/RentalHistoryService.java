@@ -29,4 +29,23 @@ public class RentalHistoryService {
     public void save(RentalHistory rentalHistory) {
         rentalHistoryRepository.save(rentalHistory);
     }
+
+    public void checkIn(RentalHistory rentalHistory) {
+        rentalHistory.setStatus(RentalHistory.RentalStatus.Checked_in);
+        rentalHistoryRepository.save(rentalHistory);
+    }
+
+    public void checkOut(RentalHistory rentalHistory) {
+        rentalHistory.setStatus(RentalHistory.RentalStatus.Checked_out);
+        rentalHistoryRepository.save(rentalHistory);
+    }
+
+    public void cancel(RentalHistory rentalHistory) {
+        rentalHistory.setStatus(RentalHistory.RentalStatus.Cancelled);
+        rentalHistoryRepository.save(rentalHistory);
+    }
+    public void book (RentalHistory rentalHistory) {
+        rentalHistory.setStatus(RentalHistory.RentalStatus.Pending);
+        rentalHistoryRepository.save(rentalHistory);
+    }
 }

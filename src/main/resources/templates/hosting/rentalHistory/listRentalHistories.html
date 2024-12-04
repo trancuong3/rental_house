@@ -6,13 +6,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="/css/hosting.css">
-    <style>
-        .btn:focus, .btn:hover {
-            background-color: inherit; /* Xóa màu nền khi hover */
-            border-color: inherit; /* Xóa border khi hover */
-            color: inherit; /* Giữ màu chữ khi hover */
-        }
-    </style>
+    <link rel="stylesheet" href="/css/rental_history.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -96,6 +90,7 @@
             <th>Ngày trả phòng</th>
             <th>Số tiền</th>
             <th>Trạng thái</th>
+            <th>Hành động</th>
         </tr>
         </thead>
         <tbody>
@@ -107,10 +102,24 @@
             <td th:text="${#temporals.format(rental.endDate.toLocalDateTime(), 'dd/MM/yyyy HH:mm')}"></td>
             <td th:text="${rental.totalCost}"></td>
             <td>
-                <span th:if="${rental.status.name() == 'Pending'}" class="btn btn-warning"  aria-disabled="true">Chờ xử lý</span>
-                <span th:if="${rental.status.name() == 'Checked_in'}" class="btn btn-success" aria-disabled="true">Đã nhận phòng</span>
-                <span th:if="${rental.status.name() == 'Checked_out'}" class="btn btn-primary" aria-disabled="true">Đã trả phòng</span>
-                <span th:if="${rental.status.name() == 'Cancelled'}" class="btn btn-danger " aria-disabled="true">Đã hủy</span>
+                <span th:if="${rental.status.name() == 'Pending'}" class="status pending">Chờ xử lý</span>
+                <span th:if="${rental.status.name() == 'Checked_in'}" class="status checked-in">Đã nhận phòng</span>
+                <span th:if="${rental.status.name() == 'Checked_out'}" class="status checked-out">Đã trả phòng</span>
+                <span th:if="${rental.status.name() == 'Cancelled'}" class="status cancelled">Đã hủy</span>
+            </td>
+            <td>
+                <a th:if="${rental.status.name() == 'Pending'}"
+                   th:href="@{/hosting/rental-history/check-in/{id}(id=${rental.rentalId})}"
+                   class="action-btn check-in-btn">
+                    Check-in
+                </a>
+
+                <a th:if="${rental.status.name() == 'Checked_in'}"
+                   th:href="@{/hosting/rental-history/check-out/{id}(id=${rental.rentalId})}"
+                   class="action-btn check-out-btn">
+                    Check-out
+                </a>
+
             </td>
         </tr>
         </tbody>
