@@ -13,6 +13,7 @@ public interface HouseRepository extends JpaRepository<House, Integer> {
     Optional<House> findByHouseId(int houseId);
     Optional<House> findById(Integer id);
 
+    List<House> findTop5ByOrderByRentalCountDesc();
     List<House> findByPropertyNameContainingIgnoreCase(String propertyName);
     List<House> findByStatus(House.Status status);
 }
