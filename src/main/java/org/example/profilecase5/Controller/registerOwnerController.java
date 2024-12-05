@@ -2,6 +2,7 @@ package org.example.profilecase5.Controller;
 
 import org.example.profilecase5.Exception.User.EmailAlreadyExistsException;
 import org.example.profilecase5.Exception.User.PasswordValidationException;
+import org.example.profilecase5.Exception.User.PhoneAlreadyExistsException;
 import org.example.profilecase5.Exception.User.UsernameAlreadyExistsException;
 import org.example.profilecase5.Model.User;
 
@@ -34,7 +35,8 @@ public class registerOwnerController {
 
         return "Owner/register";
     }
-    @PostMapping("")
+
+    @PostMapping
     public String registerOwnerUser(@Validated @ModelAttribute("user") WaitingOwner waitingOwner, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "Owner/register";
@@ -42,13 +44,16 @@ public class registerOwnerController {
         try {
             waitingOwnerService.addWaitingOwner(waitingOwner);
         } catch (UsernameAlreadyExistsException e) {
-            result.rejectValue("username", "error.username", e.getMessage());
+            result.rejectValue("username", "error.username", "Tên người dùng đã tồn tại.");
             return "Owner/register";
         } catch (EmailAlreadyExistsException e) {
-            result.rejectValue("email", "error.email", e.getMessage());
+            result.rejectValue("email", "error.email", "Email đã tồn tại.");
             return "Owner/register";
         } catch (PasswordValidationException e) {
-            result.rejectValue("password", "error.password", e.getMessage());
+            result.rejectValue("password", "error.password", "Mật khẩu không hợp lệ.");
+            return "Owner/register";
+        } catch (PhoneAlreadyExistsException e) {
+            result.rejectValue("phone", "error.phone", "Số điện thoại đã tồn tại.");
             return "Owner/register";
         }
         return "redirect:/login";

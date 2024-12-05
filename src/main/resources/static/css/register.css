@@ -104,3 +104,8 @@ body {
         width: 100%;
     }
 }
+.error-message {
+    font-size: 0.9em;
+    color: red;
+    margin-top: 5px;
+}

@@ -47,21 +47,21 @@
       <div class="input">
         <label for="username">Tên người dùng</label>
         <input type="text" id="username" name="username" th:field="*{username}" placeholder="Tên người dùng" required>
-        <span class="error-message text-danger" id="username_error"></span>
+        <span class="error-message text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
       </div>
 
       <!-- Email Field -->
       <div class="input">
         <label for="email">Email</label>
         <input type="email" id="email" name="email" th:field="*{email}" placeholder="Email" required>
-        <span class="error-message text-danger" id="email_error"></span>
+        <span class="error-message text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
       </div>
 
       <!-- Phone Field -->
       <div class="input">
         <label for="phone">Số điện thoại</label>
         <input type="tel" id="phone" name="phone" th:field="*{phone}" placeholder="Số điện thoại" required>
-        <span class="error-message text-danger" id="phone_error"></span>
+        <span class="error-message text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
       </div>
 
       <!-- Password Field -->
