@@ -134,8 +134,9 @@
         <div id="allHouses" class="card-container">
             <div th:each="house : ${house}">
                 <div class="card">
-                    <img th:src="${house.houseImages.size() > 0 ? house.houseImages[0].imageUrl : '/img/no-image.png'}" alt="House Image">
-                    <div class="p-3">
+                    <img th:src="${house.houseImages != null && house.houseImages.size() > 0
+                            ? 'data:image/jpeg;base64,' + house.houseImages[0].imageUrl
+                            : '/images/img_2.png'}" class="card-img-top" alt="House Image">                    <div class="p-3">
                         <h5 th:text="${house.propertyName}">Tên Nhà</h5>
                         <p th:text="'Giá: ' + ${house.pricePerDay} + ' VNĐ/ngày'">Giá: 0 VNĐ/ngày</p>
                     </div>
@@ -147,8 +148,9 @@
         <div id="topHouses" class="card-container d-none">
             <div th:each="house : ${topHouses}">
                 <div class="card">
-                    <img th:src="${house.houseImages.size() > 0 ? house.houseImages[0].imageUrl : '/img/no-image.png'}" alt="House Image">
-                    <div class="p-3">
+                    <img th:src="${house.houseImages != null && house.houseImages.size() > 0
+                            ? 'data:image/jpeg;base64,' + house.houseImages[0].imageUrl
+                            : '/images/img_2.png'}" class="card-img-top" alt="House Image">                      <div class="p-3">
                         <h5 th:text="${house.propertyName}">Tên Nhà</h5>
                         <p th:text="'Giá: ' + ${house.pricePerDay} + ' VNĐ/ngày'">Giá: 0 VNĐ/ngày</p>
                     </div>

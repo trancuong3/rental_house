@@ -21,36 +21,46 @@ import java.util.Set;
 @Controller
 @RequestMapping("/home")
 public class HomeController {
+
     @Autowired
     private UserService userService;
+
     @Autowired
     private HouseService houseService;
 
     @GetMapping("")
     public String getAccountPage(Model model, Authentication authentication) {
-        String username = authentication.getName();  // Lấy username của người dùng hiện tại
-        User user = userService.getUserByUsername(username);  // Tìm người dùng từ username
+        try {
+            String username = authentication.getName();
+            User user = userService.getUserByUsername(username);
 
-        if (user != null) {
+            if (user == null) {
+                model.addAttribute("errorMessage", "User not found");
+                model.addAttribute("exceptionDetails", "No user found for username: " + username);
+                return "error";  // Chuyển hướng đến trang lỗi nếu không tìm thấy người dùng
+            }
+
             model.addAttribute("user", user);
-        } else {
-            model.addAttribute("error", "User not found");
-            return "error";  // Nếu không tìm thấy người dùng
+
+            List<HouseImage> mainImages = houseService.getMainImages();
+            model.addAttribute("mainImages", mainImages);
+
+            return "home/home";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "An error occurred while loading the account page.");
+            model.addAttribute("exceptionDetails", getStackTrace(e));  // Thêm chi tiết lỗi vào Model
+            return "error";  // Chuyển hướng đến trang lỗi
         }
-
-        List<HouseImage> mainImages = houseService.getMainImages();
-        model.addAttribute("mainImages", mainImages);
-
-        // Dữ liệu banner
-        List<String> banners = List.of(
-                "/images/banner1.png",
-                "/images/banner2.png",
-                "/images/banner3.png"
-        );
-        model.addAttribute("banners", banners);
-
-        return "home/home"; // Đảm bảo sử dụng đúng tên của file HTML
     }
+
+    private String getStackTrace(Exception e) {
+        StringBuilder sb = new StringBuilder();
+        for (StackTraceElement element : e.getStackTrace()) {
+            sb.append(element.toString()).append("\n");
+        }
+        return sb.toString();
+    }
+
     @GetMapping("/detail/{id}")
     public String showDetail(@PathVariable("id") Integer id, Model model,Authentication authentication) {
         House house = houseService.getHouseById(id);
@@ -73,30 +83,29 @@ public class HomeController {
         return "detail/detail";
     }
 
-    @GetMapping("/detail")
+    @GetMapping("/history")
     public String userDetails(Model model) {
-        // Lấy thông tin người dùng từ SecurityContext
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName(); // Lấy tên đăng nhập của người dùng
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String currentUsername = authentication.getName();
 
-        // Tìm người dùng trong cơ sở dữ liệu dựa trên tên đăng nhập
-        User user = userService.getUserByUsername(currentUsername);
-        if (user == null) {
-            throw new RuntimeException("User not found with username: " + currentUsername);
+            User user = userService.getUserByUsername(currentUsername);
+            if (user == null) {
+                model.addAttribute("errorMessage", "User not found with username: " + currentUsername);
+                model.addAttribute("exceptionDetails", "Could not find user for username: " + currentUsername);
+                return "error"; // Nếu không tìm thấy người dùng, trả về trang lỗi
+            }
+
+            Set<RentalHistory> rentalHistories = user.getRentalHistories();
+            model.addAttribute("user", user);
+            model.addAttribute("rentalHistories", rentalHistories);
+            double totalSpent = rentalHistories.stream().mapToDouble(RentalHistory::getTotalCost).sum();
+            model.addAttribute("totalSpent", totalSpent);
+            return "home/history";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "An error occurred while loading the rental history.");
+            model.addAttribute("exceptionDetails", getStackTrace(e));  // Thêm chi tiết lỗi vào Model
+            return "error"; // Nếu có lỗi, trả về trang lỗi
         }
-
-        // Lấy danh sách lịch sử thuê nhà của người dùng
-        Set<RentalHistory> rentalHistories = user.getRentalHistories();
-
-        // Thêm thông tin vào model
-        model.addAttribute("user", user);
-        model.addAttribute("rentalHistories", rentalHistories);
-
-        // Tính tổng số tiền đã chi tiêu
-        double totalSpent = rentalHistories.stream().mapToDouble(RentalHistory::getTotalCost).sum();
-        model.addAttribute("totalSpent", totalSpent);
-
-        return "home/history";  // Tên file Thymeleaf
     }
-
 }

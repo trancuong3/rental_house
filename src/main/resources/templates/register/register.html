@@ -9,13 +9,12 @@
     <link rel="stylesheet" th:href="@{/css/register.css}">
 </head>
 <body>
-<!-- Navbar -->
-<!-- Navbar -->
+
 <!-- Navbar -->
 <nav class="navbar navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand"href="/main" >
-            <img  src="/images/avatar.jpg" alt="Logo" style="height: 40px;">
+        <a class="navbar-brand" href="/main">
+            <img src="/images/avatar.jpg" alt="Logo" style="height: 40px;">
             Airbnb
         </a>
         <div class="dropdown ml-2">
@@ -28,11 +27,8 @@
             </div>
             <a href="/login" class="btn btn-outline-primary ml-2">Đăng nhập</a>
         </div>
-
-        <!-- Login button, placed next to the registration buttons --></div>
+    </div>
 </nav>
-
-
 
 <!-- Registration Form Container -->
 <div class="materialContainer">
@@ -44,42 +40,42 @@
             <div class="input">
                 <label for="fullname">Họ và Tên</label>
                 <input type="text" id="fullname" name="fullname" th:field="*{fullname}" placeholder="Họ và tên" required>
-                <span class="error-message text-danger" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}"></span>
+                <span class="error-message text-danger" id="fullname_error"></span>
             </div>
 
             <!-- Username Field -->
             <div class="input">
                 <label for="username">Tên người dùng</label>
                 <input type="text" id="username" name="username" th:field="*{username}" placeholder="Tên người dùng" required>
-                <span class="error-message text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+                <span class="error-message text-danger" id="username_error"></span>
             </div>
 
             <!-- Email Field -->
             <div class="input">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" th:field="*{email}" placeholder="Email" required>
-                <span class="error-message text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                <span class="error-message text-danger" id="email_error"></span>
             </div>
 
             <!-- Phone Field -->
             <div class="input">
                 <label for="phone">Số điện thoại</label>
                 <input type="tel" id="phone" name="phone" th:field="*{phone}" placeholder="Số điện thoại" required>
-                <span class="error-message text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+                <span class="error-message text-danger" id="phone_error"></span>
             </div>
 
             <!-- Password Field -->
             <div class="input">
                 <label for="password">Mật khẩu</label>
                 <input type="password" id="password" name="password" th:field="*{password}" placeholder="Mật khẩu" minlength="6" maxlength="32" required>
-                <span class="error-message text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                <span class="error-message text-danger" id="password_error"></span>
             </div>
 
             <!-- Confirm Password Field -->
             <div class="input">
                 <label for="confirmPassword">Nhập lại mật khẩu</label>
                 <input type="password" name="confirmPassword" id="confirmPassword" th:field="*{confirmPassword}" placeholder="Xác nhận mật khẩu" required>
-                <span class="error-message text-danger" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></span>
+                <span class="error-message text-danger" id="confirmPassword_error"></span>
             </div>
 
             <!-- Address Field -->
@@ -105,5 +101,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script th:src="@{/js/register.js}"></script>
+<script src="register.js"></script>
 </body>
 </html>
