@@ -22,6 +22,11 @@ import java.util.List;
 public class WaitingOwnerService extends UserService{
     private final UserService userService;
     private final WaitingOwnerRepository waitingOwnerRepository;
+    public WaitingOwner findById(int id) {
+        return waitingOwnerRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Waiting owner not found with id: " + id));
+    }
+
 
     public WaitingOwnerService(UserRepository userRepository, PasswordEncoder passwordEncoder, WaitingOwnerRepository waitingOwnerRepository, RoleRepository roleRepository, @Qualifier("userService") UserService userService) {
         super(userRepository, passwordEncoder, roleRepository);
@@ -65,8 +70,7 @@ public class WaitingOwnerService extends UserService{
         return waitingOwnerRepository.findAll();
     }
     public void acceptWaitingOwner(int id) {
-        WaitingOwner waitingOwner = waitingOwnerRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Waiting owner not found"));
+        WaitingOwner waitingOwner = findById(id);
 
         User user = new User();
         user.setUsername(waitingOwner.getUsername());
@@ -83,8 +87,9 @@ public class WaitingOwnerService extends UserService{
         user.setRole(waitingOwner.getRole());
 
         userRepository.save(user);
-        waitingOwnerRepository.delete(waitingOwner);
+        waitingOwnerRepository.deleteById(id);
     }
+
 
     @Transactional
     public void refuseWaitingOwner(int userId) {
