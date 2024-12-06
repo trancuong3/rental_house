@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 import java.sql.Timestamp;
@@ -14,6 +16,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "User")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User  {
 
     @Id
@@ -29,14 +32,6 @@ public class User  {
     @NotEmpty(message = "Email không được để trống")
     @Email(message = "Email không hợp lệ")
     private String email;
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 
     @Column(name = "password", nullable = false)
     @NotEmpty(message = "Password không được để trống")
@@ -73,6 +68,10 @@ public class User  {
     @Column(name = "updated_at")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp updatedAt;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<RentalHistory> rentalHistories = new HashSet<>();
     public String getConfirmPassword() {
         return confirmPassword;
     }
@@ -173,8 +172,7 @@ public class User  {
         this.updatedAt = updatedAt;
     }
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<RentalHistory> rentalHistories = new HashSet<>();
+
 
     public Set<RentalHistory> getRentalHistories() {
         return rentalHistories;
@@ -182,5 +180,12 @@ public class User  {
 
     public void setRentalHistories(Set<RentalHistory> rentalHistories) {
         this.rentalHistories = rentalHistories;
+    }
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

@@ -3,6 +3,7 @@ package org.example.profilecase5.Model;
 import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "roles")
@@ -16,6 +17,7 @@ public class Role {
     private String roleName;
 
     @OneToMany(mappedBy = "role")
+    @JsonIgnore
     private Set<User> users = new HashSet<>();
 
     public Integer getRoleId() {

@@ -5,6 +5,7 @@ import org.example.profilecase5.Exception.User.PasswordValidationException;
 import org.example.profilecase5.Exception.User.UsernameAlreadyExistsException;
 import org.example.profilecase5.Model.User;
 import org.example.profilecase5.Service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,12 +16,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/register")
 public class RegistrationController {
 
-    private final UserService userService;
-
-    // Constructor injection
-    public RegistrationController(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    private UserService userService;
 
     @GetMapping
     public String showRegistrationForm(Model model) {

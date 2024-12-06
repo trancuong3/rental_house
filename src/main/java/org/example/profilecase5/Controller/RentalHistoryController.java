@@ -8,9 +8,11 @@ import org.example.profilecase5.Service.RentalHistoryService;
 import org.example.profilecase5.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -34,21 +36,33 @@ public class RentalHistoryController {
     private RentalHistoryService rentalHistoryService;
 
     @GetMapping
-    public String getAllRentalHistory(Model model, Authentication authentication) {
+    public String getAllRentalHistory(Authentication authentication,Model model) {
+        String username = authentication.getName();
+        User user = userService.getUserByUsername(username);
+        if (user != null) {
+            model.addAttribute("user", user);
+            return "hosting/rentalHistory/listRentalHistories";
+        } else {
+            return "redirect:/login";
+        }
+    }
+
+    @GetMapping("/api/data")
+    @ResponseBody
+    public ResponseEntity<?> getAllRentalHistoryData(Authentication authentication, 
+                                                     @RequestParam(name = "page", defaultValue = "0") int page,
+                                                     @RequestParam(name = "size", defaultValue = "10") int size) {
         String username = authentication.getName();
         User user = userService.getUserByUsername(username);
 
         if (user != null) {
-            model.addAttribute("user", user);
             List<House> houses = houseService.getHousesByUserId(user.getUserId());
-            List<RentalHistory> rentalHistories = rentalHistoryService.getRentalHistoriesByHouses(houses);
-            model.addAttribute("rentalHistories", rentalHistories);
+            Pageable pageable = PageRequest.of(page, size);
+            Page<RentalHistory> rentalHistoriesPage = rentalHistoryService.getRentalHistoriesByHouses(houses, pageable);
+            return ResponseEntity.ok(rentalHistoriesPage);
         } else {
-            model.addAttribute("error", "User not found");
-            return "redirect:/login";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
-
-        return "hosting/rentalHistory/listRentalHistories";
     }
 
     @GetMapping("/detail/{id}")
@@ -71,7 +85,7 @@ public class RentalHistoryController {
         rentalHistoryService.checkOut(rentalHistory);
         return "redirect:/hosting/rental-history";
     }
-
+    
     @GetMapping("/cancel/{id}")
     public String cancel(@PathVariable int id) {
         RentalHistory rentalHistory = rentalHistoryService.getRentalHistoryById(id);

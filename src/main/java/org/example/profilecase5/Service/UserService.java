@@ -33,7 +33,6 @@ public class UserService {
     protected final RoleRepository roleRepository;
 
     // Constructor injection
-    @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;

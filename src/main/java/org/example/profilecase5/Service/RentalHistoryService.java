@@ -62,4 +62,8 @@ public class RentalHistoryService {
     public List<RentalHistory> getRentalHistoriesByHouses(List<House> houses) {
         return rentalHistoryRepository.findByHouseIn(houses);
     }
+
+    public Page<RentalHistory> getRentalHistoriesByHouses(List<House> houses, Pageable pageable) {
+        return rentalHistoryRepository.findByHouseIn(houses, pageable);
+    }
 }

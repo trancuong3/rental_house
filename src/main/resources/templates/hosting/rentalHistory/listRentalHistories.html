@@ -82,6 +82,11 @@
 
 <div class="container mt-4">
     <h1 class="mb-4">Danh sách lịch sử cho thuê</h1>
+
+    <div class="form-group">
+        <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm">
+    </div>
+
     <table class="table table-bordered table-striped">
         <thead>
         <tr>
@@ -93,41 +98,27 @@
             <th>Hành động</th>
         </tr>
         </thead>
-        <tbody>
-        <tr th:each="rental: ${rentalHistories}">
-            <td>
-                <a th:href="@{/hosting/rental-history/detail/{id}(id=${rental.rentalId})}" class="btn btn-info btn-sm" th:text="${rental.user.fullname}"></a>
-            </td>
-            <td th:text="${#temporals.format(rental.startDate.toLocalDateTime(), 'dd/MM/yyyy HH:mm')}"></td>
-            <td th:text="${#temporals.format(rental.endDate.toLocalDateTime(), 'dd/MM/yyyy HH:mm')}"></td>
-            <td th:text="${rental.totalCost}"></td>
-            <td>
-                <span th:if="${rental.status.name() == 'Pending'}" class="status pending">Chờ xử lý</span>
-                <span th:if="${rental.status.name() == 'Checked_in'}" class="status checked-in">Đã nhận phòng</span>
-                <span th:if="${rental.status.name() == 'Checked_out'}" class="status checked-out">Đã trả phòng</span>
-                <span th:if="${rental.status.name() == 'Cancelled'}" class="status cancelled">Đã hủy</span>
-            </td>
-            <td>
-                <a th:if="${rental.status.name() == 'Pending'}"
-                   th:href="@{/hosting/rental-history/check-in/{id}(id=${rental.rentalId})}"
-                   class="action-btn check-in-btn">
-                    Check-in
-                </a>
-
-                <a th:if="${rental.status.name() == 'Checked_in'}"
-                   th:href="@{/hosting/rental-history/check-out/{id}(id=${rental.rentalId})}"
-                   class="action-btn check-out-btn">
-                    Check-out
-                </a>
-
-            </td>
-        </tr>
-        </tbody>
+        <tbody id="rentalHistoryTableBody"></tbody>
     </table>
+    <div class="d-flex justify-content-center">
+        <nav>
+            <ul id="pagination" class="pagination">
+                <li class="page-item">
+                    <a id="prevPage" class="page-link" href="#">Về trước</a>
+                </li>
+                <li class="page-item">
+                    <a id="nextPage" class="page-link" href="#">Về sau</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:src="@{/js/rentalHistory.js}"></script>
+
 </body>
 </html>

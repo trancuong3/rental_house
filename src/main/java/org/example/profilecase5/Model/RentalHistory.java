@@ -3,8 +3,11 @@ package org.example.profilecase5.Model;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "Rental_History")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class RentalHistory {
 
     @Id

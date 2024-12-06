@@ -16,6 +16,7 @@ public interface RentalHistoryRepository extends JpaRepository<RentalHistory, In
     RentalHistory findByRentalId(int rentalId);
     List<RentalHistory> findByHouseIn(List<House> houses);
     List<RentalHistory> findByHouse_HouseId(int houseId);
+    Page<RentalHistory> findByHouseIn(List<House> houses, Pageable pageable);
     @Query("SELECT rh FROM RentalHistory rh " +
             "JOIN rh.house h " +
             "WHERE (:propertyName IS NULL OR LOWER(h.propertyName) LIKE LOWER(CONCAT('%', :propertyName, '%'))) " +
