@@ -154,33 +154,35 @@
     </div>
 </nav>
 
-<div class="container mt-4">
-    <div class="header-content d-flex align-items-center justify-content-between">
-        <h4></h4>
-        <div class="action-buttons d-flex">
-            <button type="button" class="btn btn-secondary mr-2"><i class="fas fa-bars"></i></button>
-            <a href="/house/new" class="btn btn-primary">
-                <i class="fas fa-plus"></i>
-            </a>
-        </div>
+<h2 class="text-center mb-4">Danh sách Nhà/Phòng cho thuê</h2>
+<!-- Search Form -->
+<div class="d-flex justify-content-center align-items-center mb-4">
+    <div id="search-bar">
+        <form id="search-form" class="d-flex">
+            <input type="text" name="propertyName" id="search-name"
+                   class="form-control form-control-sm search-form-input mr-2"
+                   placeholder="Tìm theo tên" />
+            <select name="status" id="search-status"
+                    class="form-control form-control-sm search-form-select mr-2">
+                <option value="">Chọn trạng thái</option>
+                <option value="available">Có sẵn</option>
+                <option value="rented">Đã thuê</option>
+                <option value="closed">Đóng cửa</option>
+            </select>
+            <div class="header-content d-flex align-items-center justify-content-between">
+                <h4></h4>
+                <div class="action-buttons d-flex">
+                    <a href="/house/new" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
-<!-- Search Form -->
-<form id="search-form" class="d-flex">
-    <input type="text" name="propertyName" id="search-name" class="form-control mr-2"
-           placeholder="Tìm theo tên" />
-    <select name="status" id="search-status" class="form-control mr-2">
-        <option value="">Chọn trạng thái</option>
-        <option value="available">Có sẵn</option>
-        <option value="rented">Đã thuê</option>
-        <option value="closed">Đóng cửa</option>
-    </select>
-</form>
-
 <!-- House Listings -->
 <div class="container mt-4">
-    <h3 class="text-center mb-4">Danh sách Nhà/Phòng cho thuê</h3>
     <div id="house-list" class="row" th:fragment="house-list">
         <div th:if="${houses.isEmpty()}" class="col-12">
             <div class="alert alert-info text-center" role="alert">
@@ -206,7 +208,27 @@
         </div>
     </div>
 </div>
-
+<!-- Pagination Controls -->
+<div class="container mt-4">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link" th:href="@{/hosting/listings(page=${currentPage - 1})}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                th:classappend="${i == currentPage} ? 'active'">
+                <a class="page-link" th:text="${i + 1}" th:href="@{/hosting/listings(page=${i})}"></a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
+                <a class="page-link" th:href="@{/hosting/listings(page=${currentPage + 1})}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>

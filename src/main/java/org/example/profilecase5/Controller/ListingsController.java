@@ -10,8 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Page;
 
 @Controller
 @RequestMapping("/hosting/listings")
@@ -24,20 +24,26 @@ public class ListingsController {
     private HouseService houseService;
 
     @GetMapping("")
-    public String getListingsPage(Model model, Authentication authentication) {
-        String username = authentication.getName();  // Lấy tên người dùng từ Authentication
-        User user = userService.getUserByUsername(username);  // Lấy người dùng từ dịch vụ
+    public String getListingsPage(Model model, Authentication authentication,
+                                  @RequestParam(value = "page", defaultValue = "0") int page) {
+        String username = authentication.getName();  // Get the username from Authentication
+        User user = userService.getUserByUsername(username);  // Get the user from the service
 
-        // Kiểm tra nếu người dùng tồn tại
+        // Check if the user exists
         if (user != null) {
-            model.addAttribute("user", user);  // Truyền người dùng vào model
-            List<House> houses = houseService.getHousesByUserId(user.getUserId());  // Lấy danh sách nhà của người dùng
-            model.addAttribute("houses", houses);
+            model.addAttribute("user", user);  // Pass the user to the model
+            Page<House> housePage = houseService.getHousesByUserId(user.getUserId(), page, 9);  // Get the user's houses with pagination
+            model.addAttribute("houses", housePage.getContent());
+            model.addAttribute("currentPage", page);
+
+            int totalHouses = (int) housePage.getTotalElements();
+            int pageSize = 9;
+            int totalPages = (int) Math.ceil((double) totalHouses / pageSize);
+            model.addAttribute("totalPages", totalPages);
         } else {
             model.addAttribute("error", "User not found");
         }
 
-        return "/hosting/listings";  // Trả về trang listings
+        return "/hosting/listings";  // Return the listings page
     }
-
 }
