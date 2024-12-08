@@ -14,21 +14,19 @@ import java.util.List;
 @Repository
 public interface RentalHistoryRepository extends JpaRepository<RentalHistory, Integer> {
     RentalHistory findByRentalId(int rentalId);
-    List<RentalHistory> findByHouseIn(List<House> houses);
     List<RentalHistory> findByHouse_HouseId(int houseId);
     Page<RentalHistory> findByHouseIn(List<House> houses, Pageable pageable);
     @Query("SELECT rh FROM RentalHistory rh " +
-            "JOIN rh.house h " +
-            "WHERE (:propertyName IS NULL OR LOWER(h.propertyName) LIKE LOWER(CONCAT('%', :propertyName, '%'))) " +
+            "WHERE (rh.house.houseId IN :houseIds) " +
+            "AND (:propertyName IS NULL OR LOWER(rh.house.propertyName) LIKE LOWER(CONCAT('%', :propertyName, '%'))) " +
             "AND (:startDate IS NULL OR rh.startDate >= :startDate) " +
             "AND (:endDate IS NULL OR rh.endDate <= :endDate) " +
-            "AND (:status IS NULL OR rh.status = :status) " +
-            "AND (h.user.userId = :userId)")
+            "AND (:status IS NULL OR rh.status = :status)")
     Page<RentalHistory> searchRentalHistories(
+            @Param("houseIds") List<Integer> houseIds,
             @Param("propertyName") String propertyName,
             @Param("startDate") Timestamp startDate,
             @Param("endDate") Timestamp endDate,
             @Param("status") RentalHistory.RentalStatus status,
-            @Param("userId") int userId,
             Pageable pageable);
 }

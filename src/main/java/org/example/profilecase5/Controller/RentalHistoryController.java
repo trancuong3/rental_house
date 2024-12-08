@@ -94,24 +94,27 @@ public class RentalHistoryController {
     }
 
     @GetMapping("/api/search")
-    public ResponseEntity<Page<RentalHistory>> searchRentalHistories(
-            @RequestParam(required = false) String propertyName,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
-            @RequestParam(required = false) RentalHistory.RentalStatus status,
-            @PageableDefault(size = 10, sort = "startDate") Pageable pageable,
-            Model model, Authentication authentication) {
+    @ResponseBody
+    public ResponseEntity<?> searchRentalHistories(Authentication authentication,
+                                                   @RequestParam(name = "page", defaultValue = "0") int page,
+                                                   @RequestParam(name = "size", defaultValue = "5") int size,
+                                                   @RequestParam(required = false) String propertyName,
+                                                   @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                                                   @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
+                                                   @RequestParam(required = false) RentalHistory.RentalStatus status){
         Timestamp startTimestamp = (startDate != null) ? Timestamp.valueOf(startDate) : null;
         Timestamp endTimestamp = (endDate != null) ? Timestamp.valueOf(endDate) : null;
+        System.out.println("startTimestamp: " + startTimestamp);
+        System.out.println("endTimestamp: " + endTimestamp);
         String username = authentication.getName();
         User user = userService.getUserByUsername(username);
         if (user != null) {
-            model.addAttribute("user", user);
+            List<House> houses = houseService.getHousesByUserId(user.getUserId());
+            Pageable pageable = PageRequest.of(page, size);
+            Page<RentalHistory> rentalHistoriesPage = rentalHistoryService.searchRentalHistories(houses, propertyName, startTimestamp, endTimestamp, status, pageable);
+            return ResponseEntity.ok(rentalHistoriesPage);
         } else {
-            model.addAttribute("error", "User not found");
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
-        Page<RentalHistory> rentalHistories = rentalHistoryService.searchRentalHistories(propertyName, startTimestamp, endTimestamp, status, user, pageable);
-        return ResponseEntity.ok(rentalHistories);
     }
 }

@@ -9,8 +9,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RentalHistoryService {
@@ -54,14 +58,17 @@ public class RentalHistoryService {
         rentalHistoryRepository.save(rentalHistory);
     }
 
-    public Page<RentalHistory> searchRentalHistories(String propertyName, Timestamp startDate, Timestamp endDate, RentalHistory.RentalStatus status, User userSearch, Pageable pageable) {
-        int userId = userSearch.getUserId();
-        return rentalHistoryRepository.searchRentalHistories(propertyName, startDate, endDate, status, userId, pageable);
+    public Page<RentalHistory> searchRentalHistories(List<House> houses, String propertyName, Timestamp startDate, Timestamp endDate, RentalHistory.RentalStatus status, Pageable pageable) {
+        if (houses == null || houses.isEmpty()) {
+            return Page.empty(pageable);
+        }
+
+        List<Integer> houseIds = houses.stream()
+                .map(House::getHouseId)
+                .collect(Collectors.toList());
+        return rentalHistoryRepository.searchRentalHistories(houseIds, propertyName, startDate, endDate, status, pageable);
     }
 
-    public List<RentalHistory> getRentalHistoriesByHouses(List<House> houses) {
-        return rentalHistoryRepository.findByHouseIn(houses);
-    }
 
     public Page<RentalHistory> getRentalHistoriesByHouses(List<House> houses, Pageable pageable) {
         return rentalHistoryRepository.findByHouseIn(houses, pageable);

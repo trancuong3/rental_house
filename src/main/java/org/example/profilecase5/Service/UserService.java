@@ -32,7 +32,6 @@ public class UserService {
     protected final PasswordEncoder passwordEncoder;
     protected final RoleRepository roleRepository;
 
-    // Constructor injection
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;

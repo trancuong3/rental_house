@@ -1,13 +1,13 @@
 function fetchRentalHistoryData(page, size) {
+    let apiUrl = getApiUrl(page, size);
     $.ajax({
-        url: `http://localhost:8080/hosting/rental-history/api/data?page=${page}&size=${size}`,
+        url: apiUrl,
         method: 'GET',
         dataType: 'json',
         success: function (data) {
             const tableBody = $('#rentalHistoryTableBody');
             tableBody.empty();
 
-            // Render dữ liệu vào bảng
             data.content.forEach(rental => {
                 const row = $('<tr></tr>');
 
@@ -18,7 +18,7 @@ function fetchRentalHistoryData(page, size) {
                     .addClass('btn btn-info btn-sm');
                 customerNameCell.append(customerLink);
                 row.append(customerNameCell);
-
+                row.append($('<td></td>').text(rental.house.propertyName));
                 row.append($('<td></td>').text(new Date(rental.startDate).toLocaleString()));
                 row.append($('<td></td>').text(new Date(rental.endDate).toLocaleString()));
                 row.append($('<td></td>').text(rental.totalCost));
@@ -61,73 +61,89 @@ function fetchRentalHistoryData(page, size) {
 
                 tableBody.append(row);
             });
-
-            // Xử lý phân trang
-            const pagination = $('#pagination');
-            pagination.empty();
-
-            // Nút "Về trước"
-            const prevPageItem = $('<li></li>').addClass('page-item');
-            if (data.pageable.pageNumber > 0) {
-                const prevPageLink = $('<a></a>')
-                    .addClass('page-link')
-                    .attr('href', '#')
-                    .text('Về trước')
-                    .click(function (e) {
-                        e.preventDefault();
-                        fetchRentalHistoryData(data.pageable.pageNumber - 1, size);
-                    });
-                prevPageItem.append(prevPageLink);
-            } else {
-                prevPageItem.addClass('disabled'); // Vô hiệu hóa nếu không có trang trước
-                prevPageItem.append($('<span></span>').addClass('page-link').text('Về trước'));
-            }
-            pagination.append(prevPageItem);
-
-            // Số trang
-            for (let i = 0; i < data.totalPages; i++) {
-                const pageItem = $('<li></li>').addClass('page-item');
-                if (i === data.pageable.pageNumber) {
-                    pageItem.addClass('active'); // Đánh dấu trang hiện tại
-                }
-                const pageLink = $('<a></a>')
-                    .addClass('page-link')
-                    .attr('href', '#')
-                    .text(i + 1)
-                    .click(function (e) {
-                        e.preventDefault();
-                        fetchRentalHistoryData(i, size); // Gọi lại AJAX khi chọn trang
-                    });
-                pageItem.append(pageLink);
-                pagination.append(pageItem);
-            }
-
-            // Nút "Về sau"
-            const nextPageItem = $('<li></li>').addClass('page-item');
-            if (data.pageable.pageNumber < data.totalPages - 1) {
-                const nextPageLink = $('<a></a>')
-                    .addClass('page-link')
-                    .attr('href', '#')
-                    .text('Về sau')
-                    .click(function (e) {
-                        e.preventDefault();
-                        fetchRentalHistoryData(data.pageable.pageNumber + 1, size);
-                    });
-                nextPageItem.append(nextPageLink);
-            } else {
-                nextPageItem.addClass('disabled'); 
-                nextPageItem.append($('<span></span>').addClass('page-link').text('Về sau'));
-            }
-            pagination.append(nextPageItem);
+            separatePages(data, size);
         },
         error: function (error) {
             console.error('Error fetching rental history data:', error);
         }
     });
 }
+function separatePages(data, size) {
+    const pagination = $('#pagination');
+    pagination.empty();
 
-// Gọi AJAX khi trang tải lần đầu
+    const prevPageItem = $('<li></li>').addClass('page-item');
+    if (data.pageable.pageNumber > 0) {
+        const prevPageLink = $('<a></a>')
+            .addClass('page-link')
+            .attr('href', '#')
+            .text('Về trước')
+            .click(function (e) {
+                e.preventDefault();
+                fetchRentalHistoryData(data.pageable.pageNumber - 1, size);
+            });
+        prevPageItem.append(prevPageLink);
+    } else {
+        prevPageItem.addClass('disabled');
+        prevPageItem.append($('<span></span>').addClass('page-link').text('Về trước'));
+    }
+    pagination.append(prevPageItem);
+
+    for (let i = 0; i < data.totalPages; i++) {
+        const pageItem = $('<li></li>').addClass('page-item');
+        if (i === data.pageable.pageNumber) {
+            pageItem.addClass('active');
+        }
+        const pageLink = $('<a></a>')
+            .addClass('page-link')
+            .attr('href', '#')
+            .text(i + 1)
+            .click(function (e) {
+                e.preventDefault();
+                fetchRentalHistoryData(i, size);
+            });
+        pageItem.append(pageLink);
+        pagination.append(pageItem);
+    }
+
+    const nextPageItem = $('<li></li>').addClass('page-item');
+    if (data.pageable.pageNumber < data.totalPages - 1) {
+        const nextPageLink = $('<a></a>')
+            .addClass('page-link')
+            .attr('href', '#')
+            .text('Về sau')
+            .click(function (e) {
+                e.preventDefault();
+                fetchRentalHistoryData(data.pageable.pageNumber + 1, size);
+            });
+        nextPageItem.append(nextPageLink);
+    } else {
+        nextPageItem.addClass('disabled');
+        nextPageItem.append($('<span></span>').addClass('page-link').text('Về sau'));
+    }
+    pagination.append(nextPageItem);
+}
+function getApiUrl(page, size) {
+    const propertyName = $('#propertyName').val().trim();
+    const startDate = $('#startDate').val();
+    const endDate = $('#endDate').val();
+    const status = $('#statusFilter').val();
+
+    if (propertyName || startDate || endDate || status) {
+        let searchUrl = `http://localhost:8080/hosting/rental-history/api/search?page=${page}&size=${size}`;
+        if (propertyName) searchUrl += `&propertyName=${encodeURIComponent(propertyName)}`;
+        if (startDate) searchUrl += `&startDate=${encodeURIComponent(startDate)}`;
+        if (endDate) searchUrl += `&endDate=${encodeURIComponent(endDate)}`;
+        if (status) searchUrl += `&status=${encodeURIComponent(status)}`;
+        return searchUrl;
+    }
+
+    return `http://localhost:8080/hosting/rental-history/api/data?page=${page}&size=${size}`;
+}
 $(document).ready(function () {
-    const pageSize = 5; // Kích thước trang mặc định
-    fetchRentalHistoryData(0, pageSize); // Gọi trang đầu tiên
+    const pageSize = 5;
+    fetchRentalHistoryData(0, pageSize);
+    $('#propertyName, #startDate, #endDate, #statusFilter').on('input change', function () {
+        fetchRentalHistoryData(0, pageSize);
+    });
 });

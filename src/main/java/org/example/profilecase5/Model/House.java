@@ -80,7 +80,6 @@ public class House {
         , closed
     }
 
-    // Getters và Setters
     public int getHouseId() {
         return houseId;
     }

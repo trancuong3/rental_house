@@ -82,15 +82,38 @@
 
 <div class="container mt-4">
     <h1 class="mb-4">Danh sách lịch sử cho thuê</h1>
-
-    <div class="form-group">
-        <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm">
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <label for="propertyName" class="form-label">Tên nhà</label>
+            <input type="text" id="propertyName" class="form-control" placeholder="Nhập tên nhà">
+        </div>
+        <div class="col-md-4">
+            <label for="startDate" class="form-label">Từ ngày</label>
+            <input type="datetime-local" id="startDate" class="form-control">
+        </div>
+        <div class="col-md-4">
+            <label for="endDate" class="form-label">Đến ngày</label>
+            <input type="datetime-local" id="endDate" class="form-control">
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <label for="statusFilter" class="form-label">Trạng thái đơn</label>
+            <select id="statusFilter" class="form-control">
+                <option value="">Tất cả</option>
+                <option value="Pending">Chờ xử lý</option>
+                <option value="Checked_in">Đang ở</option>
+                <option value="Checked_out">Đã trả phòng</option>
+                <option value="Cancelled">Đã hủy</option>
+            </select>
+        </div>
     </div>
 
     <table class="table table-bordered table-striped">
         <thead>
         <tr>
             <th>Tên khách hàng</th>
+            <th>Tên nhà</th>
             <th>Ngày đặt</th>
             <th>Ngày trả phòng</th>
             <th>Số tiền</th>
