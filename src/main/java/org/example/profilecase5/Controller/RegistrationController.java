@@ -2,6 +2,7 @@ package org.example.profilecase5.Controller;
 
 import org.example.profilecase5.Exception.User.EmailAlreadyExistsException;
 import org.example.profilecase5.Exception.User.PasswordValidationException;
+import org.example.profilecase5.Exception.User.PhoneAlreadyExistsException;
 import org.example.profilecase5.Exception.User.UsernameAlreadyExistsException;
 import org.example.profilecase5.Model.User;
 import org.example.profilecase5.Service.UserService;
@@ -31,19 +32,23 @@ public class RegistrationController {
             return "register/register";
         }
         try {
-            userService.registerUser(user);
+            userService.registerUser(user); // Hàm này sẽ kiểm tra và xử lý logic lưu user
         } catch (UsernameAlreadyExistsException e) {
-            result.rejectValue("username", "error.username", e.getMessage());
+            result.rejectValue("username", "error.username", "Tên người dùng đã tồn tại.");
             return "register/register";
         } catch (EmailAlreadyExistsException e) {
-            result.rejectValue("email", "error.email", e.getMessage());
+            result.rejectValue("email", "error.email", "Email đã tồn tại.");
             return "register/register";
         } catch (PasswordValidationException e) {
-            result.rejectValue("password", "error.password", e.getMessage());
+            result.rejectValue("password", "error.password", "Mật khẩu không hợp lệ.");
+            return "register/register";
+        } catch (PhoneAlreadyExistsException e) {
+            result.rejectValue("phone", "error.phone", "Số điện thoại đã tồn tại.");
             return "register/register";
         }
         return "redirect:/login";
     }
+
 
 
 

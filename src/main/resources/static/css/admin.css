@@ -158,3 +158,39 @@ body {
     max-width: 50px;
     height: auto;
 }
+.search-bar {
+    width: 250px;
+}
+
+.mt-3 {
+    margin-top: 1rem !important;
+}
+
+h2.text-center {
+    margin: 0;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-2px);
+    }
+    50% {
+        transform: translateX(2px);
+    }
+    75% {
+        transform: translateX(-2px);
+    }
+}
+
+.list-group-item i {
+    display: inline-block; /* Để biểu tượng có thể chuyển động */
+    transition: transform 0.2s ease-in-out;
+}
+
+.list-group-item:hover i {
+    animation: shake 0.5s ease-in-out;
+}
+

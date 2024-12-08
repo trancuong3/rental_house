@@ -1,6 +1,6 @@
 /* General Styling */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f8f9fa;
     margin: 0;
     padding: 0;
@@ -10,9 +10,9 @@ body {
 .materialContainer {
     display: flex;
     justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 15px;
+    align-items: flex-start; /* Căn chỉnh phần tử con (box) ở phía trên */
+    min-height: 80vh;
+    padding: 75px;
 }
 
 .box {
@@ -20,8 +20,8 @@ body {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
+    /*width: 100%;*/
+    width: 1200px;
 }
 
 /* Form Title */
@@ -77,12 +77,14 @@ body {
 /* Submit Button */
 .button {
     text-align: center;
+    margin-top: 52px; /* Thêm margin-top để đẩy nút xuống */
 }
+
 
 .button button {
     width: 100%;
     padding: 12px;
-    font-size: 16px;
+    font-size: 17px;
     background-color: #007bff;
     color: white;
     border: none;
@@ -103,4 +105,23 @@ body {
     .box {
         width: 100%;
     }
+}
+.error-message {
+    font-size: 0.9em;
+    color: red;
+    margin-top: 5px;
+}
+/* Điều chỉnh chiều rộng để các cột không bị quá rộng trên màn hình nhỏ */
+@media (max-width: 768px) {
+    .materialContainer .box {
+        padding: 150px;
+    }
+    .materialContainer .box .col-md-6 {
+        width: 100%;
+    }
+}
+
+.navbar {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ với độ mờ */
+
 }
