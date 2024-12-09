@@ -104,8 +104,17 @@
     </tbody>
   </table>
   <div>
-    <h5>Tổng chi phí đã chi: <span th:text="${totalSpent}"></span></h5>
+    <h5>Tổng chi phí đã chi: <span id="total-spent" th:data-raw-cost="${totalSpent}"></span></h5>
   </div>
 </div>
+<script>
+  function formatCurrency(amount) {
+    return new Intl.NumberFormat('vi-VN').format(amount);
+  }
+
+  const totalCostElement = document.getElementById('total-cost');
+  const rawCost = totalCostElement.getAttribute('data-raw-cost');
+  totalCostElement.textContent = formatCurrency(rawCost);
+</script>
 </body>
 </html>

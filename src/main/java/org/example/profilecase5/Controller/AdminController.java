@@ -29,7 +29,7 @@ public class AdminController {
     private WaitingOwnerService waitingOwnerService;
     @Autowired
     private EmailService emailService;
-    @GetMapping()
+    @GetMapping("")
     public String getUsers(Model model) {
         List<User> user = userService.getAllUsers();
         model.addAttribute("user", user);
