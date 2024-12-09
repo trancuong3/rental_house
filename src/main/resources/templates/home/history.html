@@ -21,13 +21,13 @@
         <a class="nav-link" href="/home">Hôm nay</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/home/detail">Lịch</a>
+        <a class="nav-link" href="/home/history">Lịch</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="">Nhà/phòng cho thuê</a>
+        <a class="nav-link" href="#">Nhà/phòng cho thuê</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="">Tin nhắn</a>
+        <a class="nav-link" href="#">Tin nhắn</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -104,8 +104,17 @@
     </tbody>
   </table>
   <div>
-    <h5>Tổng chi phí đã chi: <span th:text="${totalSpent}"></span></h5>
+    <h5>Tổng chi phí đã chi: <span id="total-spent" th:data-raw-cost="${totalSpent}"></span></h5>
   </div>
 </div>
+<script>
+  function formatCurrency(amount) {
+    return new Intl.NumberFormat('vi-VN').format(amount);
+  }
+
+  const totalCostElement = document.getElementById('total-cost');
+  const rawCost = totalCostElement.getAttribute('data-raw-cost');
+  totalCostElement.textContent = formatCurrency(rawCost);
+</script>
 </body>
 </html>

@@ -57,43 +57,92 @@
           <a class="dropdown-item" href="#"><i class="fas fa-envelope mr-2"></i>Thông báo 3</a>
         </div>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Tài khoản
-        </a>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-          <a class="dropdown-item" href="/profile">Hồ sơ</a>
-          <a class="dropdown-item" href="/account">Tài khoản</a>
-          <a class="dropdown-item" href="#">Truy cập trung tâm trợ giúp</a>
-          <a class="dropdown-item" href="#">Tìm trợ giúp về vấn đề an toàn</a>
-          <a class="dropdown-item" href="#">Ngôn ngữ và dịch</a>
-          <a class="dropdown-item" href="#">VNĐ</a>
-          <a class="dropdown-item" href="#">Tổ chức trải nghiệm</a>
-          <a class="dropdown-item" href="#">Chuyển sang chế độ du lịch</a>
-          <form th:action="@{/perform_logout}" method="POST" class="dropdown-item p-0">
-            <button type="submit" class="dropdown-item w-100 text-left">Đăng xuất</button>
-          </form>
-        </div>
-      </li>
-      <!-- New Login and Register buttons -->
+
       <li class="nav-item">
-        <a class="nav-link btn btn-primary text-white" href="/login">Đăng nhập</a>
+        <a class="nav-link btn btn-primary text-white btn-hover-primary" href="/login">Đăng nhập</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link btn btn-success text-white" href="/register">Đăng ký</a>
+        <a class="nav-link btn btn-success text-white btn-hover-success" href="/register">Đăng ký</a>
       </li>
+
     </ul>
   </div>
 </nav>
 
-<div class="container mt-4">
-  <!-- Bộ lọc -->
-  <div class="filters d-flex flex-wrap justify-content-start mb-4">
-    <button class="btn btn-outline-secondary mr-2">Islands</button>
-    <button class="btn btn-outline-secondary mr-2">Tiny Homes</button>
-    <button class="btn btn-outline-secondary mr-2">Design</button>
-    <button class="btn btn-outline-secondary mr-2">Arctic</button>
-    <button class="btn btn-outline-secondary">Amazing Pools</button>
+<div class="container mt-4"> <!-- Banner -->
+  <div id="homepageBanner" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <th:block th:each="banner, stat : ${banners}">
+        <div class="carousel-item" th:classappend="${stat.index == 0} ? 'active'">
+          <img th:src="${banner}" class="d-block w-100" alt="Banner">
+        </div>
+      </th:block>
+    </div>
+
+    <!-- Nút điều khiển trước -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#homepageBanner" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden"></span>
+    </button>
+
+    <!-- Nút điều khiển sau -->
+    <button class="carousel-control-next" type="button" data-bs-target="#homepageBanner" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden"></span>
+    </button>
+  </div>
+
+
+  <!-- Filters -->
+  <div class="filters">
+    <div class="filter-item">
+      <img src="https://a0.muscache.com/pictures/31c1d523-cc46-45b3-957a-da76c30c85f9.jpg" alt="Islands" class="rounded" style="width: 25px; height: 25px">
+      <p class="content_filter">Islands</p>
+    </div>
+    <div class="filter-item">
+      <img src="https://a0.muscache.com/pictures/c5a4f6fc-c92c-4ae8-87dd-57f1ff1b89a6.jpg" alt="Tiny Homes" class="rounded" style="width: 25px; height: 25px">
+      <p class="content_filter">Thật ấn tượng</p>
+    </div>
+    <div class="filter-item">
+      <img src="https://a0.muscache.com/im/pictures/mediaverse/category_icon/original/3e5243c8-4d15-4c6b-97e3-7ba2bb7bb880.png" alt="Design" class="rounded" style="width: 25px; height: 25px">
+      <p class="content_filter">Biểu tượng</p>
+    </div>
+    <div class="filter-item">
+      <img src="https://a0.muscache.com/pictures/3b1eb541-46d9-4bef-abc4-c37d77e3c21b.jpg" alt="Arctic" class="rounded" style="width: 25px; height: 25px">
+      <p class="content_filter">Khung cảnh</p>
+    </div>
+    <div class="filter-item">
+      <img src="https://a0.muscache.com/pictures/1b6a8b70-a3b6-48b5-88e1-2243d9172c06.jpg" alt="Amazing Pools" class="rounded" style="width: 25px; height: 25px">
+      <p class="content_filter">Lâu Đài </p>
+    </div>
+    <div class="filter-item">
+      <img src="https://a0.muscache.com/pictures/78ba8486-6ba6-4a43-a56d-f556189193da.jpg" alt="Amazing Pools" class="rounded" style="width: 25px; height: 25px">
+      <p class="content_filter">Biệt Thự</p>
+    </div>
+    <div class="filter-item">
+      <img src="https://a0.muscache.com/pictures/4221e293-4770-4ea8-a4fa-9972158d4004.jpg" alt="Amazing Pools" class="rounded" style="width: 25px; height: 25px">
+      <p class="content_filter">Hang động</p>
+    </div>
+    <div class="filter-item">
+      <img src="https://a0.muscache.com/pictures/8b44f770-7156-4c7b-b4d3-d92549c8652f.jpg" alt="Amazing Pools" class="rounded" style="width: 25px; height: 25px">
+      <p class="content_filter">Băng Cực</p>
+    </div>
+    <div class="filter-item">
+      <img src="https://a0.muscache.com/pictures/732edad8-3ae0-49a8-a451-29a8010dcc0c.jpg" alt="Amazing Pools" class="rounded" style="width: 25px; height: 25px">
+      <p class="content_filter">Cabin</p>
+    </div>
+    <div class="filter-item">
+      <img src="https://a0.muscache.com/pictures/50861fca-582c-4bcc-89d3-857fb7ca6528.jpg" alt="Amazing Pools" class="rounded" style="width: 25px; height: 25px">
+      <p class="content_filter">Thiết Kế</p>
+    </div>
+    <div class="filter-item">
+      <img src="https://a0.muscache.com/pictures/4d4a4eba-c7e4-43eb-9ce2-95e1d200d10e.jpg" alt="Amazing Pools" class="rounded" style="width: 25px; height: 25px">
+      <p class="content_filter">Nhà Trên Cây</p>
+    </div>
+
+
+
+
   </div>
 
   <!-- Cards -->
@@ -113,14 +162,36 @@
   </div>
 </div>
 
-<footer class="footer mt-5 py-4 bg-light">
-  <div class="container text-center">
-    <p class="text-muted">&copy; 2024 Airbnb - <a href="#">Privacy</a> - <a href="#">Terms</a></p>
+<!-- Footer -->
+<div class="footer">
+
+
+  <!-- Navigation Menu -->
+  <div class="boxNav" id="menu">
+    <div>Home</div>
+    <div>Home</div>
+    <div>Home</div>
+    <div>Home</div>
+    <div>Home</div>
+
   </div>
-</footer>
+
+
+  <div>
+    <p style="text-align: center;">Đảm bảo thanh toán an toàn</p>
+    <img
+            src="https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/elementor/thumbs/Icons-123-pzks3go5g30b2zz95xno9hgdw0h3o8xu97fbaqhtb6.png"
+            alt="Safe Payment">
+  </div>
+
+  <!-- Footer Info -->
+  <div style="text-align: center; margin-top: 20px;">
+    Copyright © 2024 Home. Created by Team CodeGym
+  </div>
+</div>
 <script>
   function showLoginAlert() {
-    alert("Bạn phải đăng nhập để xem chi tiết sản phẩm.");
+    alert("Bạn phải đăng nhập để xem chi tiết nhà.");
   }
 </script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

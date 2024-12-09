@@ -6,13 +6,14 @@ body {
     min-height: 100vh;
     background-color: #f7f0f7;
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .materialContainer {
     width: 100%;
     max-width: 600px; /* Đổi max-width để form rộng hơn */
     padding: 20px;
+    align-items: flex-start; /* Căn chỉnh phần tử con (box) ở phía trên */
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -69,7 +70,9 @@ body {
 .button {
     text-align: center;
 }
-
+.button button{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 .button button.btn {
     width: 100%;
     padding: 12px;
@@ -120,4 +123,9 @@ body {
 
 .role-btn:active {
     transform: scale(0.98);
+}
+
+.navbar {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ với độ mờ */
+
 }

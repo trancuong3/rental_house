@@ -471,3 +471,30 @@
     .content_filter{
         font-size: 11px;
     }
+
+/*    nút cho chưa đăng nhập */
+    /* Hiệu ứng cho nút Đăng nhập */
+    .btn-hover-primary {
+        transition: all 0.6s ease-in-out;
+        margin: 0 10px ;
+    }
+
+    .btn-hover-primary:hover {
+        background-color: #0056b3 !important;
+        color: #fff !important;
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
+
+    }
+
+    /* Hiệu ứng cho nút Đăng ký */
+    .btn-hover-success {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn-hover-success:hover {
+        background-color: #28a745 !important;
+        color: #fff !important;
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+    }

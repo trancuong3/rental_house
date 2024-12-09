@@ -5,6 +5,7 @@ import org.example.profilecase5.Model.House;
 import org.example.profilecase5.Model.RentalHistory;
 import org.example.profilecase5.Model.User;
 import org.example.profilecase5.Model.WaitingOwner;
+import org.example.profilecase5.Service.EmailService;
 import org.example.profilecase5.Service.HouseService;
 import org.example.profilecase5.Service.UserService;
 import org.example.profilecase5.Service.WaitingOwnerService;
@@ -26,7 +27,9 @@ public class AdminController {
     private HouseService houseService;
     @Autowired
     private WaitingOwnerService waitingOwnerService;
-    @GetMapping()
+    @Autowired
+    private EmailService emailService;
+    @GetMapping("")
     public String getUsers(Model model) {
         List<User> user = userService.getAllUsers();
         model.addAttribute("user", user);
@@ -93,16 +96,58 @@ public class AdminController {
     // Accept waiting owner
     @PostMapping("/waiting-owners/accept/{id}")
     public String acceptOwner(@PathVariable("id") int id) {
-        // Gọi service để chấp nhận chủ nhà và chuyển sang bảng user
+        // Gọi service để chấp nhận chủ nhà và lấy email của họ
+        WaitingOwner waitingOwner = waitingOwnerService.findById(id);
+        if (waitingOwner == null) {
+            throw new RuntimeException("WaitingOwner not found with id: " + id);
+        }
+        String email = waitingOwner.getEmail();
+
+        // Chuyển đổi và lưu trữ vào bảng user
         waitingOwnerService.acceptWaitingOwner(id);
 
-        // Sau khi chuyển thành công, chuyển hướng lại trang danh sách chủ nhà chờ duyệt
+        // Gửi email thông báo
+        emailService.sendEmail(
+                email,
+                "Đăng ký làm chủ nhà được chấp nhận",
+                "Đăng ký làm chủ nhà được chấp nhận\n" +
+
+                        "                        \"Chúng tôi xin trân trọng thông báo rằng đơn đăng ký của quý vị vào  đã được chấp nhận.\n" +
+                        "                        \n" +
+                        "                        \"Sau khi xem xét và đánh giá hồ sơ của quý vị, chúng tôi rất vui mừng thông báo rằng quý vị đã đủ điều kiện tham gia. Chúng tôi sẽ liên hệ với quý vị để thông báo chi tiết về các bước tiếp theo và các thông tin liên quan.\n" +
+                        "                        \n" +
+                                               "Chúng tôi mong muốn được hợp tác và chào đón quý vị tham gia chương trình của chúng tôi.\n"+
+
+                                               "Xin chân thành cảm ơn quý vị đã quan tâm và đăng ký tham gia.\n"+
+                        "vui lòng đăng nhập để xử dụng dịch vụ \n"+
+                        "http://localhost:8080/login"
+        );
+
+        // Chuyển hướng về trang danh sách chủ nhà chờ duyệt
         return "redirect:/admin/waiting-owners";
     }
+
     // Refuse waiting owner
     @GetMapping("/waiting-owners/refuse/{id}")
     public String refuseOwner(@PathVariable("id") int id) {
+        WaitingOwner waitingOwner = waitingOwnerService.findById(id);
         waitingOwnerService.refuseWaitingOwner(id);
+        String email = waitingOwner.getEmail();
+        emailService.sendEmail(
+                email,
+                "Đăng ký làm chủ nhà bị từ chối",
+
+                        "Chúng tôi rất tiếc phải thông báo rằng đơn đăng ký của quý vị vào không được chấp nhận.\n" +
+                                "\n" +
+                                "Sau khi xem xét kỹ lưỡng hồ sơ của quý vị, chúng tôi tiếc phải thông báo rằng quý vị không đủ điều kiện tham gia trong đợt này. Quyết định này dựa trên các tiêu chí và yêu cầu cụ thể của chương trình, và chúng tôi rất tiếc rằng quý vị không đáp ứng đủ các tiêu chí đó.\n" +
+                                "\n" +
+                                "Chúng tôi rất trân trọng sự quan tâm và nỗ lực của quý vị, và hy vọng sẽ có cơ hội làm việc cùng quý vị trong các chương trình sau này.\n" +
+                                "\n" +
+                                "Nếu quý vị có bất kỳ câu hỏi nào hoặc cần thêm thông tin, xin vui lòng liên hệ với chúng tôi qua số điện thoại hoặc email dưới đây.\n"+
+                                "email: farmer365421@gmail.com\n"+
+                                "số điện thoại : 12345567"
+
+        );
         return "redirect:/admin/waiting-owners";
     }
 
