@@ -347,22 +347,30 @@ public class HouseController {
     @GetMapping("/search")
     public String searchHouses(@RequestParam(required = false) String propertyName,
                                @RequestParam(required = false) String status,
-                               Model model,Authentication authentication) {
+                               Model model, Authentication authentication) {
         List<House> houses;
         String username = authentication.getName();  // Lấy tên người dùng từ Authentication
         User user = userService.getUserByUsername(username);
         model.addAttribute("user", user);
+
+        // Tìm kiếm nhà của chủ nhà hiện tại
         if (propertyName != null && !propertyName.isEmpty()) {
-            houses = houseService.searchHousesByName(propertyName);
-        } else if (status != null) {
-            houses = houseService.searchHousesByStatus(House.Status.valueOf(status.toLowerCase()));
+            // Tìm kiếm theo tên của chủ nhà hiện tại
+            houses = houseService.searchHousesByNameAndUser(propertyName, user.getUserId());
+        } else if (status != null && !status.isEmpty()) {
+            // Tìm kiếm theo trạng thái của chủ nhà hiện tại
+            houses = houseService.searchHousesByStatusAndUser(House.Status.valueOf(status.toUpperCase()), user.getUserId());
         } else {
-            houses = houseRepository.findAll();
+            // Nếu không có tìm kiếm nào, lấy tất cả nhà của chủ nhà hiện tại
+            houses = houseService.getHousesByUserId(user.getUserId());
         }
 
         model.addAttribute("houses", houses);
         return "house/search";  // Template mới sẽ được sử dụng tại đây
     }
+
+
+
 
 
 
