@@ -51,11 +51,12 @@
                 <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img src="/images/img_1.png" alt="Thông báo" class="rounded-circle" width="30" height="30">
                 </a>
-                <div class="dropdown-menu dropdown-menu-right notification-panel" aria-labelledby="notificationsDropdown">
+                <div class="dropdown-menu dropdown-menu-right notification-panel" id="notificationPanel" aria-labelledby="notificationsDropdown">
                     <h4>Thông báo</h4>
-                    <a class="dropdown-item" href="#"><i class="fas fa-envelope mr-2"></i>Thông báo 1</a>
-                    <a class="dropdown-item" href="#"><i class="fas fa-envelope mr-2"></i>Thông báo 2</a>
-                    <a class="dropdown-item" href="#"><i class="fas fa-envelope mr-2"></i>Thông báo 3</a>
+                    <div id = "notificationList">
+                        <p>...Đang tải thông báo...</p>
+                        <!--úm ba la alaba trap -->
+                    </div>
                 </div>
 
             </li>
@@ -240,6 +241,69 @@
     <p class="text-muted">&copy; 2024 Airbnb - <a href="#">Privacy</a> - <a href="#">Terms</a></p>
 
 </footer>
+
+<script>
+    let currentPage = 0;
+const pageSize = 10;
+
+function loadNotifications(page) {
+    fetch(`/api/notifications?page=${page}&size=${pageSize}`)
+        .then(response => response.json())
+        .then(data => {
+            const notificationList = document.getElementById('notificationList');
+
+            // Xóa danh sách cũ
+            notificationList.innerHTML = '';
+
+            // Hiển thị thông báo
+            data.content.forEach(notification => {
+                const item = document.createElement('a');
+                item.className = 'dropdown-item';
+                item.href = '#';
+                item.innerHTML = `
+                    <i class="fas fa-envelope mr-2"></i>
+                    ${notification.userName} đã đặt thuê "${notification.houseName}"
+                    vào ngày ${new Date(notification.startDate).toLocaleDateString()}
+                `;
+                notificationList.appendChild(item);
+            });
+
+            // Thêm nút phân trang
+            renderPagination(data);
+        })
+        .catch(error => {
+            console.error('Error fetching notifications:', error);
+        });
+}
+
+function renderPagination(data) {
+    const paginationContainer = document.createElement('div');
+    paginationContainer.className = 'pagination justify-content-center mt-2';
+
+    // Nút Previous
+    if (!data.first) {
+        const prevButton = document.createElement('button');
+        prevButton.className = 'btn btn-sm btn-outline-primary mr-2';
+        prevButton.textContent = 'Trước';
+        prevButton.onclick = () => loadNotifications(data.number - 1);
+        paginationContainer.appendChild(prevButton);
+    }
+
+    // Nút Next
+    if (!data.last) {
+        const nextButton = document.createElement('button');
+        nextButton.className = 'btn btn-sm btn-outline-primary';
+        nextButton.textContent = 'Tiếp';
+        nextButton.onclick = () => loadNotifications(data.number + 1);
+        paginationContainer.appendChild(nextButton);
+    }
+
+    document.getElementById('notificationList').appendChild(paginationContainer);
+}
+
+// Gọi ban đầu
+loadNotifications(0);
+</script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

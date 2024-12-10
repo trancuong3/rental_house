@@ -2,10 +2,12 @@ package org.example.profilecase5.Service;
 
 import org.example.profilecase5.Model.House;
 import org.example.profilecase5.Model.RentalHistory;
+import org.example.profilecase5.Model.RentalNotificationDTO;
 import org.example.profilecase5.Model.User;
 import org.example.profilecase5.Repository.RentalHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
@@ -73,4 +75,9 @@ public class RentalHistoryService {
     public Page<RentalHistory> getRentalHistoriesByHouses(List<House> houses, Pageable pageable) {
         return rentalHistoryRepository.findByHouseIn(houses, pageable);
     }
+
+    public Page<RentalNotificationDTO> getLatestNotifications(Pageable pageable) {
+        return rentalHistoryRepository.findLatestNotifications(pageable);
+    }
+
 }

@@ -2,6 +2,7 @@ package org.example.profilecase5.Repository;
 
 import org.example.profilecase5.Model.House;
 import org.example.profilecase5.Model.RentalHistory;
+import org.example.profilecase5.Model.RentalNotificationDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +30,8 @@ public interface RentalHistoryRepository extends JpaRepository<RentalHistory, In
             @Param("endDate") Timestamp endDate,
             @Param("status") RentalHistory.RentalStatus status,
             Pageable pageable);
+
+    @Query("SELECT new org.example.profilecase5.Model.RentalNotificationDTO(r.user.username, r.house.propertyName, r.startDate) " +
+            "FROM RentalHistory r ORDER BY r.startDate DESC")
+    Page<RentalNotificationDTO> findLatestNotifications(Pageable pageable);
 }

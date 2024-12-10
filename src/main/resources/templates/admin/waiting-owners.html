@@ -6,8 +6,6 @@
     <title>Danh sách chủ nhà chờ duyệt</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link rel="stylesheet" href="/css/admin.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <style>
         #loading {
             display: none;
@@ -20,11 +18,28 @@
             padding: 20px;
             border-radius: 5px;
             font-size: 18px;
+            z-index: 9999;
+        }
+
+        #wrapper {
+            display: flex;
+        }
+
+        #sidebar-wrapper {
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+        }
+
+        #page-content-wrapper {
+            margin-left: 250px;
+            width: 100%;
         }
     </style>
 </head>
 <body>
 <div class="d-flex" id="wrapper">
+    <!-- Sidebar -->
     <div class="bg-dark text-white" id="sidebar-wrapper">
         <div class="sidebar-heading text-center py-4">
             <img src="https://logodix.com/logo/1707097.png"
@@ -47,10 +62,10 @@
             <a href="/perform_logout" class="list-group-item list-group-item-action bg-dark text-white">
                 <i class="fas fa-sign-out-alt"></i> Đăng xuất
             </a>
-
         </div>
     </div>
 
+    <!-- Content -->
     <div id="page-content-wrapper">
         <div class="container-fluid">
             <h2 class="text-center mt-4">Danh sách chủ nhà chờ duyệt</h2>
@@ -72,13 +87,16 @@
                     <td th:text="${owner.email}"></td>
                     <td th:text="${owner.address}"></td>
                     <td>
+                        <!-- Nút Accept -->
                         <form th:action="@{'/admin/waiting-owners/accept/' + ${owner.userId}}" method="post"
-                              style="display:inline;">
+                              style="display:inline;" onsubmit="showLoading();">
                             <button class="btn btn-success btn-sm">Accept</button>
                         </form>
+
+                        <!-- Nút Refuse -->
                         <a th:href="@{'/admin/waiting-owners/refuse/' + ${owner.userId}}"
                            class="btn btn-danger btn-sm"
-                           style="display:inline;" onclick="showLoading();">
+                           onclick="showLoading();">
                             Refuse
                         </a>
                     </td>
@@ -89,22 +107,19 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script th:src="@{/js/Admin.js}"></script>
-
 <script>
+    // Hiển thị loading
     function showLoading() {
-        document.getElementById("loading").style.display = "block"; // Hiển thị ô thông báo
+        document.getElementById("loading").style.display = "block";
     }
 
+    // Ẩn loading (nếu cần)
     function hideLoading() {
-        document.getElementById("loading").style.display = "none"; // Ẩn ô thông báo khi hoàn thành
+        document.getElementById("loading").style.display = "none";
     }
-
-    // Nếu bạn muốn tự động ẩn ô thông báo sau một khoảng thời gian (ví dụ: 3 giây)
-    // setTimeout(hideLoading, 3000);
 </script>
-
 </body>
 </html>
