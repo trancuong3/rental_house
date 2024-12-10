@@ -124,9 +124,9 @@
       <div class="price-details">
         <h5 class="card-title mb-4">Chi tiết giá</h5>
 
-        <p><strong>Giá thuê/ngày:</strong> <span th:text="${house.pricePerDay}">0 VNĐ</span> / đêm</p>
+        <p><strong>Giá thuê/ngày:</strong> <span th:text="${house.pricePerDay}"></span> VNĐ/đêm</p>
         <p><strong>Số đêm:</strong> <span th:text="${numDays}">0</span></p>
-        <p class="total-price"><strong>Tổng tiền:</strong> <span th:text="${totalCost}" class="total">0 VNĐ</span></p>
+        <p class="total-price"><strong>Tổng tiền:</strong> <span th:text="${totalCost}" class="total">VNĐ</span> VNĐ</p>
 
         <!-- Nút xác nhận -->
         <form th:action="@{/rental/confirm}" method="post">

@@ -6,6 +6,7 @@ import org.example.profilecase5.Model.HouseImage;
 import org.example.profilecase5.Repository.HouseImageRepository;
 import org.example.profilecase5.Repository.HouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.data.domain.Page;
@@ -93,4 +94,22 @@ public class HouseService {
     public Page<House> getHousesByUserId(int userId, int page, int size) {
         return houseRepository.findByUser_UserId(userId, PageRequest.of(page, size));
     }
+
+    public Page<HouseImage> getMainImages(Pageable pageable) {
+        return houseImageRepository.findAll(pageable);
+    }
+    // Tìm kiếm nhà theo tên của chủ nhà hiện tại
+    public List<House> searchHousesByNameAndUser(String propertyName, int userId) {
+        return houseRepository.findByPropertyNameContainingIgnoreCaseAndUser_UserId(propertyName, userId);
+    }
+
+    // Tìm kiếm nhà theo trạng thái của chủ nhà hiện tại
+    public List<House> searchHousesByStatusAndUser(House.Status status, int userId) {
+        return houseRepository.findByStatusAndUser_UserId(status, userId);
+    }
+
+    // Lấy tất cả nhà của chủ nhà hiện tại
+
+
+
 }

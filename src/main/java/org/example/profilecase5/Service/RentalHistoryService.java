@@ -50,6 +50,11 @@ public class RentalHistoryService {
         rentalHistory.setStatus(RentalHistory.RentalStatus.Checked_out);
         rentalHistoryRepository.save(rentalHistory);
     }
+    public Page<RentalHistory> getAllRentalHistory(Pageable pageable) {
+        return rentalHistoryRepository.findAll(pageable);
+    }
+
+    // Method to get a rental history by ID
 
     public void cancel(RentalHistory rentalHistory) {
         rentalHistory.setStatus(RentalHistory.RentalStatus.Cancelled);

@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="/css/hosting.css">
-    <link rel="stylesheet" href="/css/rental_history.css">
 </head>
 <body>
 
@@ -14,8 +13,7 @@
     <a class="navbar-brand" href="#">
         <img href="/main" src="/images/avatar.jpg" alt="Logo">
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
@@ -33,8 +31,7 @@
                 <a class="nav-link" href="/hosting/messages">Tin nhắn</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Menu
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -51,12 +48,10 @@
         </ul>
         <ul class="navbar-nav">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img src="/images/img_1.png" alt="Thông báo" class="rounded-circle" width="30" height="30">
                 </a>
-                <div class="dropdown-menu dropdown-menu-right notification-panel"
-                     aria-labelledby="notificationsDropdown">
+                <div class="dropdown-menu dropdown-menu-right notification-panel" aria-labelledby="notificationsDropdown">
                     <h4>Thông báo</h4>
                     <a class="dropdown-item" href="#"><i class="fas fa-envelope mr-2"></i>Thông báo 1</a>
                     <a class="dropdown-item" href="#"><i class="fas fa-envelope mr-2"></i>Thông báo 2</a>
@@ -104,29 +99,14 @@
 
             <h5 class="card-title">Thông tin lịch sử cho thuê</h5>
             <p class="card-text">
-                <em>Ngày đặt phòng:</em> <span
-                    th:text="${#temporals.format(rentalHistory.startDate.toLocalDateTime(), 'dd/MM/yyyy HH:mm')}"></span><br>
-                <em>Ngày trả phòng:</em> <span
-                    th:text="${#temporals.format(rentalHistory.endDate.toLocalDateTime(), 'dd/MM/yyyy HH:mm')}"></span><br>
+                <em>Ngày đặt phòng:</em> <span th:text="${#temporals.format(rentalHistory.startDate.toLocalDateTime(), 'dd/MM/yyyy HH:mm')}"></span><br>
+                <em>Ngày trả phòng:</em> <span th:text="${#temporals.format(rentalHistory.endDate.toLocalDateTime(), 'dd/MM/yyyy HH:mm')}"></span><br>
                 <em>Số tiền:</em> <span th:text="${rentalHistory.totalCost}"></span> VND<br>
                 <em>Trạng thái:</em>
-                <span th:if="${rentalHistory.status.name == 'Pending'}"
-                      class="status pending">Chờ xử lý</span>
-                <span th:if="${rentalHistory.status.name == 'Checked_in'}"
-                      class="status checked-in">Đã nhận phòng</span>
-                <span th:if="${rentalHistory.status.name == 'Checked_out'}"
-                      class="status checked-out">Đã trả phòng</span>
-                <span th:if="${rentalHistory.status.name == 'Cancelled'}"
-                      class="status cancelled">Đã hủy</span>
-            </p>
-            <p class="card-text">
-                <a th:if="${rentalHistory.status.name == 'Pending'}"
-                   th:href="@{/hosting/rental-history/check-in/{id}(id=${rentalHistory.rentalId})}"
-                   class="action-btn check-in-btn">Check-in</a>
-
-                <a th:if="${rentalHistory.status.name == 'Checked_in'}"
-                   th:href="@{/hosting/rental-history/check-out/{id}(id=${rentalHistory.rentalId})}"
-                   class="action-btn check-out-btn">Check-out</a>
+                <span th:if="${rentalHistory.status.name == 'Pending'}" class="badge badge-warning">Chờ xử lý</span>
+                <span th:if="${rentalHistory.status.name == 'Checked_in'}" class="badge badge-success">Đã nhận phòng</span>
+                <span th:if="${rentalHistory.status.name == 'Checked_out'}" class="badge badge-primary">Đã trả phòng</span>
+                <span th:if="${rentalHistory.status.name == 'Cancelled'}" class="badge badge-danger">Đã hủy</span>
             </p>
         </div>
         <div class="card-footer text-muted">
