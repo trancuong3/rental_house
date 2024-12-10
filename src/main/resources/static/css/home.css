@@ -422,6 +422,7 @@
         border-radius: 10px;
         padding: 20px;
         width: 400px;
+        height: auto;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
         text-align: center;
     }
@@ -429,29 +430,40 @@
     /* Popup Title */
     .popup-content h4 {
         margin-bottom: 20px;
-        font-size: 18px;
+        font-size: 16px;
         font-weight: bold;
     }
 
-    /* Popup Items */
     .popup-items {
         display: grid;
-        grid-template-columns: repeat(2, 1fr); /* Two items per row */
-        gap: 10px;
+        grid-template-columns: repeat(3, 1fr); /* 1 hàng 3 ảnh */
+        gap: 20px; /* Khoảng cách giữa các mục */
+        justify-content: center;
+        align-items: center;
     }
 
     .popup-item {
-        background: #f7f7f7;
-        border-radius: 5px;
-        padding: 10px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
+        text-align: center;
+        width: 105px;
     }
 
-    .popup-item:hover {
-        background: #FF385C;
-        color: white;
+    .popup-item img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px; /* Tùy chọn bo góc */
+        transition: opacity 0.3s ease-in-out; /* Thêm animation */
     }
+
+    .popup-item img:hover {
+        opacity: 0.7; /* Hiệu ứng hover */
+    }
+
+    .popup-text {
+        margin-top: 8px;
+        font-size: 14px;
+        color: #333;
+    }
+
 
     /* Close Button */
     .close-popup {
