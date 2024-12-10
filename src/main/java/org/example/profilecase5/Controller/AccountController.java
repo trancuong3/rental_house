@@ -27,6 +27,9 @@ public class AccountController {
             User user = userService.getUserByUsername(username);
 
             if (user != null) {
+                // In thông tin role ra terminal
+                System.out.println("Role hiện tại của người dùng: " + user.getRole());
+
                 model.addAttribute("user", user);
                 return "account/account";
             } else {
@@ -38,6 +41,8 @@ public class AccountController {
             return "error";
         }
     }
+
+
 
     @PostMapping("/change-password")
     public String changePassword(@RequestParam String currentPassword,

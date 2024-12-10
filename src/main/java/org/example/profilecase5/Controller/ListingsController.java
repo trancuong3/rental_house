@@ -26,24 +26,34 @@ public class ListingsController {
     @GetMapping("")
     public String getListingsPage(Model model, Authentication authentication,
                                   @RequestParam(value = "page", defaultValue = "0") int page) {
-        String username = authentication.getName();  // Get the username from Authentication
-        User user = userService.getUserByUsername(username);  // Get the user from the service
-
-        // Check if the user exists
-        if (user != null) {
-            model.addAttribute("user", user);  // Pass the user to the model
-            Page<House> housePage = houseService.getHousesByUserId(user.getUserId(), page, 9);  // Get the user's houses with pagination
-            model.addAttribute("houses", housePage.getContent());
-            model.addAttribute("currentPage", page);
-
-            int totalHouses = (int) housePage.getTotalElements();
-            int pageSize = 9;
-            int totalPages = (int) Math.ceil((double) totalHouses / pageSize);
-            model.addAttribute("totalPages", totalPages);
-        } else {
-            model.addAttribute("error", "User not found");
+        // Validate authentication object
+        if (authentication == null || authentication.getName() == null) {
+            model.addAttribute("error", "User not authenticated");
+            return "error";
         }
 
-        return "/hosting/listings";  // Return the listings page
+        String username = authentication.getName();
+        User user = userService.getUserByUsername(username);
+
+        // Validate the retrieved user
+        if (user == null) {
+            model.addAttribute("error", "User not found");
+            return "error";
+        }
+
+        // Fetch paginated house listings for the user
+        Page<House> housePage = houseService.getHousesByUserId(user.getUserId(), page, 6);
+        model.addAttribute("user", user);
+        model.addAttribute("houses", housePage.getContent());
+        model.addAttribute("currentPage", page);
+
+        int totalHouses = (int) housePage.getTotalElements();
+        int pageSize = housePage.getSize(); // Use the actual page size from the Page object
+        int totalPages = housePage.getTotalPages();
+
+        model.addAttribute("totalHouses", totalHouses);
+        model.addAttribute("totalPages", totalPages);
+
+        return "/hosting/listings";  // Return the view for the listings page
     }
 }

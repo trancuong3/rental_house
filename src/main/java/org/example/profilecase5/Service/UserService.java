@@ -101,6 +101,10 @@ public class UserService {
     }
 
     public void saveUser(User user) {
+        if (user.getAvatar() == null || user.getAvatar().isEmpty()) {
+            // Gán giá trị mặc định cho avatar nếu không có avatar
+            user.setAvatar("/images/img_2.png");
+        }
         userRepository.save(user);
     }
 
