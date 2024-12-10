@@ -211,7 +211,8 @@
     <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
         <ul class="navbar-nav mx-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="/home">Hôm nay</a>
+                <a class="nav-link"
+                   th:href="@{${user.role.roleName == 'ROLE_OWNER' ? '/hosting' : '/home'}}">Hôm nay</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Lịch</a>
