@@ -7,6 +7,7 @@ import org.example.profilecase5.Model.User;
 import org.example.profilecase5.Service.HouseService;
 import org.example.profilecase5.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Set;
@@ -29,7 +31,10 @@ public class HomeController {
     private HouseService houseService;
 
     @GetMapping("")
-    public String getAccountPage(Model model, Authentication authentication) {
+    public String getAccountPage(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "6") int size,
+            Model model, Authentication authentication) {
         try {
             String username = authentication.getName();
             User user = userService.getUserByUsername(username);
@@ -42,8 +47,10 @@ public class HomeController {
 
             model.addAttribute("user", user);
 
-            List<HouseImage> mainImages = houseService.getMainImages();
-            model.addAttribute("mainImages", mainImages);
+            Page<HouseImage> paginatedImages = houseService.getPaginatedMainImages(page, size);
+            model.addAttribute("mainImages", paginatedImages.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", paginatedImages.getTotalPages());
 
             return "home/home";
         } catch (Exception e) {

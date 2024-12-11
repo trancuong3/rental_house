@@ -110,6 +110,11 @@ public class HouseService {
 
     // Lấy tất cả nhà của chủ nhà hiện tại
 
+    public Page<HouseImage> getPaginatedMainImages(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return houseImageRepository.findAll(pageable);
+    }
+
 
 
 }
