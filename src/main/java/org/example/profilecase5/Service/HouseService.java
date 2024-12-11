@@ -116,5 +116,11 @@ public class HouseService {
         return houseRepository.findAll(pageable);
     }
 
+    public Page<HouseImage> getPaginatedMainImages(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return houseImageRepository.findAll(pageable);
+    }
+
+
 
 }
