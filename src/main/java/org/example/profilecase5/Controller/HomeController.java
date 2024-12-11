@@ -33,7 +33,7 @@ public class HomeController {
     @GetMapping("")
     public String getAccountPage(
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "6") int size,
+            @RequestParam(value = "size", defaultValue = "9") int size,
             Model model, Authentication authentication) {
         try {
             String username = authentication.getName();

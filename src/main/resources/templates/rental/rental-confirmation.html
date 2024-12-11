@@ -89,6 +89,19 @@
     .price-details .total-price {
       text-align: right;
     }
+    .total, .extra-zeros {
+      color: #dc3545; /* Màu đỏ */
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    .total, .extra-zeros {
+      color: #dc3545; /* Màu đỏ */
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin: 0; /* Đảm bảo không có khoảng cách */
+      padding: 0;
+    }
+
   </style>
 </head>
 
@@ -124,9 +137,14 @@
       <div class="price-details">
         <h5 class="card-title mb-4">Chi tiết giá</h5>
 
-        <p><strong>Giá thuê/ngày:</strong> <span th:text="${house.pricePerDay}"></span> VNĐ/đêm</p>
+        <p><strong>Giá thuê/ngày:</strong> <span th:text="${house.pricePerDay}"></span>0 VNĐ/đêm</p>
         <p><strong>Số đêm:</strong> <span th:text="${numDays}">0</span></p>
-        <p class="total-price"><strong>Tổng tiền:</strong> <span th:text="${totalCost}" class="total">VNĐ</span> VNĐ</p>
+
+        <p class="total-price">
+          <strong>Tổng tiền:</strong>
+          <span class="total" th:text="${totalCost}">0</span><span class="extra-zeros">00</span> VNĐ
+        </p>
+
 
         <!-- Nút xác nhận -->
         <form th:action="@{/rental/confirm}" method="post">
@@ -145,4 +163,8 @@
   </div>
 </div>
 </body>
+<script>
+
+
+</script>
 </html>
