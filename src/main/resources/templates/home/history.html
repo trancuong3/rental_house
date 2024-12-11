@@ -102,13 +102,14 @@
       <td th:text="${rentalHistory.house.propertyName}"></td>
       <td th:text="${rentalHistory.startDate}"></td>
       <td th:text="${rentalHistory.endDate}"></td>
-      <td th:text="${rentalHistory.totalCost}"></td>
+      <td th:text="${rentalHistory.totalCost}"></td><td th:text="${#numbers.formatDecimal(rentalHistory.totalCost, 0, 3)}"></td>
+
     </tr>
     </tbody>
   </table>
   <div>
 
-    <h5>Tổng chi phí đã chi: <span id="total-spent" th:text="${totalSpent}"></span>  VND</h5>
+    <h5>Tổng chi phí đã chi: <span id="total-spent" th:text="${totalSpent}"></span>00 VND</h5>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
