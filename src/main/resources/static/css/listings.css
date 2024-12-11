@@ -69,7 +69,7 @@
 
 /* Notifications */
 .notification-panel {
-    width: 300px;
+    width: auto;
 }
 .notification-panel h4 {
     padding: 10px 15px;
