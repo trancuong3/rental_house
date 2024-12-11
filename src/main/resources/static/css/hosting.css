@@ -31,7 +31,7 @@
     font-weight: bold; /* In đậm chữ */
 }
 .notification-panel {
-    width: 300px; /* Định kích thước cho bảng thông báo */
+    width: auto; /* Định kích thước cho bảng thông báo */
 }
 
 .notification-panel a {
