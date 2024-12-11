@@ -11,6 +11,8 @@ import org.example.profilecase5.Service.UserService;
 import org.example.profilecase5.Service.WaitingOwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -71,19 +73,25 @@ public class AdminController {
         return "admin/userDetail";  // Tên file Thymeleaf
     }
     @GetMapping("/house")
-    public String house(Model model) {
-        // Lấy danh sách tất cả nhà
-        List<House> house = houseService.getAllHouses();
+    public String house(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        // Create a Pageable object with the page and size parameters
+        Pageable pageable = PageRequest.of(page, size);
 
-        // Lấy top 5 căn nhà có nhiều lượt thuê nhất
+        // Get paginated list of houses
+        Page<House> housePage = houseService.getHouses(pageable);
+
+        // Get top 5 rented houses
         List<House> topHouses = houseService.getTop5MostRentedHouses();
 
-        // Thêm danh sách nhà và top 5 vào model
-        model.addAttribute("house", house);
+        // Add the houses and pagination info to the model
+        model.addAttribute("housePage", housePage);
         model.addAttribute("topHouses", topHouses);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", housePage.getTotalPages());
 
         return "admin/house";
     }
+
 
 
     @GetMapping("/waiting-owners")

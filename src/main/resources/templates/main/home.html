@@ -6,6 +6,13 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="/css/home.css">
+  <style>
+    .banner_container img {
+      width: 90%; /* Điều chỉnh chiều rộng theo tỷ lệ phần trăm */
+      max-width: 100%; /* Đảm bảo hình ảnh không vượt quá chiều rộng của container */
+    }
+
+  </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -69,15 +76,20 @@
   </div>
 </nav>
 
-<div class="container mt-4"> <!-- Banner -->
+
+<div class="carousel-inner">
+
+  <div class="banner_container">
+    <img src="../../images/banner12.png" style="width: 100%; height: auto;" />
+  </div>
+
+
+</div>
+
+<div class="container mt-4">
+  <!--Banner-->
   <div id="homepageBanner" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <th:block th:each="banner, stat : ${banners}">
-        <div class="carousel-item" th:classappend="${stat.index == 0} ? 'active'">
-          <img th:src="${banner}" class="d-block w-100" alt="Banner">
-        </div>
-      </th:block>
-    </div>
+
 
     <!-- Nút điều khiển trước -->
     <button class="carousel-control-prev" type="button" data-bs-target="#homepageBanner" data-bs-slide="prev">
@@ -90,7 +102,67 @@
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden"></span>
     </button>
+
   </div>
+  <!-- Search Bar -->
+  <div class="search-bar">
+    <div class="search-bar-item" onclick="showPopup()">
+      <h4>Địa điểm</h4>
+      <p>Tìm kiếm điểm đến</p>
+    </div>
+    <div class="search-bar-item" >
+      <h4>Nhận phòng</h4>
+      <p>Thêm ngày</p>
+    </div>
+    <div class="search-bar-item" >
+      <h4>Trả phòng</h4>
+      <p>Thêm ngày</p>
+    </div>
+    <div class="search-bar-item" >
+      <h4>Khách</h4>
+      <p>Thêm khách</p>
+    </div>
+    <button class="search-button" >
+      <i class="fa fa-search"></i>
+    </button>
+  </div>
+
+  <!-- Popup -->
+  <div class="popup-overlay" id="popup">
+    <div class="popup-content">
+      <h4>Tìm kiếm theo khu vực</h4>
+      <div class="popup-items">
+        <div class="popup-item">
+          <img src="https://a0.muscache.com/pictures/f9ec8a23-ed44-420b-83e5-10ff1f071a13.jpg?im_w=320" alt="Châu Âu">
+          <div class="popup-text">Châu Âu</div>
+        </div>
+        <div class="popup-item">
+          <img src="https://a0.muscache.com/im/pictures/7b5cf816-6c16-49f8-99e5-cbc4adfd97e2.jpg?im_w=320" alt="Thái Lan">
+          <div class="popup-text">Thái Lan</div>
+        </div>
+        <div class="popup-item">
+          <img src="https://a0.muscache.com/im/pictures/26891a81-b9db-4a9c-8aab-63486b7e627c.jpg?im_w=320" alt="Hoa Kỳ">
+          <div class="popup-text">Hoa Kỳ</div>
+        </div>
+        <div class="popup-item">
+          <img src="https://a0.muscache.com/im/pictures/d77de9f5-5318-4571-88c7-e97d2355d20a.jpg?im_w=320" alt="Hàn Quốc">
+          <div class="popup-text">Hàn Quốc</div>
+        </div>
+        <div class="popup-item">
+          <img src="https://a0.muscache.com/im/pictures/c193e77c-0b2b-4f76-8101-b869348d8fc4.jpg?im_w=320" alt="Úc">
+          <div class="popup-text">Úc</div>
+        </div>
+        <div class="popup-item">
+          <img src="https://a0.muscache.com/im/pictures/42a1fb0f-214c-41ec-b9d7-135fbbdb8316.jpg?im_w=320" alt="Úc">
+          <div class="popup-text">Thái Lan</div>
+        </div>
+      </div>
+
+
+      <button class="close-popup" onclick="hidePopup()">Đóng</button>
+    </div>
+  </div>
+
 
 
   <!-- Filters -->
@@ -139,22 +211,34 @@
       <img src="https://a0.muscache.com/pictures/4d4a4eba-c7e4-43eb-9ce2-95e1d200d10e.jpg" alt="Amazing Pools" class="rounded" style="width: 25px; height: 25px">
       <p class="content_filter">Nhà Trên Cây</p>
     </div>
-
+    <div class="filter-item">
+      <img src="https://a0.muscache.com/pictures/3271df99-f071-4ecf-9128-eb2d2b1f50f0.jpg" alt="Amazing Pools" class="rounded" style="width: 25px; height: 25px">
+      <p class="content_filter">Nhà Nhỏ</p>
+    </div>
+    <div class="filter-item">
+      <img src="https://a0.muscache.com/pictures/89faf9ae-bbbc-4bc4-aecd-cc15bf36cbca.jpg" alt="Amazing Pools" class="rounded" style="width: 25px; height: 25px">
+      <p class="content_filter">Nhà mái vòm</p>
+    </div>
 
 
 
   </div>
 
-  <!-- Cards -->
+  <!-- Featured Listings -->
   <div class="row">
-    <div th:each="image : ${mainImages}" class="col-md mb-4">
-      <div class="card" onclick="showLoginAlert()">
-        <img th:src="${image.imageUrl != null && image.imageUrl != '' ? 'data:image/jpeg;base64,' + image.imageUrl : '/images/img_2.png'}" class="card-img-top" alt="Main Image">
+    <!-- Dynamically rendered images and property details using Thymeleaf with static layout -->
+    <div th:each="image : ${mainImages}" class="col-md-4 mb-4">
+      <div class="card">
+        <a th:href="@{/home/detail/{id}(id=${image.house.houseId})}">
+          <img th:src="${image.imageUrl != null && image.imageUrl != '' ? 'data:image/jpeg;base64,' + image.imageUrl : '/images/img_2.png'}" class="card-img-top" alt="Main Image">
+        </a>
         <div class="card-body">
           <h5 class="card-title" th:text="${image.house.propertyName}"></h5>
           <p class="card-text">
-            <span th:text="${image.house.address}"></span> -
-            <span th:text="${image.house.pricePerDay}"></span> (VND)/days
+            Địa Chỉ: <span th:text="${image.house.address}"></span> -
+          </p>
+          <p class="card-text">
+            Giá: <span id="price" th:data-raw-price="${image.house.pricePerDay}"></span> VND/Ngày
           </p>
         </div>
       </div>
@@ -165,14 +249,16 @@
 <!-- Footer -->
 <div class="footer">
 
-
+  <div>
+    <img src="../../images/logo.png" width="100" />
+  </div>
   <!-- Navigation Menu -->
   <div class="boxNav" id="menu">
-    <div>Home</div>
-    <div>Home</div>
-    <div>Home</div>
-    <div>Home</div>
-    <div>Home</div>
+    <div>Trang chủ</div>
+    <div>Lịch sử thuê nhà </div>
+    <div>Phòng Cho Thuê</div>
+    <div>Tin nhan</div>
+    <div>menu</div>
 
   </div>
 
