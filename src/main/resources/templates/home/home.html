@@ -244,7 +244,7 @@
                        Địa Chỉ: <span th:text="${image.house.address}"></span> -
                     </p>
                     <p class="card-text">
-                        Giá: <span id="price" th:data-raw-price="${image.house.pricePerDay}"></span> VND/Ngày
+                        Giá: <span class="price" th:data-raw-price="${image.house.pricePerDay}"></span>.000 VND/Ngày
                     </p>
                 </div>
             </div>
@@ -300,10 +300,7 @@
     </div>
 </div>
 
-<!-- Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 
 <script>
 
@@ -316,14 +313,28 @@
         const popup = document.getElementById('popup');
         popup.style.display = 'none'; // Hide the popup
     }
+
     function formatCurrency(amount) {
-        return new Intl.NumberFormat('vi-VN').format(amount);
+        return new Intl.NumberFormat('vi-VN').format(amount); // Remove currency symbol
     }
+
+
+    // Lấy tất cả các phần tử có class 'price' và định dạng
+    const priceElements = document.querySelectorAll('.price');
+    priceElements.forEach(priceElement => {
+        const rawPrice = priceElement.getAttribute('data-raw-price');
+        if (rawPrice) {
+            priceElement.textContent = formatCurrency(rawPrice);
+        }
+    });
 
     // Lấy số tiền từ thuộc tính `data-raw-price` và format
     const priceElement = document.getElementById('price');
     const rawPrice = priceElement.getAttribute('data-raw-price');
     priceElement.textContent = formatCurrency(rawPrice);
 </script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
