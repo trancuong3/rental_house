@@ -5,6 +5,32 @@
     <title>Profile Page</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 80%; /* Tăng chiều rộng của container */
+        }
+        form label {
+            font-size: 1.2rem; /* Tăng kích thước font của nhãn */
+        }
+
+        form .form-control {
+            font-size: 1.1rem; /* Tăng kích thước font của ô nhập liệu */
+            padding: 10px; /* Tăng khoảng cách bên trong */
+        }
+
+        form button {
+            font-size: 1rem; /* Tăng kích thước chữ của nút */
+            padding: 10px 20px; /* Tăng kích thước nút */
+        }
+
+        .content {
+            flex: 1;
+        }
         .btn-hover:hover {
             background-color: #f0f0f0;
         }
@@ -121,11 +147,10 @@
         .card {
             height: 100%;
         }
-
         .card-body {
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
+            justify-content: flex-start; /* Đẩy nội dung lên trên */
             height: 100%;
         }
 
@@ -140,6 +165,16 @@
             object-fit: cover;
             width: 100%;
         }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px 0;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
         .footer h6 {
             font-weight: bold;
             margin-bottom: 15px;
@@ -177,6 +212,7 @@
         .footer .fab:hover, .footer .fas.fa-globe:hover {
             color: #343a40;
         }
+
         .footer-link {
             color: #6c757d;
             text-decoration: none;
@@ -277,7 +313,7 @@
     <div class="header-content">
         <h1>Hồ sơ của tôi</h1>
         <div>
-            <a href="javascript:void(0)" class="btn btn-secondary btn-hover" onclick="enableEdit()" style="margin-left: -700px;">Chỉnh sửa hồ sơ </a>
+            <a href="javascript:void(0)" class="btn btn-secondary btn-hover" onclick="enableEdit()" style="margin-left: -850px;">Chỉnh sửa hồ sơ </a>
         </div>
     </div>
     <div class="row mt-4">
@@ -285,17 +321,18 @@
             <div class="card">
                 <img th:src="${user.avatar != null && user.avatar != '' ? 'data:image/jpeg;base64,' + user.avatar : '/images/img_2.png'}"
                      alt="Avatar"
-                     class="avatar-image">
+                     class="avatar-image"
+                     style="margin-top:10px">
                 <div class="card-body">
                     <p class="card-text">Ảnh đại diện của bạn</p>
-                    <button class="btn btn-outline-primary btn-underline" onclick="showUrlForm()">Cập Nhật</button>
+                    <button class="btn btn-outline-primary btn-underline" id="updateBtn" onclick="showUrlForm()">Cập Nhật</button>
                     <div id="urlForm" style="display: none;">
                         <form action="/profile/update-avatar" method="post" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="avatar">Chọn ảnh đại diện:</label>
-                                <input type="file" id="avatar" name="avatar" class="form-control">
+                                <input type="file" id="avatar" name="avatar" class="form-control" style="padding: 5px; ">
                             </div>
-                            <button type="submit" class="btn btn-primary">Cập nhật ảnh</button>
+                            <button type="submit" class="btn btn-primary" id="submitAvatarBtn">Cập nhật ảnh</button>
                             <button type="button" class="btn btn-secondary" onclick="cancelUrlForm()">Hủy</button>
                         </form>
                     </div>
@@ -329,9 +366,9 @@
                         <label for="address">Địa chỉ</label>
                         <input class="form-control" type="text" id="address" name="address" th:value="${user.address}" readonly />
                     </div>
-                    <div class="submit-btn">
-                        <button type="submit" id="submitBtn" style="display:none;">Cập nhật</button>
-                        <button type="button" onclick="hideEditForm()" style="display:none;" id="cancelBtn">Hủy</button>
+                    <div class="submit-btn" style="margin-top:10px">
+                        <button type="submit" id="submitBtn" style="display:none;" class="btn btn-primary">Cập nhật</button>
+                        <button type="button" onclick="hideEditForm()" style="display:none;" id="cancelBtn" class="btn btn-secondary">Hủy</button>
                     </div>
                 </div>
             </form>
@@ -339,7 +376,7 @@
     </div>
 </div>
 
-<footer class="footer bg-light text-center py-4">
+<footer class="footer">
     <p class="text-muted">&copy; 2024 Airbnb - <a href="#">Privacy</a> - <a href="#">Terms</a></p>
     <ul class="list-inline">
         <li class="list-inline-item"><a href="#" class="footer-link">Điều khoản sử dụng</a></li>
@@ -353,16 +390,23 @@
     </div>
 </footer>
 
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     function showUrlForm() {
+        // Hiển thị form URL và hai nút "Cập nhật ảnh" và "Hủy"
         document.getElementById("urlForm").style.display = "block";
+
+        // Ẩn nút "Cập Nhật"
+        document.getElementById("updateBtn").style.display = "none";
     }
 
     function cancelUrlForm() {
+        // Ẩn form URL và hiển thị lại nút "Cập Nhật"
         document.getElementById("urlForm").style.display = "none";
+        document.getElementById("updateBtn").style.display = "inline-block";
     }
     function enableEdit() {
         // Remove the readonly attribute to enable editing
@@ -374,6 +418,9 @@
         // Show submit and cancel buttons
         document.getElementById("submitBtn").style.display = "inline-block";
         document.getElementById("cancelBtn").style.display = "inline-block";
+
+        // Ẩn nút "Cập nhật"
+        document.getElementById("editBtn").style.display = "none";
     }
 
     // Function to hide the edit form (can be used with the cancel button)
@@ -387,16 +434,6 @@
         // Hide the submit and cancel buttons
         document.getElementById("submitBtn").style.display = "none";
         document.getElementById("cancelBtn").style.display = "none";
-    }
-    function showUrlForm() {
-        document.getElementById("urlForm").style.display = "block";
-    }
-    function showUrlForm() {
-        document.getElementById("urlForm").style.display = 'block';
-    }
-
-    function cancelUrlForm() {
-        document.getElementById("urlForm").style.display = 'none';
     }
 
     function toggleDropdown() {
@@ -414,13 +451,7 @@
         }
     }
 
-    function showUrlForm() {
-        document.getElementById("urlForm").style.display = "block";
-    }
 
-    function cancelUrlForm() {
-        document.getElementById("urlForm").style.display = "none";
-    }
 </script>
 </body>
 </html>
