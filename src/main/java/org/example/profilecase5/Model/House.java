@@ -167,4 +167,5 @@ public class House {
     public void setUser(User user) {
         this.user = user;
     }
+
 }
