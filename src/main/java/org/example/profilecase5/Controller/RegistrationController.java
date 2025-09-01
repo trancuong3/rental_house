@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/register")
@@ -27,7 +28,7 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public String registerUser(@Validated @ModelAttribute("user") User user, BindingResult result, Model model) {
+    public String registerUser(@Validated @ModelAttribute("user") User user, BindingResult result, Model model,  RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "register/register";
         }
@@ -46,6 +47,7 @@ public class RegistrationController {
             result.rejectValue("phone", "error.phone", "Số điện thoại đã tồn tại.");
             return "register/register";
         }
+        redirectAttributes.addFlashAttribute("successMessage", "Đăng ký thành công! Vui lòng đăng nhập.");
         return "redirect:/login";
     }
 

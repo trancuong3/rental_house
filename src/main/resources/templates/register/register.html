@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký</title>
-    <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/register.css}">
 </head>
 <body>
 
-<!-- Navbar -->
 <nav class="navbar navbar-light bg-light">
     <div class="container">
         <a class="navbar-brand" href="/main">
@@ -18,7 +16,8 @@
             Airbnb
         </a>
         <div class="dropdown ml-2">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Đăng ký Người dùng
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -30,86 +29,165 @@
     </div>
 </nav>
 
-<!-- Registration Form Container -->
 <div class="materialContainer">
     <div class="box">
         <form id="registerForm" th:action="@{/register}" th:object="${user}" method="post">
             <h2 class="title">Đăng kí tài khoản Người dùng</h2>
 
             <div class="row">
-                <!-- Bên trái: Họ và Tên, Tên người dùng, Email, Số điện thoại -->
                 <div class="col-md-6">
-                    <!-- Fullname Field -->
                     <div class="input">
                         <label for="fullname">Họ và Tên</label>
                         <input type="text" id="fullname" name="fullname" th:field="*{fullname}" placeholder="Họ và tên" required>
                         <span class="error-message text-danger" id="fullname_error"></span>
                     </div>
 
-                    <!-- Username Field -->
                     <div class="input">
                         <label for="username">Tên người dùng</label>
                         <input type="text" id="username" name="username" th:field="*{username}" placeholder="Tên người dùng" required>
                         <span class="error-message text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
                     </div>
 
-                    <!-- Email Field -->
                     <div class="input">
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" th:field="*{email}" placeholder="Email" required>
                         <span class="error-message text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                     </div>
 
-                    <!-- Phone Field -->
                     <div class="input">
                         <label for="phone">Số điện thoại</label>
-                        <input type="tel" id="phone" name="phone" th:field="*{phone}" placeholder="Số điện thoại" required>
-                        <span class="error-message text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+                        <input type="tel" id="phone" name="phone" th:field="*{phone}"
+                               inputmode="numeric" placeholder="Số điện thoại"
+                               required>
+                        <span class="error-message text-danger" id="phone_error"></span>
                     </div>
                 </div>
 
-                <!-- Bên phải: Mật khẩu, Nhập lại mật khẩu, Địa chỉ, Nút đăng ký -->
                 <div class="col-md-6">
-                    <!-- Password Field -->
                     <div class="input">
                         <label for="password">Mật khẩu</label>
-                        <input type="password" id="password" name="password" th:field="*{password}" placeholder="Mật khẩu" minlength="6" maxlength="32" required>
+                        <input type="password" id="password" name="password" th:field="*{password}"
+                               placeholder="Mật khẩu" minlength="6" maxlength="32" required>
                         <span class="error-message text-danger" id="password_error"></span>
                     </div>
 
-                    <!-- Confirm Password Field -->
                     <div class="input">
                         <label for="confirmPassword">Nhập lại mật khẩu</label>
-                        <input type="password" name="confirmPassword" id="confirmPassword" th:field="*{confirmPassword}" placeholder="Xác nhận mật khẩu" required>
+                        <input type="password" name="confirmPassword" id="confirmPassword"
+                               th:field="*{confirmPassword}" placeholder="Xác nhận mật khẩu" required>
                         <span class="error-message text-danger" id="confirmPassword_error"></span>
                     </div>
 
-                    <!-- Address Field -->
                     <div class="input">
                         <label for="address">Địa chỉ</label>
                         <input type="text" id="address" name="address" th:field="*{address}" placeholder="Địa chỉ">
                     </div>
 
-                    <!-- Submit Button -->
                     <div class="button">
                         <button type="submit" class="btn btn-primary">Đăng ký</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Hidden Fields -->
             <input type="hidden" name="status" th:field="*{status}" value="ACTIVE">
             <input type="hidden" name="role" th:field="*{role.roleId}" th:value="2">
         </form>
     </div>
 </div>
 
-
-<!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script th:src="@{/js/register.js}"></script>
 <script src="register.js"></script>
+
+<!-- CHỈ GIỮ MỘT SCRIPT DUY NHẤT -->
+<script>
+    (function () {
+        const form = document.getElementById("registerForm");
+        const inputs = Array.from(form.querySelectorAll("input:not([type='hidden'])"));
+        const phoneInput = document.getElementById("phone");
+        const phoneError = document.getElementById("phone_error");
+        const passwordInput = document.getElementById("password");
+        const confirmPasswordInput = document.getElementById("confirmPassword");
+        const confirmPasswordError = document.getElementById("confirmPassword_error");
+        const addressInput = document.getElementById("address");
+
+        // 1) Enter => focus next, riêng ô cuối submit
+        inputs.forEach((input, idx) => {
+            input.addEventListener("keydown", function (e) {
+                if (e.key === "Enter" && input.type !== "submit") {
+                    e.preventDefault();
+                    if (input === addressInput) {
+                        form.requestSubmit();
+                    } else {
+                        const next = inputs[idx + 1];
+                        if (next) next.focus();
+                    }
+                }
+            });
+        });
+
+
+
+
+        function showPhoneError(msg) {
+            phoneError.textContent = msg || "";
+            phoneInput.setCustomValidity(msg || "");
+            if (msg) {
+                phoneInput.classList.add("is-invalid");
+            } else {
+                phoneInput.classList.remove("is-invalid");
+            }
+        }
+
+        const PHONE_RE = /^[0-9]{10,11}$/;
+
+        function validatePhone() {
+            const v = (phoneInput.value || "").trim();
+            if (!v) {
+                showPhoneError(""); // không báo khi để trống (vì required đã xử lý)
+                return true;
+            }
+            if (!PHONE_RE.test(v)) {
+                showPhoneError("Số điện thoại phải gồm 10 hoặc 11 chữ số.");
+                return false;
+            }
+            showPhoneError("");
+            return true;
+        }
+
+        phoneInput.addEventListener("input", validatePhone);
+
+        // 3) So sánh mật khẩu và nhập lại mật khẩu
+        function validatePasswords() {
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                confirmPasswordError.textContent = "Mật khẩu nhập lại không khớp.";
+                confirmPasswordInput.setCustomValidity("Mật khẩu không khớp");
+                return false;
+            } else {
+                confirmPasswordError.textContent = "";
+                confirmPasswordInput.setCustomValidity("");
+                return true;
+            }
+        }
+
+        passwordInput.addEventListener("input", validatePasswords);
+        confirmPasswordInput.addEventListener("input", validatePasswords);
+
+        // 4) Chặn submit nếu có lỗi
+        form.addEventListener("submit", function (e) {
+            let ok = true;
+            if (!validatePhone()) ok = false;
+            if (!validatePasswords()) ok = false;
+            if (!ok) {
+                e.preventDefault();
+                form.reportValidity && form.reportValidity();
+            }
+        });
+    })();
+</script>
+
+
 </body>
 </html>

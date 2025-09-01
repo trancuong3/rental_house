@@ -1,127 +1,152 @@
-/* General Styling */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8f9fa;
+/* Reset cơ bản */
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-/* Centering the Registration Form */
+/* Tổng thể */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #74b9ff, #a29bfe);
+    min-height: 100vh;
+}
+
+/* Container chính */
 .materialContainer {
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Căn chỉnh phần tử con (box) ở phía trên */
-    min-height: 80vh;
-    padding: 75px;
+    align-items: center;
+    padding: 60px 20px;
 }
 
+/* Box form */
 .box {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    /*width: 100%;*/
-    width: 1200px;
+    background: #fff;
+    padding: 40px 50px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 1100px;
+    animation: fadeIn 0.5s ease-in-out;
 }
 
-/* Form Title */
+/* Tiêu đề form */
 .title {
-    font-size: 28px;
-    color: #333;
+    font-size: 30px;
+    font-weight: bold;
+    color: #2d3436;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    letter-spacing: 0.5px;
 }
 
-/* Styling Input Fields */
+/* Input */
 .input {
-    position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .input label {
     font-weight: 600;
-    color: #333;
-    margin-bottom: 8px;
+    font-size: 14px;
+    color: #2d3436;
+    margin-bottom: 6px;
     display: block;
 }
 
 .input input {
     width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+    padding: 12px 15px;
+    font-size: 15px;
+    border: 1px solid #dfe6e9;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background: #f9fbfd;
 }
 
 .input input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    border-color: #0984e3;
+    background: #fff;
+    box-shadow: 0 0 6px rgba(9, 132, 227, 0.4);
     outline: none;
 }
 
-/* Error Message */
+/* Thông báo lỗi */
 .error-message {
-    position: absolute;
-    bottom: -18px;
-    left: 0;
-    font-size: 12px;
-    color: red;
-    display: none;
+    font-size: 13px;
+    margin-top: 5px;
+    color: #d63031;
 }
 
-.error-message:not(:empty) {
-    display: block;
-}
-
-/* Submit Button */
+/* Nút đăng ký */
 .button {
     text-align: center;
-    margin-top: 52px; /* Thêm margin-top để đẩy nút xuống */
+    margin-top: 30px;
 }
-
 
 .button button {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     font-size: 17px;
-    background-color: #007bff;
-    color: white;
+    font-weight: 600;
+    background: linear-gradient(135deg, #0984e3, #6c5ce7);
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
+    color: white;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .button button:hover {
-    background-color: #0056b3;
+    background: linear-gradient(135deg, #74b9ff, #a29bfe);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 }
 
-/* Responsive for Small Screens */
+/* Navbar */
+.navbar {
+    background: #fff !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .navbar-brand {
+    font-weight: 700;
+    color: #2d3436 !important;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .box {
+        padding: 30px 25px;
+    }
+    .title {
+        font-size: 26px;
+    }
+}
+
 @media (max-width: 576px) {
     .materialContainer {
-        padding: 10px;
+        padding: 30px 10px;
     }
     .box {
-        width: 100%;
+        padding: 25px 20px;
     }
-}
-.error-message {
-    font-size: 0.9em;
-    color: red;
-    margin-top: 5px;
-}
-/* Điều chỉnh chiều rộng để các cột không bị quá rộng trên màn hình nhỏ */
-@media (max-width: 768px) {
-    .materialContainer .box {
-        padding: 150px;
-    }
-    .materialContainer .box .col-md-6 {
-        width: 100%;
+    .title {
+        font-size: 22px;
     }
 }
 
-.navbar {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ với độ mờ */
 
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+button[type="submit"] {
+    margin-top: 20px;
 }

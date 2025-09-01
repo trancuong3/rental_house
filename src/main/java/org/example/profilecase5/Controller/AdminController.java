@@ -120,9 +120,9 @@ public class AdminController {
                 "Đăng ký làm chủ nhà được chấp nhận",
                 "Đăng ký làm chủ nhà được chấp nhận\n" +
 
-                        "                        \"Chúng tôi xin trân trọng thông báo rằng đơn đăng ký của quý vị vào  đã được chấp nhận.\n" +
+                        "                        Chúng tôi xin trân trọng thông báo rằng đơn đăng ký của quý vị vào  đã được chấp nhận.\n" +
                         "                        \n" +
-                        "                        \"Sau khi xem xét và đánh giá hồ sơ của quý vị, chúng tôi rất vui mừng thông báo rằng quý vị đã đủ điều kiện tham gia. Chúng tôi sẽ liên hệ với quý vị để thông báo chi tiết về các bước tiếp theo và các thông tin liên quan.\n" +
+                        "                        Sau khi xem xét và đánh giá hồ sơ của quý vị, chúng tôi rất vui mừng thông báo rằng quý vị đã đủ điều kiện tham gia. Chúng tôi sẽ liên hệ với quý vị để thông báo chi tiết về các bước tiếp theo và các thông tin liên quan.\n" +
                         "                        \n" +
                                                "Chúng tôi mong muốn được hợp tác và chào đón quý vị tham gia chương trình của chúng tôi.\n"+
 

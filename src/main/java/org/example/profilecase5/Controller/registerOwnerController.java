@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class registerOwnerController {
     }
 
     @PostMapping
-    public String registerOwnerUser(@Validated @ModelAttribute("user") WaitingOwner waitingOwner, BindingResult result, Model model) {
+    public String registerOwnerUser(@Validated @ModelAttribute("user") WaitingOwner waitingOwner, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "Owner/register";
         }
@@ -56,6 +57,7 @@ public class registerOwnerController {
             result.rejectValue("phone", "error.phone", "Số điện thoại đã tồn tại.");
             return "Owner/register";
         }
+        redirectAttributes.addFlashAttribute("successMessage", "Đăng ký chủ nhà thành công! Vui lòng đăng nhập.");
         return "redirect:/login";
     }
 }
