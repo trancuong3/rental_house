@@ -9,5 +9,4 @@ public class ProfileCase5Application {
     public static void main(String[] args) {
         SpringApplication.run(ProfileCase5Application.class, args);
     }
-
 }
