@@ -187,3 +187,12 @@
 .notification-panel .fa-envelope {
     font-size: 20px; /* Điều chỉnh kích thước biểu tượng */
 }
+    /* Avatar góc phải (ảnh user)*/
+    .navbar .dropdown img,
+    .avatar-user {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 1px solid #ddd;
+    }
