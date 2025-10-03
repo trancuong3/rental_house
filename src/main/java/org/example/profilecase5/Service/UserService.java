@@ -1,5 +1,6 @@
 package org.example.profilecase5.Service;
 
+import org.example.profilecase5.Exception.User.PhoneAlreadyExistsException;
 import org.example.profilecase5.Model.RentalHistory;
 import org.example.profilecase5.Exception.User.EmailAlreadyExistsException;
 import org.example.profilecase5.Exception.User.PasswordValidationException;
@@ -37,7 +38,9 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
     }
-
+    public boolean isPhoneExist(String phone) {
+        return userRepository.existsByPhone(phone); // <-- thêm phương thức này
+    }
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
@@ -74,6 +77,16 @@ public class UserService {
             return passwordMatches && hasRole;
         }
         return false;
+    }
+    public void deleteUserById(int id) {
+        userRepository.deleteById(id);
+    }
+    public List<Role> getAllRoles() {
+        return roleRepository.findAll();
+    }
+    public Role getRoleById(int roleId) {
+        return roleRepository.findById(roleId)
+                .orElseThrow(() -> new RuntimeException("Role not found with id: " + roleId));
     }
 
     public boolean isUsernameExist(String username) {
@@ -178,6 +191,57 @@ public class UserService {
         userRepository.save(user);
         encryptAllPasswords();
     }
+    // Trong UserService
+    public void registerOwner(User owner) {
+        // Kiểm tra username
+        if (isUsernameExist(owner.getUsername())) {
+            throw new UsernameAlreadyExistsException("Vui lòng sử dụng tên đăng nhập khác.");
+        }
+
+        // Kiểm tra email
+        if (isEmailExist(owner.getEmail())) {
+            throw new EmailAlreadyExistsException("Vui lòng sử dụng email khác.");
+        }
+
+        // Kiểm tra số điện thoại
+        if (isPhoneExist(owner.getPhone())) {
+            throw new PhoneAlreadyExistsException("Số điện thoại đã tồn tại.");
+        }
+
+        // Kiểm tra mật khẩu xác nhận
+        if (owner.getConfirmPassword() == null || owner.getConfirmPassword().isEmpty()) {
+            throw new PasswordValidationException("Xác nhận mật khẩu không được để trống");
+        }
+
+        if (!owner.getPassword().equals(owner.getConfirmPassword())) {
+            throw new PasswordValidationException("Mật khẩu xác nhận không khớp");
+        }
+
+        // Kiểm tra độ dài mật khẩu
+        if (owner.getPassword().length() < 6 || owner.getPassword().length() > 32) {
+            throw new PasswordValidationException("Mật khẩu phải có độ dài từ 6 đến 32 ký tự");
+        }
+
+        Timestamp currentTimestamp = Timestamp.from(Instant.now());
+        owner.setCreatedAt(currentTimestamp);
+        owner.setUpdatedAt(currentTimestamp);
+
+        // Encode mật khẩu
+        owner.setPassword(passwordEncoder.encode(owner.getPassword()));
+        owner.setConfirmPassword(passwordEncoder.encode(owner.getConfirmPassword()));
+
+        // 🔹 Set role mặc định Owner (roleId = 3)
+        Role ownerRole = roleRepository.findById(3)
+                .orElseThrow(() -> new RuntimeException("Role Owner không tồn tại"));
+        owner.setRole(ownerRole);
+
+        owner.setStatus(User.Status.Active);
+
+        userRepository.save(owner);
+
+        encryptAllPasswords(); // nếu bạn vẫn muốn gọi
+    }
+
 
     public void registerOwnerUser(User user) {
         if (isUsernameExist(user.getUsername())) {

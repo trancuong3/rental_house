@@ -1,0 +1,32 @@
+<h2>Thêm Owner</h2>
+<div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+<form th:action="@{/admin/owner/add}" th:object="${owner}" method="post">
+  <div class="form-group">
+    <label>Họ và tên</label>
+    <input type="text" th:field="*{fullname}" class="form-control" required>
+  </div>
+  <div class="form-group">
+    <label>Username</label>
+    <input type="text" th:field="*{username}" class="form-control" required>
+  </div>
+  <div class="form-group">
+    <label>Email</label>
+    <input type="email" th:field="*{email}" class="form-control" required>
+  </div>
+  <div class="form-group">
+    <label>Số điện thoại</label>
+    <input type="tel" th:field="*{phone}" class="form-control" required>
+  </div>
+  <div class="form-group">
+    <label>Địa chỉ</label>
+    <input type="text" th:field="*{address}" class="form-control">
+  </div>
+
+  <div class="alert alert-info">
+    Mật khẩu sẽ được tạo tự động và gửi qua email.
+  </div>
+
+  <button type="submit" class="btn btn-success">Thêm Owner</button>
+  <a href="/admin/owners" class="btn btn-secondary">Quay lại</a>
+</form>

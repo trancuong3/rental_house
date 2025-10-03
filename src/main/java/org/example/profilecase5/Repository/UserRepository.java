@@ -16,5 +16,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT u FROM User u WHERE u.role.roleId = 3")
     List<User> findAllOwners();
     Optional<User> findByUserId(int userId);
-
+    boolean existsByPhone(String phone);
 }

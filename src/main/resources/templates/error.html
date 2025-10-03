@@ -1,23 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        pre { white-space: pre-wrap; word-break: break-word; max-height: 60vh; overflow:auto; background:#f7f7f7; padding:10px; border-radius:4px; }
+    </style>
 </head>
 <body>
 <div class="container mt-4">
     <h1>Error occurred</h1>
-    <p><strong>Error Message:</strong> <span th:text="${errorMessage}"></span></p>
+    <p><strong>Error Message:</strong> <span th:text="${errorMessage}">[errorMessage]</span></p>
+    <p><strong>Request:</strong> <span th:text="${requestUri}">[requestUri]</span></p>
+    <p><strong>Exception class:</strong> <span th:text="${exceptionClass}">[exceptionClass]</span></p>
 
-    <!-- Hiển thị chi tiết exception -->
     <div>
         <h3>Exception Details:</h3>
-        <pre th:text="${exceptionDetails}"></pre>
+        <!-- pre giữ định dạng stacktrace -->
+        <pre th:text="${exceptionDetails}">[exceptionDetails]</pre>
     </div>
 
-    <a href="/main" class="btn btn-primary">Go Back to Home</a>
+    <a href="/admin" class="btn btn-primary mt-3">Quay về Admin</a>
 </div>
 </body>
 </html>

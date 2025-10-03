@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,20 +10,16 @@
         body {
             background-color: #f8f9fa;
         }
-
         #sidebar-wrapper {
             min-height: 100vh;
             width: 250px;
         }
-
         .container {
             margin-left: 270px;
         }
-
         .card img {
             object-fit: cover;
         }
-
         table {
             background-color: white;
         }
@@ -74,13 +70,31 @@
                     <span th:if="${user.status.name() == 'Active'}" class="badge badge-success">Đang hoạt động</span>
                     <span th:if="${user.status.name() == 'Locked'}" class="badge badge-danger">Khóa</span>
                 </p>
-                <p><strong>Tổng tiền đã chi tiêu:</strong> <span th:text="${totalSpent}"></span> VND</p>
+                <p><strong>Tổng tiền đã chi tiêu:</strong>
+                    <span th:text="${#numbers.formatDecimal(totalSpent,0,'COMMA',0,'POINT')}"></span> VND
+                </p>
             </div>
             <div class="card-footer text-center bg-light">
                 <a href="/admin" class="btn btn-secondary">Quay Lại</a>
+
+                <!-- Nút sửa -->
+                <a th:href="@{/admin/user/edit/{id}(id=${user.userId})}" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Sửa
+                </a>
+
+
+
+                <!-- Nút reset mật khẩu (POST) -->
+                <form th:action="@{/admin/user/reset-password/{id}(id=${user.userId})}"
+                      method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fas fa-key"></i> Reset Mật Khẩu
+                    </button>
+                </form>
             </div>
         </div>
 
+        <!-- Lịch sử thuê -->
         <h3 class="mt-5">Lịch Sử Thuê Nhà</h3>
         <table class="table table-striped mt-3 shadow-sm">
             <thead class="thead-dark">
@@ -98,7 +112,7 @@
                 <td th:text="${history.house.propertyName}"></td>
                 <td th:text="${#dates.format(history.startDate, 'yyyy-MM-dd')}"></td>
                 <td th:text="${#dates.format(history.endDate, 'yyyy-MM-dd')}"></td>
-                <td th:text="${history.totalCost}"></td>
+                <td th:text="${#numbers.formatDecimal(history.totalCost,0,'COMMA',0,'POINT')} + ' VND'"></td>
             </tr>
             </tbody>
         </table>
