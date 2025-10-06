@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sửa Người Dùng</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="mb-4">Sửa thông tin người dùng</h2>
+
+    <!-- Form sửa user -->
+    <form th:action="@{/admin/user/edit/{id}(id=${user.userId})}" th:object="${user}" method="post" class="needs-validation" novalidate>
+
+        <!-- Họ tên -->
+        <div class="form-group">
+            <label for="fullname">Họ tên</label>
+            <input id="fullname" type="text" th:field="*{fullname}" class="form-control" required minlength="5" maxlength="50"/>
+            <div class="invalid-feedback">Họ tên phải từ 5 - 50 ký tự</div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" th:field="*{email}" class="form-control" required/>
+            <div class="invalid-feedback">Email không hợp lệ</div>
+        </div>
+
+        <!-- Số điện thoại -->
+        <div class="form-group">
+            <label for="phone">Số điện thoại</label>
+            <input id="phone" type="text" th:field="*{phone}" class="form-control" />
+        </div>
+
+        <!-- Vai trò -->
+        <!-- Vai trò -->
+        <div class="form-group">
+            <label for="role">Vai trò</label>
+            <select id="role" th:field="*{role.roleId}" class="form-control" required>
+                <option th:each="r : ${roles}"
+                        th:value="${r.roleId}"
+                        th:text="${r.roleName}">
+                </option>
+            </select>
+        </div>
+
+
+
+
+        <!-- Trạng thái -->
+        <div class="form-group">
+            <label for="status">Trạng thái</label>
+            <select id="status" th:field="*{status}" class="form-control" required>
+                <option value="Active">Hoạt động</option>
+                <option value="Locked">Khóa</option>
+            </select>
+        </div>
+
+        <!-- Nút -->
+        <button type="submit" class="btn btn-success">💾 Lưu thay đổi</button>
+        <a href="/admin" class="btn btn-secondary">⬅ Quay lại</a>
+    </form>
+</div>
+
+<!-- JS để validate bootstrap -->
+<script>
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            const forms = document.getElementsByClassName('needs-validation');
+            Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+</body>
+</html>

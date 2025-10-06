@@ -1,0 +1,131 @@
+/* Center the form container */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f7f0f7;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.materialContainer {
+    width: 100%;
+    max-width: 600px; /* Đổi max-width để form rộng hơn */
+    padding: 20px;
+    align-items: flex-start; /* Căn chỉnh phần tử con (box) ở phía trên */
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form title */
+.title {
+    font-size: 36px; /* Tăng kích thước chữ "Đăng ký" */
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #d63384;
+}
+
+/* Input fields styling */
+.input {
+    position: relative;
+    margin-bottom: 20px;
+    min-height: 60px;
+}
+
+.input label {
+    display: block;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.input input.form-control {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.input input:focus {
+    border-color: #d63384;
+    outline: none;
+    box-shadow: 0 0 4px rgba(214, 51, 132, 0.25);
+}
+
+/* Error message styling */
+.input .error-message {
+    display: none;
+    color: red;
+    font-size: 12px;
+    position: absolute;
+    bottom: -18px;
+    left: 0;
+}
+
+/* Submit button styling */
+.button {
+    text-align: center;
+}
+.button button{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.button button.btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    background-color: #d63384;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button button.btn:hover {
+    background-color: #c12f73;
+}
+
+/* Media query for small screens */
+@media (max-width: 576px) {
+    .materialContainer {
+        padding: 15px;
+    }
+}
+
+.role-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.role-btn.btn {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.role-btn.selected {
+    background-color: #d63384;
+    color: white;
+    border-color: #d63384;
+}
+
+.role-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.role-btn:active {
+    transform: scale(0.98);
+}
+
+.navbar {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ với độ mờ */
+
+}

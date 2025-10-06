@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Airbnb Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/home.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+        <img src="/images/avatar.jpg" alt="Logo">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+        <ul class="navbar-nav mx-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/hosting">Hôm nay</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Lịch</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/hosting/listings">Nhà/phòng cho thuê</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/hosting/messages">Tin nhắn</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Menu
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Tham gia chương trình thử nghiệm trước</a>
+                    <a class="dropdown-item" href="#">Đặt phòng</a>
+                    <a class="dropdown-item" href="#">Thu nhập</a>
+                    <a class="dropdown-item" href="#">Thông tin phân tích</a>
+                    <a class="dropdown-item" href="#">Tạo mục cho thuê mới</a>
+                    <a class="dropdown-item" href="#">Sách hướng dẫn</a>
+                    <a class="dropdown-item" href="#">Khám phá các nguồn hỗ trợ</a>
+                    <a class="dropdown-item" href="#">Kết nối với các người tổ chức</a>
+                </div>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="/images/img_1.png" alt="Thông báo" class="rounded-circle" width="30" height="30">
+                </a>
+                <div class="dropdown-menu dropdown-menu-right notification-panel" aria-labelledby="notificationsDropdown">
+                    <h4>Thông báo</h4>
+                    <a class="dropdown-item" href="#"><i class="fas fa-envelope mr-2"></i>Thông báo 1</a>
+                    <a class="dropdown-item" href="#"><i class="fas fa-envelope mr-2"></i>Thông báo 2</a>
+                    <a class="dropdown-item" href="#"><i class="fas fa-envelope mr-2"></i>Thông báo 3</a>
+                </div>
+
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img th:src="${user.avatar != null && user.avatar != '' ? 'data:image/jpeg;base64,' + user.avatar : '/images/img_2.png'}" alt="Avatar" width="30" height="30">
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="/profile">Hồ sơ</a>
+                    <a class="dropdown-item" href="/account">Tài khoản</a>
+                    <a class="dropdown-item" href="#">Truy cập trung tâm trợ giúp</a>
+                    <a class="dropdown-item" href="#">Tìm trợ giúp về vấn đề an toàn</a>
+                    <a class="dropdown-item" href="#">Ngôn ngữ và dịch</a>
+                    <a class="dropdown-item" href="#">VNĐ</a>
+                    <a class="dropdown-item" href="#">Tổ chức trải nghiệm</a>
+                    <a class="dropdown-item" href="#">Chuyển sang chế độ du lịch</a>
+                    <form th:action="@{/perform_logout}" method="POST" class="dropdown-item p-0">
+                        <button type="submit" class="dropdown-item w-100 text-left">Đăng xuất</button>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <!-- Bộ lọc -->
+    <div class="filters d-flex flex-wrap justify-content-start mb-4">
+        <button class="btn btn-outline-secondary mr-2">Islands</button>
+        <button class="btn btn-outline-secondary mr-2">Tiny Homes</button>
+        <button class="btn btn-outline-secondary mr-2">Design</button>
+        <button class="btn btn-outline-secondary mr-2">Arctic</button>
+        <button class="btn btn-outline-secondary">Amazing Pools</button>
+    </div>
+
+    <!-- Cards -->
+    <div class="row">
+        <!-- Card 1 -->
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="/images/img_home_1.jpg" class="card-img-top" alt="Pulau Seribu">
+                <div class="card-body">
+                    <h5 class="card-title">Pulau Seribu, Jakarta</h5>
+                    <p class="card-text">2,426 kilometers away - <span class="text-muted">7,115,274 VND/night</span></p>
+                </div>
+            </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="/images/img_home_2.jpg" class="card-img-top" alt="Lovina">
+                <div class="card-body">
+                    <h5 class="card-title">Lovina, Indonesia</h5>
+                    <p class="card-text">2,801 kilometers away - <span class="text-muted">5,846,315 VND/night</span></p>
+                </div>
+            </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="/images/img_home_3.jpg" class="card-img-top" alt="Anambas">
+                <div class="card-body">
+                    <h5 class="card-title">Anambas, Indonesia</h5>
+                    <p class="card-text">6.5 hectares - <span class="text-muted">2,417,545 VND/night</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+
+
+    <!-- Navigation Menu -->
+    <div class="boxNav" id="menu">
+        <div>Home</div>
+        <div>Home</div>
+        <div>Home</div>
+        <div>Home</div>
+        <div>Home</div>
+
+    </div>
+
+
+    <div>
+        <p style="text-align: center;">Đảm bảo thanh toán an toàn</p>
+        <img
+                src="https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/elementor/thumbs/Icons-123-pzks3go5g30b2zz95xno9hgdw0h3o8xu97fbaqhtb6.png"
+                alt="Safe Payment">
+    </div>
+
+    <!-- Footer Info -->
+    <div style="text-align: center; margin-top: 20px;">
+        Copyright © 2024 Home. Created by Team CodeGym
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
