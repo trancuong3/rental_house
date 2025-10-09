@@ -7,12 +7,9 @@ import org.example.profilecase5.Model.User;
 import org.example.profilecase5.Repository.RentalHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -22,11 +19,11 @@ import java.util.stream.Collectors;
 public class RentalHistoryService {
 
     @Autowired
-    private RentalHistoryRepository rentalHistoryRepository;  // Inject repository
+    private RentalHistoryRepository rentalHistoryRepository;
 
     // Method to get rental history by house ID
     public List<RentalHistory> getRentalHistoriesByHouseId(int houseId) {
-        return rentalHistoryRepository.findByHouse_HouseId(houseId);  // Assume findByHouseId is implemented in the repository
+        return rentalHistoryRepository.findByHouse_HouseId(houseId);
     }
 
     public List<RentalHistory> getAllRentalHistory() {
@@ -50,16 +47,16 @@ public class RentalHistoryService {
         rentalHistory.setStatus(RentalHistory.RentalStatus.Checked_out);
         rentalHistoryRepository.save(rentalHistory);
     }
+
     public Page<RentalHistory> getAllRentalHistory(Pageable pageable) {
         return rentalHistoryRepository.findAll(pageable);
     }
-
-    // Method to get a rental history by ID
 
     public void cancel(RentalHistory rentalHistory) {
         rentalHistory.setStatus(RentalHistory.RentalStatus.Cancelled);
         rentalHistoryRepository.save(rentalHistory);
     }
+
     public void book (RentalHistory rentalHistory) {
         rentalHistory.setStatus(RentalHistory.RentalStatus.Pending);
         rentalHistoryRepository.save(rentalHistory);
@@ -76,7 +73,6 @@ public class RentalHistoryService {
         return rentalHistoryRepository.searchRentalHistories(houseIds, propertyName, startDate, endDate, status, pageable);
     }
 
-
     public Page<RentalHistory> getRentalHistoriesByHouses(List<House> houses, Pageable pageable) {
         return rentalHistoryRepository.findByHouseIn(houses, pageable);
     }
@@ -85,4 +81,24 @@ public class RentalHistoryService {
         return rentalHistoryRepository.findLatestNotifications(pageable);
     }
 
+    // ====================================================================
+    // ======= PHƯƠNG THỨC BỔ SUNG CHO ADMINCONTROLLER =======
+    // ====================================================================
+
+    /**
+     * Phương thức này sửa lỗi: cannot find symbol method getRentalHistoryByUserId(int)
+     * Lấy danh sách lịch sử thuê nhà theo ID người dùng thuê.
+     */
+    public List<RentalHistory> getRentalHistoryByUserId(int userId) {
+        // Gọi phương thức mới findByUser_UserId trong Repository
+        return rentalHistoryRepository.findByUser_UserId(userId);
+    }
+
+    /**
+     * Phương thức này tính tổng tiền đã chi tiêu của User.
+     * Đã cập nhật để gọi phương thức Repository mới (sumTotalPriceByUserId).
+     */
+    public double calculateTotalSpentByUser(int userId) {
+        return rentalHistoryRepository.sumTotalPriceByUserId(userId);
+    }
 }

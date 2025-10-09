@@ -14,9 +14,33 @@ import java.util.List;
 
 @Repository
 public interface RentalHistoryRepository extends JpaRepository<RentalHistory, Integer> {
+
+    // Phương thức tiêu chuẩn
     RentalHistory findByRentalId(int rentalId);
     List<RentalHistory> findByHouse_HouseId(int houseId);
     Page<RentalHistory> findByHouseIn(List<House> houses, Pageable pageable);
+
+    // ====================================================================
+    // ======= PHƯƠNG THỨC BỔ SUNG CHO ADMIN CONTROLLER & SERVICE =======
+    // ====================================================================
+
+    /**
+     * Bổ sung để sửa lỗi biên dịch trong RentalHistoryService.getRentalHistoryByUserId(int).
+     * (Giả định trường User trong RentalHistory được đặt tên là 'user')
+     */
+    List<RentalHistory> findByUser_UserId(int userId);
+
+    /**
+     * Bổ sung để tính tổng tiền mà một người dùng đã chi tiêu.
+     * Chỉ tính tổng cho các giao dịch hoàn tất (Checked_out).
+     */
+    @Query("SELECT COALESCE(SUM(rh.totalPrice), 0.0) FROM RentalHistory rh WHERE rh.user.userId = :userId AND rh.status = 'Checked_out'")
+    double sumTotalPriceByUserId(@Param("userId") int userId);
+
+    // ====================================================================
+    // ======= CÁC PHƯƠNG THỨC QUERY KHÁC (ĐÃ CÓ) =======
+    // ====================================================================
+
     @Query("SELECT rh FROM RentalHistory rh " +
             "WHERE (rh.house.houseId IN :houseIds) " +
             "AND (:propertyName IS NULL OR LOWER(rh.house.propertyName) LIKE LOWER(CONCAT('%', :propertyName, '%'))) " +

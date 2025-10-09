@@ -25,4 +25,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     // ===== Lấy Owner theo roleId và trạng thái =====
     List<User> findByRoleRoleIdAndStatus(int roleId, String status);
+
 }
+
