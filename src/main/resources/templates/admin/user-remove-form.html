@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Xóa Người Dùng</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="mb-4 text-danger">Xóa người dùng</h2>
+
+    <div class="alert alert-warning">
+        ⚠️ Bạn có chắc muốn <strong>xóa người dùng này</strong>? Hành động này <strong>không thể hoàn tác!</strong>
+    </div>
+
+    <!-- Form xác nhận xóa -->
+    <form th:action="@{/admin/user/delete/{id}(id=${user.userId})}" method="post">
+        <div class="form-group">
+            <label>Họ tên:</label>
+            <input type="text" th:value="${user.fullname}" class="form-control" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="text" th:value="${user.email}" class="form-control" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>Tên đăng nhập:</label>
+            <input type="text" th:value="${user.username}" class="form-control" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>Số điện thoại:</label>
+            <input type="text" th:value="${user.phone}" class="form-control" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>Vai trò:</label>
+            <input type="text" th:value="${user.role.roleName}" class="form-control" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>Trạng thái:</label>
+            <input type="text" th:value="${user.status}" class="form-control" readonly>
+        </div>
+
+        <button type="submit" class="btn btn-danger">🗑 Xác nhận xóa</button>
+        <a th:href="@{/admin}" class="btn btn-secondary">⬅ Quay lại</a>
+    </form>
+</div>
+</body>
+</html>
