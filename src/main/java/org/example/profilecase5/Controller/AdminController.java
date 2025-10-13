@@ -168,7 +168,7 @@ public class AdminController {
             // 🔹 Đăng ký Owner
             userService.registerOwner(owner);
 
-            // 🔹 Encode mật khẩu và cập nhật lại
+            // 🔹 Encode mật khẩu và cập nhật lạig
             String encodedPassword = userService.encodePassword(randomPassword);
             owner.setPassword(encodedPassword);
             owner.setConfirmPassword(encodedPassword);
