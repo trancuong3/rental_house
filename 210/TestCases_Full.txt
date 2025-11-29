@@ -1,0 +1,9 @@
+=======================================
+KET QUA TEST CASE CHO CHUC NANG FN1
+TestCase | A | B | C | D | Expected | Actual | PASS/FAIL
+=======================================
+KET QUA TEST CASE CHO CHUC NANG FN2
+TestCase | A | B | C | D | Expected | Actual | PASS/FAIL
+=======================================
+KET QUA TEST CASE CHO CHUC NANG FN3
+TestCase | A | B | C | D | Expected | Actual | PASS/FAIL
