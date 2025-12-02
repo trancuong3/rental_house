@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const subtotalSpan = document.getElementById("subtotal");
     const totalPriceSpan = document.getElementById("totalPrice");
 
-    // Lấy giá thuê từ HTML (loại bỏ định dạng nếu có)
     const pricePerDay = parseInt(
         document.getElementById("pricePerNight").textContent.replace(/\./g, "")
     );
